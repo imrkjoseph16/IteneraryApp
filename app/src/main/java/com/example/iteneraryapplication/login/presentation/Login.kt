@@ -1,7 +1,6 @@
 package com.example.iteneraryapplication.login.presentation
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.example.iteneraryapplication.app.foundation.BaseActivity
