@@ -11,11 +11,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     abstract val inflater: (LayoutInflater) -> VB
 
-    protected open fun onActivityCreated() = Unit
+    protected open fun onActivityCreated() { initViewBinding() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initViewBinding()
+        onActivityCreated()
     }
 
     private fun initViewBinding() {
