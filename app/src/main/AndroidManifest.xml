@@ -26,6 +26,7 @@
 
         <activity
             android:name=".register.presentation.Register"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
 
         <activity
