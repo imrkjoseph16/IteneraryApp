@@ -12,23 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IteneraryApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".register.presentation.Register"
-            android:exported="false" />
+
         <activity
             android:name=".login.presentation.Login"
-            android:exported="false" />
-        <activity
-            android:name=".dashboard.Dashboard"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.IteneraryApplication">
+            android:theme="@style/Theme.IteneraryApplication" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".register.presentation.Register"
+            android:exported="false" />
+
+        <activity
+            android:name=".dashboard.Dashboard"
+            android:exported="false"/>
     </application>
 
 </manifest>
