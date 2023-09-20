@@ -16,5 +16,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
 
     override fun onActivityCreated() {
         super.onActivityCreated()
+
+        // You can initialize your layout component here.
     }
 }
