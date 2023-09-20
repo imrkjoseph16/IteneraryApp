@@ -2,7 +2,7 @@ package com.example.iteneraryapplication.register.presentation
 
 import androidx.lifecycle.ViewModel
 import com.example.iteneraryapplication.register.domain.CreateUserCredentials
-import com.example.iteneraryapplication.register.domain.data.Credentials
+import com.example.iteneraryapplication.shared.Credentials
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

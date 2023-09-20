@@ -1,7 +1,7 @@
 package com.example.iteneraryapplication.register.data.repository
 
 import com.example.iteneraryapplication.app.util.coRunCatching
-import com.example.iteneraryapplication.register.domain.data.Credentials
+import com.example.iteneraryapplication.shared.Credentials
 import com.example.iteneraryapplication.register.presentation.RegisterState
 import com.example.iteneraryapplication.register.presentation.ShowRegisterError
 import com.example.iteneraryapplication.register.presentation.ShowRegisterLoading
@@ -21,7 +21,7 @@ class RegisterRepository @Inject constructor(
 
     suspend fun registerCredentials(credentials: Credentials) = coRunCatching {
         _dataStream.value = ShowRegisterLoading
-        firebaseAuth.signInWithEmailAndPassword(
+        firebaseAuth.createUserWithEmailAndPassword(
             credentials.email,
             credentials.password
         ).await()
