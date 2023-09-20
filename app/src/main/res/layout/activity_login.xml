@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLogin" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -49,10 +49,10 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@id/et_email" />
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/button_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -60,12 +60,12 @@
         android:background="@drawable/button_custom"
         android:text="@string/title_login"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@id/etPassword"
-        app:layout_constraintStart_toStartOf="@id/etPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:layout_constraintEnd_toEndOf="@id/et_password"
+        app:layout_constraintStart_toStartOf="@id/et_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
     <TextView
-        android:id="@+id/tvRegisterAccount"
+        android:id="@+id/tv_register_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -74,6 +74,6 @@
         android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogin"/>
+        app:layout_constraintTop_toBottomOf="@id/button_login"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,12 @@
 package com.example.iteneraryapplication.login.presentation
 
-import android.content.Intent
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.example.iteneraryapplication.app.foundation.BaseActivity
+import com.example.iteneraryapplication.dashboard.presentation.Dashboard
 import com.example.iteneraryapplication.databinding.ActivityLoginBinding
 import com.example.iteneraryapplication.register.presentation.Register
+import com.example.iteneraryapplication.shared.Credentials
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,15 +20,32 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     override fun onActivityCreated() {
         super.onActivityCreated()
         binding.apply {
-            tvRegisterAccount.setOnClickListener {
-                navigateActivityRegister()
+            configureViews()
+            setupObserver()
+        }
+    }
+
+    private fun ActivityLoginBinding.configureViews() {
+        buttonLogin.setOnClickListener {
+            viewModel.loginCredentials(
+                Credentials(
+                    email = etEmail.text.toString(),
+                    password = etPassword.text.toString()
+                )
+            )
+        }
+        tvRegisterAccount.setOnClickListener { navigateActivityRegister() }
+    }
+
+    private fun setupObserver() {
+        with(viewModel) {
+            isLoginSuccess.observe(this@Login) { isSuccess ->
+                isSuccess?.let { navigateActivityDashboard() } ?: error("Unable to login")
             }
         }
     }
 
-    private fun navigateActivityRegister() {
-        val intent = Intent(this, Register::class.java)
-        startActivity(intent)
-    }
+    private fun navigateActivityDashboard() = navigationUtil.navigateActivity(context = this, className = Dashboard::class.java)
 
+    private fun navigateActivityRegister() = navigationUtil.navigateActivity(context = this, className = Register::class.java)
 }
