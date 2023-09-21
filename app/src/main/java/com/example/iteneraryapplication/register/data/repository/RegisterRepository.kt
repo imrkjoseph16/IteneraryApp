@@ -1,6 +1,7 @@
 package com.example.iteneraryapplication.register.data.repository
 
 import com.example.iteneraryapplication.app.util.coRunCatching
+import com.example.iteneraryapplication.register.data.form.RegisterForm
 import com.example.iteneraryapplication.shared.Credentials
 import com.example.iteneraryapplication.register.presentation.RegisterState
 import com.example.iteneraryapplication.register.presentation.ShowRegisterError

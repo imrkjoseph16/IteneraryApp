@@ -78,6 +78,7 @@ dependencies {
     // Firebase
     implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     //Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.6.4")
@@ -90,4 +91,7 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(kotlin("stdlib", org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
 }

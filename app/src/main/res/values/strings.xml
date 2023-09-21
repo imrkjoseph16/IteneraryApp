@@ -18,4 +18,5 @@
     <string name="login_title">Itinerary App</string>
     <string name="login_bottom_button_title">Begin your Journey</string>
     <string name="register_description">Create your account, Let\'s plan your travel together!</string>
+    <string name="verification_email">We have sent an email with a confirmation link to your email address. Please allow 5-10 minutes for this message to arrive.</string>
 </resources>

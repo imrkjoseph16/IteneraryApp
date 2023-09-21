@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.iteneraryapplication.app.core.shared.SingleLiveEvent
 import com.example.iteneraryapplication.login.domain.LoginUserCredentials
 import com.example.iteneraryapplication.shared.Credentials
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,14 +17,18 @@ class LoginViewModel @Inject constructor(
 
     val isLoginSuccess = SingleLiveEvent<Boolean?>()
 
+    val throwMessage = SingleLiveEvent<String?>()
+
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+
     fun loginCredentials(credentials: Credentials) {
         viewModelScope.launch {
             loginUserCredentials.invoke(credentials).onSuccess {
-                // handle success state
-                isLoginSuccess.value = true
+                isLoginSuccess.value = FirebaseAuth.getInstance().currentUser!!.isEmailVerified
+
             }.onFailure {
                 // handle failed state
-                isLoginSuccess.value = false
+                throwMessage.value = it.message
             }
         }
     }
