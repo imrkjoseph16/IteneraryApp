@@ -1,6 +1,7 @@
 package com.example.iteneraryapplication.login.presentation
 
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.dashboard.presentation.Dashboard
@@ -40,7 +41,16 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     private fun setupObserver() {
         with(viewModel) {
             isLoginSuccess.observe(this@Login) { isSuccess ->
-                isSuccess?.let { navigateActivityDashboard() } ?: error("Unable to login")
+                if (isSuccess == true) {
+                    navigateActivityDashboard()
+                } else {
+                    Toast.makeText(this@Login, "Your account is not yet verified, please check your email.", Toast.LENGTH_LONG).show()
+                }
+            }
+            throwMessage.observe(this@Login) { message ->
+                if (message!!.isNotEmpty()) {
+                    Toast.makeText(this@Login, message.toString(), Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
