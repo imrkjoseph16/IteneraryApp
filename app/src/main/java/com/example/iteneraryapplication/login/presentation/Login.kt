@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class Login : BaseActivity<ActivityLoginBinding>() {
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override val inflater: (LayoutInflater) -> ActivityLoginBinding
         get() = ActivityLoginBinding::inflate
@@ -20,6 +20,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     override fun onActivityCreated() {
         super.onActivityCreated()
         binding.apply {
+            viewModel = loginViewModel
             configureViews()
             setupObserver()
         }
@@ -27,7 +28,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
 
     private fun ActivityLoginBinding.configureViews() {
         buttonLogin.setOnClickListener {
-            viewModel.loginCredentials(
+            loginViewModel.loginCredentials(
                 Credentials(
                     email = etEmail.text.toString(),
                     password = etPassword.text.toString()
@@ -35,10 +36,11 @@ class Login : BaseActivity<ActivityLoginBinding>() {
             )
         }
         tvRegisterAccount.setOnClickListener { navigateActivityRegister() }
+        beginJourney.setOnClickListener { isBeginJourney = true }
     }
 
     private fun setupObserver() {
-        with(viewModel) {
+        with(loginViewModel) {
             isLoginSuccess.observe(this@Login) { isSuccess ->
                 isSuccess?.let { navigateActivityDashboard() } ?: error("Unable to login")
             }
