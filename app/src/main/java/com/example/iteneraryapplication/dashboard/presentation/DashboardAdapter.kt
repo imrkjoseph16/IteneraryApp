@@ -7,7 +7,7 @@ import com.example.iteneraryapplication.dashboard.pages.booking.BookingFragment
 import com.example.iteneraryapplication.dashboard.pages.budgetmanagement.BudgetManagementFragment
 import com.example.iteneraryapplication.dashboard.pages.itinerarymanagement.ItineraryManagementFragment
 import com.example.iteneraryapplication.dashboard.pages.traveltips.TravelTipsFragment
-import com.example.iteneraryapplication.dashboard.pages.tripplanning.TripPlanningFragment
+import com.example.iteneraryapplication.dashboard.pages.tripplanning.presentation.TripPlanningFragment
 
 class DashboardAdapter(
     fragmentManager: FragmentManager,

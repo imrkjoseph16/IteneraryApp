@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,25 +12,25 @@
         android:roundIcon="@drawable/icon_app_64px"
         android:supportsRtl="true"
         android:theme="@style/Theme.IteneraryApplication"
-        android:name=".app.App"
         tools:targetApi="31">
-
+        <activity
+            android:name=".dashboard.shared.CreateTravelNoteActivity"
+            android:exported="false" />
         <activity
             android:name=".login.presentation.Login"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".register.presentation.Register"
             android:exported="false" />
-
         <activity
             android:name=".dashboard.presentation.Dashboard"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,34 +1,41 @@
 package com.example.iteneraryapplication.register.data.repository
 
-import com.example.iteneraryapplication.app.util.coRunCatching
-import com.example.iteneraryapplication.register.data.form.RegisterForm
-import com.example.iteneraryapplication.shared.Credentials
-import com.example.iteneraryapplication.register.presentation.RegisterState
-import com.example.iteneraryapplication.register.presentation.ShowRegisterError
-import com.example.iteneraryapplication.register.presentation.ShowRegisterLoading
-import com.example.iteneraryapplication.register.presentation.ShowRegisterNoData
-import com.example.iteneraryapplication.register.presentation.ShowRegisterSuccess
+import com.example.iteneraryapplication.register.data.dto.RegisterCredentialResponse
+import com.example.iteneraryapplication.register.data.dto.SaveDetailsFireStore
+import com.example.iteneraryapplication.register.data.dto.SendEmailVerificationResponse
+import com.example.iteneraryapplication.register.domain.data.ICreateUserCredential
+import com.example.iteneraryapplication.register.domain.data.ISaveDetailsFireStore
+import com.example.iteneraryapplication.register.domain.data.ISendEmailVerification
+import com.example.iteneraryapplication.app.shared.model.Credentials
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RegisterRepository @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val fireStore: FirebaseFirestore
 ) {
-    private val _dataStream = MutableStateFlow<RegisterState>(ShowRegisterNoData)
-
-    suspend fun registerCredentials(credentials: Credentials) = coRunCatching {
-        _dataStream.value = ShowRegisterLoading
-        firebaseAuth.createUserWithEmailAndPassword(
+    suspend fun registerCredentials(credentials: Credentials) : ICreateUserCredential {
+        val authResult = firebaseAuth.createUserWithEmailAndPassword(
             credentials.email,
             credentials.password
         ).await()
-    }.onSuccess {
-        _dataStream.value = ShowRegisterSuccess
-    }.onFailure {exception ->
-        _dataStream.value = ShowRegisterError(exception)
+        return RegisterCredentialResponse(authResult)
+    }
+
+    suspend fun sendEmailVerification() : ISendEmailVerification {
+        val emailVerificationTask = firebaseAuth.currentUser?.sendEmailVerification()
+        emailVerificationTask?.await()
+        return SendEmailVerificationResponse(emailVerificationTask?.isSuccessful == true)
+    }
+
+    suspend fun saveFireStoreDetails(details: HashMap<String, String?>) : ISaveDetailsFireStore {
+        val userId = firebaseAuth.currentUser?.uid ?: error("userId failed to generate")
+        val saveDetailsStatus = fireStore.collection("user").document(userId).set(details)
+        saveDetailsStatus.await()
+        return SaveDetailsFireStore(saveDetailsStatus.isSuccessful)
     }
 }

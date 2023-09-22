@@ -159,6 +159,8 @@
                     android:text="@string/title_login"
                     android:textAllCaps="false"
                     android:textSize="16dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:textColor="@color/atomic_steel_blue"
                     app:layout_constraintEnd_toEndOf="@id/et_password"
                     app:layout_constraintStart_toStartOf="@id/et_password"
@@ -189,6 +191,8 @@
                 android:layout_marginHorizontal="22dp"
                 android:textAllCaps="false"
                 android:textSize="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:text="@string/login_bottom_button_title"
                 android:visibility="@{isBeginJourney ? View.GONE : View.VISIBLE}"
                 android:fontFamily="@font/poppins_medium"
@@ -197,5 +201,10 @@
                 app:layout_constraintStart_toStartOf="@id/et_password"
                 app:layout_constraintTop_toBottomOf="@+id/et_password" />
         </LinearLayout>
+
+        <include
+            android:id="@+id/loading_widget"
+            layout="@layout/shared_loading_widget"
+            tools:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

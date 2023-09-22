@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="data"
+            type="com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        style="@style/MatchWrapParent"
+        android:layout_margin="16dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            style="@style/MatchWrapParent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:background="@color/white">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/icon_app_64px" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="@{data.getItemTitle(context)}"
+                    tools:text="Sample title text"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@{data.getItemNote(context)}"
+                android:textColor="@color/gray"
+                tools:text="Sample description text" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
+

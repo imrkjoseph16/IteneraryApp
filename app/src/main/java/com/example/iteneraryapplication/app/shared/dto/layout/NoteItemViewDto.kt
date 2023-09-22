@@ -1,0 +1,19 @@
+package com.example.iteneraryapplication.app.shared.dto.layout
+
+import android.content.Context
+import com.example.iteneraryapplication.app.shared.component.TextLine
+
+/**
+ * Reusable component for notes list item.
+ *
+ * Describes data rendered in [com.example.iteneraryapplication.R.layout.shared_list_note_item]
+ * */
+data class NoteItemViewDto(
+    private val itemTitle: TextLine = TextLine.EMPTY,
+    private val itemNote: TextLine = TextLine.EMPTY,
+) {
+
+    fun getItemTitle(context: Context) = itemTitle.getString(context)
+
+    fun getItemNote(context: Context) = itemNote.getString(context)
+}

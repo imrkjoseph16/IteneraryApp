@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.shared
+package com.example.iteneraryapplication.app.shared.model
 
 data class Credentials(
     val email: String,

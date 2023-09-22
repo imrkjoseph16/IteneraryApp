@@ -1,6 +1,8 @@
 package com.example.iteneraryapplication.app.core
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +20,8 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideFirebaseUser(auth: FirebaseAuth) = auth.currentUser
+
+    @Provides
+    @Singleton
+    fun provideFireStore() = Firebase.firestore
 }

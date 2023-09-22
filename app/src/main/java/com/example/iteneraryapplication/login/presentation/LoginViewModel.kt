@@ -1,10 +1,12 @@
 package com.example.iteneraryapplication.login.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iteneraryapplication.app.core.shared.SingleLiveEvent
+import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.login.domain.LoginUserCredentials
-import com.example.iteneraryapplication.shared.Credentials
+import com.example.iteneraryapplication.app.shared.model.Credentials
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,23 +14,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUserCredentials: LoginUserCredentials
+    private val loginUserCredentials: LoginUserCredentials,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
-    val isLoginSuccess = SingleLiveEvent<Boolean?>()
-
-    val throwMessage = SingleLiveEvent<String?>()
-
-    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private val _loginState = MutableLiveData<LoginState>()
+    val loginState: LiveData<LoginState> get() = _loginState
 
     fun loginCredentials(credentials: Credentials) {
         viewModelScope.launch {
-            loginUserCredentials.invoke(credentials).onSuccess {
-                isLoginSuccess.value = FirebaseAuth.getInstance().currentUser!!.isEmailVerified
+            _loginState.apply {
+                value = ShowLoginLoading
 
-            }.onFailure {
-                // handle failed state
-                throwMessage.value = it.message
+                coRunCatching {
+                    loginUserCredentials.invoke(credentials)
+                }.onSuccess {
+                    value = ShowLoginSuccess(firebaseAuth.currentUser?.isEmailVerified)
+                }.onFailure {
+                    value = ShowLoginError(it)
+                }
+
+                value = ShowLoginDismissLoading
             }
         }
     }

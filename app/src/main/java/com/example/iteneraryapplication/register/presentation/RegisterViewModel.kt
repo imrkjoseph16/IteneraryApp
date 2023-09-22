@@ -1,60 +1,72 @@
 package com.example.iteneraryapplication.register.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iteneraryapplication.app.core.shared.SingleLiveEvent
-import com.example.iteneraryapplication.register.data.form.RegisterForm
-import com.example.iteneraryapplication.register.domain.CreateUserCredentials
-import com.example.iteneraryapplication.shared.Credentials
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.example.iteneraryapplication.app.util.coRunCatching
+import com.example.iteneraryapplication.register.domain.RegisterCredentialUseCase
+import com.example.iteneraryapplication.register.domain.data.ICreateUserCredential
+import com.example.iteneraryapplication.register.domain.data.ISaveDetailsFireStore
+import com.example.iteneraryapplication.register.domain.data.ISendEmailVerification
+import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.register.domain.data.IRegisterCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val createUserCredentials: CreateUserCredentials,
+    private val registerCredentialUseCase: RegisterCredentialUseCase
+) : ViewModel() {
 
-    ) : ViewModel() {
+    private val _registerState = MutableLiveData<RegisterState>()
+    val registerState: LiveData<RegisterState> get() = _registerState
 
-    val isRegisterSuccess = SingleLiveEvent<Boolean?>()
-
-    val throwMessage = SingleLiveEvent<String?>()
-
-    private val fireStore = Firebase.firestore
-
-    private val currentUser = FirebaseAuth.getInstance().currentUser
     fun registerCredentials(credentials: Credentials) {
+
         val userMap = hashMapOf(
             "email" to credentials.email,
             "phoneNumber" to credentials.phoneNumber,
             "password" to credentials.password
-
         )
 
         viewModelScope.launch {
-            createUserCredentials.invoke(credentials).onSuccess {
-                currentUser?.sendEmailVerification()?.addOnCompleteListener(
-                    OnCompleteListener {
-                        if (it.isSuccessful) {
-                            val userId = currentUser!!.uid
-                            fireStore.collection("user").document(userId).set(userMap)
-                            isRegisterSuccess.value = true
-                            throwMessage.value = "We have sent an email with a confirmation link to your email address. Please allow 5-10 minutes for this message to arrive."
-                        } else {
-                            isRegisterSuccess.value = false
-                        }
-                    })
+            updateUIState(state = ShowRegisterLoading)
+            // This chainCall function execute a step by step network call.
+            chainCall(
+                { registerCredentialUseCase.registerCredentials(credentials) },
+                { registerCredentialUseCase.sendEmailVerification() },
+                { registerCredentialUseCase.saveFireStoreDetails(userMap) }
+            )
+            updateUIState(state = ShowRegisterDismissLoading)
+        }
+    }
 
-            }.onFailure { throwMessage.value = it.message
-
+    private suspend fun<T : IRegisterCredential> chainCall(vararg calls: (suspend () -> T)) {
+        run chain@{
+            calls.onEachIndexed { _, codeToExecute ->
+                coRunCatching {
+                    codeToExecute.invoke()
+                }.onSuccess { result ->
+                    if (result.isNetworkSuccess()) handleChainCallback(result)
+                }.onFailure {
+                    updateUIState(state = ShowRegisterError(it))
+                    return@chain
+                }
             }
         }
+    }
 
+    private fun updateUIState(state: RegisterState) {
+        _registerState.value = state
+    }
 
+    private fun handleChainCallback(result: Any) {
+        when(result) {
+            is ICreateUserCredential -> updateUIState(state = RegisterCredentialSuccess(result.authResult))
+            is ISendEmailVerification -> updateUIState(state = EmailVerificationSuccess)
+            is ISaveDetailsFireStore -> updateUIState(state = SaveFireStoreDetailsSuccess)
+        }
     }
 }

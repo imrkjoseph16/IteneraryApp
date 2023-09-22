@@ -8,6 +8,6 @@ object ShowLoginLoading : LoginState()
 
 object ShowLoginDismissLoading : LoginState()
 
-object ShowLoginSuccess : LoginState()
+data class ShowLoginSuccess(val isVerified: Boolean?) : LoginState()
 
 data class ShowLoginError(val throwable: Throwable) : LoginState()

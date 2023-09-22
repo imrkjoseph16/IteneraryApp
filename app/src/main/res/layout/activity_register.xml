@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -87,6 +88,7 @@
                 android:hint="@string/title_phone_number"
                 android:alpha="0.9"
                 android:inputType="number"
+                android:maxLength="11"
                 android:padding="15dp"
                 android:textSize="15dp"/>
 
@@ -125,8 +127,15 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/title_register"
                 android:textAllCaps="false"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:textColor="@color/atomic_steel_blue"
                 android:textSize="16dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loading_widget"
+        layout="@layout/shared_loading_widget"
+        tools:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.IteneraryApplication" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="MatchWrapParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ConstraintParent">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
