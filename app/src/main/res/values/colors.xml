@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="colorPrimary">#171C26</color>
+    <color name="colorPrimaryDark">#10141C</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -17,4 +20,13 @@
     <color name="tomato_orange">#E46F44</color>
     <color name="pink_shell">#E8AA9B</color>
     <color name="plum_violet">#DCD5DC</color>
+
+    <color name="ColorDefaultNote">#606570</color>
+    <color name="ColorBlueNote">#4e33ff</color>
+    <color name="ColorYellowNote">#ffd633</color>
+    <color name="ColorWhiteNote">#ffffff</color>
+    <color name="ColorPurpleNote">#ae3b76</color>
+    <color name="ColorGreenNote">#0aebaf</color>
+    <color name="ColorOrangeNote">#ff7746</color>
+    <color name="ColorBlackNote">#202734</color>
 </resources>

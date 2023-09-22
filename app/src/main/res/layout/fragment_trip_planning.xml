@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/atomic_steel_light_blue"
+        android:background="@color/ColorBlackNote"
         tools:context=".dashboard.pages.tripplanning.presentation.TripPlanningFragment">
 
         <TextView
@@ -55,9 +55,9 @@
             android:padding="0dp"
             app:maxImageSize="30dp"
             app:fabCustomSize="60dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="120dp"
-            android:backgroundTint="@color/seagull_blue"
+            android:backgroundTint="@color/ColorYellowNote"
             app:borderWidth="0dp"
             android:tint="@color/white"
             android:scaleType="fitXY"

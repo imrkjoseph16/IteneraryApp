@@ -8,7 +8,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.example.iteneraryapplication.app.util.DateUtil
 import com.example.iteneraryapplication.app.util.NavigationUtil
+import com.example.iteneraryapplication.app.util.PermissionUtil
+import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
@@ -19,6 +22,15 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     @Inject
     lateinit var navigationUtil: NavigationUtil
+
+    @Inject
+    lateinit var permissionUtil: PermissionUtil
+
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
+    lateinit var dateUtil: DateUtil
 
     protected open fun onActivityCreated() { initViewBinding() }
 

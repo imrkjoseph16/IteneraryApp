@@ -19,4 +19,13 @@
     <string name="login_bottom_button_title">Begin your Journey</string>
     <string name="register_description">Create your account, Let\'s plan your travel together!</string>
     <string name="verification_email">We have sent an email with a confirmation link to your email address. Please allow 5-10 minutes for this message to arrive.</string>
+
+    <string name="notes_title">Notes Title</string>
+    <string name="notes_sub_title">Notes Sub Title</string>
+    <string name="notes_desc">Enter Note Here</string>
+    <string name="web_url">Enter Web Url</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="storage_permission_text">This app needs access to your storage.</string>
 </resources>

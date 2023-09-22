@@ -29,6 +29,16 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun ActivityLoginBinding.configureViews() {
+        /*** Temporarily comment, will uncomment these code,
+        when the logout function is implemented.
+
+        // Check currentUser state if already logged in.
+        // then automatically navigateToDashboard()
+        if (firebaseAuth.currentUser?.uid != null) {
+            navigateActivityDashboard()
+            return
+        } ******/
+
         buttonLogin.setOnClickListener {
             loginViewModel.loginCredentials(
                 Credentials(
@@ -37,6 +47,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
                 )
             )
         }
+
         tvRegisterAccount.setOnClickListener { navigateActivityRegister() }
         beginJourney.setOnClickListener { isBeginJourney = true }
     }
@@ -55,7 +66,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun ShowLoginSuccess.handleSuccess() {
-        if (isVerified == true) navigateActivityDashboard()
+        if (isVerified == true) navigateActivityDashboard().also { finish() }
         else Toast.makeText(this@Login, EMAIL_NOT_VERIFIED_MSG, Toast.LENGTH_LONG).show()
     }
 
