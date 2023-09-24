@@ -35,7 +35,7 @@ class Login : BaseActivity<ActivityLoginBinding>() {
         // Check currentUser state if already logged in.
         // then automatically navigateToDashboard()
         if (firebaseAuth.currentUser?.uid != null) {
-            navigateActivityDashboard()
+            navigateActivityDashboard().also { finish() }
             return
         } ******/
 

@@ -1,6 +1,7 @@
 package com.example.iteneraryapplication.app.core
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -19,7 +20,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseUser(auth: FirebaseAuth) = auth.currentUser
+    fun provideFirebaseUser() = FirebaseAuth.getInstance().currentUser
 
     @Provides
     @Singleton

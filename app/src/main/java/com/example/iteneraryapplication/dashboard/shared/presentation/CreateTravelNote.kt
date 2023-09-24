@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.shared
+package com.example.iteneraryapplication.dashboard.shared.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,24 +15,31 @@ import android.view.LayoutInflater
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
 import com.example.iteneraryapplication.app.util.showToastMessage
+import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.EasyPermissions
 
 @AndroidEntryPoint
-class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>() {
+class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
-    private val viewModel: CreateTravelNoteViewModel by viewModels()
+    private val viewModel: DashboardSharedViewModel by viewModels()
 
     private var selectedColor = "#171C26"
 
@@ -48,6 +55,7 @@ class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>()
         binding.apply {
             configureBroadcastReceiver(isRegister = true)
             configureViews()
+            setupObserver()
         }
     }
 
@@ -68,17 +76,28 @@ class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>()
         }
 
         tvWebLink.setOnClickListener {
-            navigationUtil.openExternalBrowser(this@CreateTravelNoteActivity, etWebLink.text.toString())
+            navigationUtil.openExternalBrowser(this@CreateTravelNote, etWebLink.text.toString())
         }
 
         buttonOk.setOnClickListener {
             if (etWebLink.text.toString().trim().isNotEmpty()) checkWebUrl()
-            else showToastMessage(this@CreateTravelNoteActivity, URL_REQUIRED_MSG)
+            else showToastMessage(this@CreateTravelNote, URL_REQUIRED_MSG)
         }
 
         buttonCancel.setOnClickListener {
             if (noteId != -1) configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false)
             else configureWebLayout(isShowLayoutUrl = false)
+        }
+
+        buttonSaveNote.setOnClickListener {
+            viewModel.saveNotes(
+                notesType = NOTES_TYPE_TRIP_PLAN,
+                notes = Notes(
+                    notesTitle = etNoteTitle.text.toString(),
+                    notesSubtitle = etNoteSubTitle.text.toString(),
+                    description = etNoteDesc.text.toString()
+                )
+            )
         }
     }
 
@@ -90,6 +109,28 @@ class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>()
         showLayoutUrl = isShowLayoutUrl
     }
 
+    private fun setupObserver() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.dashboardState.collectLatest { state ->
+                        when (state) {
+                            is ShowSaveNoteSuccess -> finish()
+                            is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
+                            is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
+                            is ShowDashboardError -> showToastMessage(
+                                context = this@CreateTravelNote,
+                                message = state.throwable.message.toString()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
+
     private fun checkWebUrl() {
         binding.apply {
             val webLinkText = etWebLink.text.toString()
@@ -99,7 +140,7 @@ class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>()
                 tvWebLink.text = webLinkText
                 webLink = webLinkText
             } else {
-                showToastMessage(this@CreateTravelNoteActivity, URL_REQUIRED_MSG)
+                showToastMessage(this@CreateTravelNote, URL_REQUIRED_MSG)
             }
         }
     }
@@ -166,12 +207,12 @@ class CreateTravelNoteActivity : BaseActivity<ActivityCreateTravelNoteBinding>()
                     layoutImage.setVisible(true)
 
                     selectedImagePath = permissionUtil.getPathFromUri(
-                        context = this@CreateTravelNoteActivity,
+                        context = this@CreateTravelNote,
                         contentUri = data
                     )
-                } ?: showToastMessage(this@CreateTravelNoteActivity, SOMETHING_WENT_WRONG)
+                } ?: showToastMessage(this@CreateTravelNote, SOMETHING_WENT_WRONG)
             } catch (e: Exception) {
-                showToastMessage(this@CreateTravelNoteActivity, e.message.toString())
+                showToastMessage(this@CreateTravelNote, e.message.toString())
             }
         }
     }

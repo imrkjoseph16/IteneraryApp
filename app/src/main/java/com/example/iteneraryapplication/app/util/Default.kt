@@ -16,5 +16,7 @@ class Default {
         const val SOMETHING_WENT_WRONG = "Something went wrong, Please try again later"
 
         const val URL_REQUIRED_MSG = "Url is Required"
+
+        const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
     }
 }
