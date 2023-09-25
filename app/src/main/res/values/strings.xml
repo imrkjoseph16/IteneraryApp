@@ -9,10 +9,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Bottom Navigation Titles-->
-    <string name="bottom_nav_trip_planning">Trip Plan</string>
-    <string name="bottom_nav_booking">Booking</string>
-    <string name="bottom_nav_itinerary">Itinerary</string>
-    <string name="bottom_nav_budget">Budget</string>
+    <string name="bottom_nav_trip_planning">Trip Planning</string>
+    <string name="bottom_nav_booking">Hotel Booking</string>
+    <string name="bottom_nav_itinerary">Itinerary Management</string>
+    <string name="bottom_nav_budget">Budget Management</string>
     <string name="bottom_nav_travel_tips">Travel Tips</string>
     <string name="login_subtitle">TRAVEL THE WORLD</string>
     <string name="login_title">Itinerary App</string>

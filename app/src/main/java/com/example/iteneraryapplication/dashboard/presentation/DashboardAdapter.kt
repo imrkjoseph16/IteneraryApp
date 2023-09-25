@@ -14,12 +14,12 @@ class DashboardAdapter(
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    enum class DashboardFragments {
-        TRIP_PLANNING,
-        BOOKING,
-        ITINERARY_MANAGEMENT,
-        BUDGET_MANAGEMENT,
-        TRAVEL_TIPS
+    enum class DashboardFragments(val value: String) {
+        TRIP_PLANNING("Trip Planning"),
+        BOOKING("Hotel Booking"),
+        ITINERARY_MANAGEMENT("Itinerary Management"),
+        BUDGET_MANAGEMENT("Budget Managment"),
+        TRAVEL_TIPS("Travel Tips")
     }
 
     override fun getItemCount() = DashboardFragments.values().size
