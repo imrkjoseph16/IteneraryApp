@@ -24,7 +24,6 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
-import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
@@ -42,9 +41,9 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private val viewModel: DashboardSharedViewModel by viewModels()
 
-    private var selectedColor = "#171C26"
+    private var selectedColor: String = "#202734"
 
-    private var selectedImagePath = ""
+    private var selectedNoteImage: Uri? = null
 
     private var webLink = ""
 
@@ -91,17 +90,22 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         buttonSaveNote.setOnClickListener {
-            viewModel.saveNotes(
-                notesType = NOTES_TYPE_TRIP_PLAN,
-                notes = Notes(
-                    notesTitle = etNoteTitle.text.toString(),
-                    notesDateSaved = dateUtil.getCurrentDateTime(format = DATE_NAMED),
-                    notesSubtitle = etNoteSubTitle.text.toString(),
-                    description = etNoteDesc.text.toString()
-                )
-            )
+            validateFields().also { valid ->
+                if (valid) selectedNoteImage?.let {
+                    viewModel.uploadNoteImage(NOTES_TYPE_TRIP_PLAN, it)
+                } ?: binding.saveNotes()
+            }
         }
     }
+
+    private fun ActivityCreateTravelNoteBinding.validateFields() =
+        validationUtil.validateFields(
+            listOf(
+                etNoteTitle,
+                etNoteSubTitle,
+                etNoteDesc
+            )
+        )
 
     private fun ActivityCreateTravelNoteBinding.configureWebLayout(
         isShowWebLink: Boolean = false,
@@ -117,6 +121,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 launch {
                     viewModel.dashboardState.collectLatest { state ->
                         when (state) {
+                            is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
                             is ShowSaveNoteSuccess -> finish()
                             is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                             is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
@@ -129,6 +134,21 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 }
             }
         }
+    }
+
+    private fun ActivityCreateTravelNoteBinding.saveNotes(imageUrl: String? = null) {
+        viewModel.saveNotes(
+            notesType = NOTES_TYPE_TRIP_PLAN,
+            notes = Notes(
+                notesTitle = etNoteTitle.text.toString(),
+                notesDateSaved = dateUtil.getCurrentDateTime(),
+                notesSubtitle = etNoteSubTitle.text.toString(),
+                notesColor = selectedColor,
+                notesDesc = etNoteDesc.text.toString(),
+                notesWebLink = etWebLink.text.toString(),
+                notesImage = imageUrl
+            )
+        )
     }
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
@@ -169,7 +189,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 }
 
                 when (action) {
-                    "Image" -> readStorageTask().also { configureWebLayout(isShowLayoutUrl = false)  }
+                    "Image" -> readStorageTask()
                     "WebUrl" -> configureWebLayout(isShowLayoutUrl = true)
                     "DeleteNote" -> TODO("Will implement delete function")
                 }
@@ -177,9 +197,13 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
     }
 
-    private fun readStorageTask() = requestStoragePermission().takeUnless {
-        permissionUtil.hasReadStoragePerm(this).not()
-    } ?: pickImageFromGallery()
+    private fun readStorageTask() {
+        if (permissionUtil.hasReadStoragePerm(this).not()) {
+            requestStoragePermission()
+        } else {
+            pickImageFromGallery()
+        }
+    }
 
     @SuppressLint("QueryPermissionsNeeded")
     private fun pickImageFromGallery(){
@@ -206,10 +230,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                     imgNote.setVisible(true)
                     layoutImage.setVisible(true)
 
-                    selectedImagePath = permissionUtil.getPathFromUri(
-                        context = this@CreateTravelNote,
-                        contentUri = data
-                    )
+                    selectedNoteImage = data
                 } ?: showToastMessage(this@CreateTravelNote, SOMETHING_WENT_WRONG)
             } catch (e: Exception) {
                 showToastMessage(this@CreateTravelNote, e.message.toString())
