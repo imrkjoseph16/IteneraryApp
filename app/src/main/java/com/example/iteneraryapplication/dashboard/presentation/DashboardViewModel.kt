@@ -30,7 +30,6 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             _logoutState.apply {
                 value = ShowLogoutLoading
-
                 coRunCatching {
                     firebaseAuth.signOut()
                 }.onSuccess {

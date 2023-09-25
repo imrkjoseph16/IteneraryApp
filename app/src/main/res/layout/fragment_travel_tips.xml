@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".dashboard.pages.traveltips.TravelTipsFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="@color/white"
         android:text="Travel Tips"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

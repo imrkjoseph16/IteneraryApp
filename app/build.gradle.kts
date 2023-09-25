@@ -109,4 +109,6 @@ dependencies {
 
     implementation(kotlin("stdlib", org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
+
+    implementation ("com.airbnb.android:lottie:3.4.0")
 }
