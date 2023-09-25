@@ -1,24 +1,32 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
-import android.util.Log
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
-import com.google.android.gms.tasks.OnCompleteListener
+import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardError
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardNoData
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowGetNoteSuccess
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.gson.Gson
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class DashboardRepository @Inject constructor(
     private val fireStore: FirebaseFirestore,
-    private val firebaseUser: FirebaseUser?
+    firebaseUser: FirebaseUser?
 ) {
 
     private val userId = firebaseUser?.uid ?: error("failed to fetch userId")
+
+    // These data streams state flow,
+    // will collect all the current state and return it on the view.
+    private val _dataStream = MutableStateFlow<DashboardState>(ShowDashboardNoData)
+    fun getDashboardStream(): StateFlow<DashboardState> = _dataStream
 
     suspend fun saveNotes(notesType: String, notes: Notes) : Boolean {
         val saveDetailsStatus = fireStore.collection("notes")
@@ -29,16 +37,22 @@ class DashboardRepository @Inject constructor(
         return saveDetailsStatus.isSuccessful
     }
 
-    suspend fun getNotes(notesType: String) : List<Notes?> {
-        val getNotes = fireStore.collection("notes")
+    fun getNotes(notesType: String) {
+        _dataStream.apply {
+            value = ShowDashboardLoading
+
+            fireStore.collection("notes")
             .document(userId)
-            .collection(notesType).get()
-        getNotes.await()
+            .collection(notesType).addSnapshotListener { result, error ->
+                val listNotes = mutableListOf<Notes>()
 
-        val mappedList = getNotes.result.documents.mapIndexed { _, documentSnapshot ->
-            return@mapIndexed documentSnapshot.toObject(Notes::class.java)
+                if (error != null) value = ShowDashboardError(error)
+                else result?.forEach { listNotes.add(it.toObject(Notes::class.java)) }
+
+                value = ShowGetNoteSuccess(listNotes)
+            }
+
+            value = ShowDashboardDismissLoading
         }
-
-        return mappedList
     }
 }

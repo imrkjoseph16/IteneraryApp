@@ -39,17 +39,5 @@ class DashboardSharedViewModel @Inject constructor(
         }
     }
 
-    fun getNotes() {
-        viewModelScope.launch {
-            _dashboardState.apply {
-                coRunCatching {
-                    planningNoteUseCase.getNotes(NOTES_TYPE_TRIP_PLAN)
-                }.onSuccess {
-                    value = ShowGetNoteSuccess(it)
-                }.onFailure {
-                    value = ShowDashboardError(it)
-                }
-            }
-        }
-    }
+    fun getNotes(notesType: String) = planningNoteUseCase.getNotes(notesType = notesType)
 }

@@ -24,6 +24,7 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
@@ -94,6 +95,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 notesType = NOTES_TYPE_TRIP_PLAN,
                 notes = Notes(
                     notesTitle = etNoteTitle.text.toString(),
+                    notesDateSaved = dateUtil.getCurrentDateTime(format = DATE_NAMED),
                     notesSubtitle = etNoteSubTitle.text.toString(),
                     description = etNoteDesc.text.toString()
                 )
@@ -159,12 +161,10 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
             binding.apply {
-                val action = intent?.getStringExtra("action") ?: "null"
+                val action = intent?.getStringExtra("action")
 
-                if ((action == "Image").not()
-                    or (action == "WebUrl").not()
-                    or (action == "DeleteNote").not()) {
-                    selectedColor = intent?.getStringExtra("selectedColor") ?: "#171C26"
+                if (intent?.getStringExtra("selectedColor") != null) {
+                    selectedColor = intent.getStringExtra("selectedColor") ?: "#171C26"
                     colorView.setBackgroundColor(Color.parseColor(selectedColor))
                 }
 

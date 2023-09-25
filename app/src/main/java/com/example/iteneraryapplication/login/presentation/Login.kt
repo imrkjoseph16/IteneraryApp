@@ -29,15 +29,12 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun ActivityLoginBinding.configureViews() {
-        /*** Temporarily comment, will uncomment these code,
-        when the logout function is implemented.
-
         // Check currentUser state if already logged in.
         // then automatically navigateToDashboard()
         if (firebaseAuth.currentUser?.uid != null) {
             navigateActivityDashboard().also { finish() }
             return
-        } ******/
+        }
 
         buttonLogin.setOnClickListener {
             loginViewModel.loginCredentials(

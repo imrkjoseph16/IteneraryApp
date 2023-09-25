@@ -14,6 +14,6 @@ object ShowDashboardSuccess : DashboardState()
 
 object ShowSaveNoteSuccess : DashboardState()
 
-data class ShowGetNoteSuccess(val notes: List<Notes?>) : DashboardState()
+data class ShowGetNoteSuccess(val notes: List<Notes>?) : DashboardState()
 
 data class ShowDashboardError(val throwable: Throwable) : DashboardState()

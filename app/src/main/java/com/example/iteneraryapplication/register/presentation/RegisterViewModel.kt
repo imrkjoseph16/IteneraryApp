@@ -20,28 +20,29 @@ class RegisterViewModel @Inject constructor(
     private val registerCredentialUseCase: RegisterCredentialUseCase
 ) : ViewModel() {
 
-    private val _registerState = MutableLiveData<RegisterState>()
+    private val _registerState = MutableLiveData<RegisterState>(ShowRegisterNoData)
     val registerState: LiveData<RegisterState> get() = _registerState
 
     fun registerCredentials(credentials: Credentials) {
-
-        val userMap = hashMapOf(
-            "email" to credentials.email,
-            "phoneNumber" to credentials.phoneNumber,
-            "password" to credentials.password
-        )
-
         viewModelScope.launch {
             updateUIState(state = ShowRegisterLoading)
+
             // This chainCall function execute a step by step network call.
             chainCall(
-                { registerCredentialUseCase.registerCredentials(credentials) },
+                { registerCredentialUseCase.registerCredentials(credentials = credentials) },
                 { registerCredentialUseCase.sendEmailVerification() },
-                { registerCredentialUseCase.saveFireStoreDetails(userMap) }
+                { registerCredentialUseCase.saveFireStoreDetails(details = credentials.transformCredentials()) }
             )
+
             updateUIState(state = ShowRegisterDismissLoading)
         }
     }
+
+    private fun Credentials.transformCredentials() = hashMapOf(
+        "email" to email,
+        "phoneNumber" to phoneNumber,
+        "password" to password
+    )
 
     private suspend fun<T : IRegisterCredential> chainCall(vararg calls: (suspend () -> T)) {
         run chain@{

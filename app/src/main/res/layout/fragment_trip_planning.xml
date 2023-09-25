@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.iteneraryapplication.dashboard.pages.tripplanning.presentation.TripPlanningViewModel"/>
@@ -15,38 +14,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ColorBlackNote"
+        android:background="@color/colorPrimaryDark"
         tools:context=".dashboard.pages.tripplanning.presentation.TripPlanningFragment">
-
-        <TextView
-            android:id="@+id/planning_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Trip Planning"
-            android:textColor="@color/white"
-            android:textSize="28dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <com.example.iteneraryapplication.app.widget.CustomRecyclerView
             android:id="@+id/list_planning"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/planning_title"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/shared_list_note_item" />
 
         <include
             android:id="@+id/loading_widget"
             layout="@layout/shared_loading_widget"
-            tools:visibility="gone"/>
+            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_trip_planning_note"
@@ -66,6 +52,11 @@
             android:src="@drawable/icon_add_24px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/widget_empty_screen"
+            layout="@layout/shared_empty_list_item"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -31,8 +31,7 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
                 Credentials(
                 email = etEmail.text.toString(),
                 phoneNumber = etPhoneNumber.text.toString(),
-                password = etPassword.text.toString()
-            )
+                password = etPassword.text.toString())
             )
         }
     }
@@ -55,7 +54,7 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
         }
     }
 
-    private  fun submitForm(credentials: Credentials) = viewModel.registerCredentials(credentials)
+    private fun submitForm(credentials: Credentials) = viewModel.registerCredentials(credentials)
 
     private fun ActivityRegisterBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 }

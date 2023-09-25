@@ -100,6 +100,7 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     }
 
     private fun BottomSheetNotesOptionsBinding.configureNotes(selectedImage: Int) {
+
         val imageNoteList = buildList {
             add(ImageNoteSetup(imgNote1, "#4e33ff"))
             add(ImageNoteSetup(imgNote2, "#ffd633"))

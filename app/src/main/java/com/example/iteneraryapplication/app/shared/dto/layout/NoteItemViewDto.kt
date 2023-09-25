@@ -10,10 +10,16 @@ import com.example.iteneraryapplication.app.shared.component.TextLine
  * */
 data class NoteItemViewDto(
     private val itemTitle: TextLine = TextLine.EMPTY,
+    private val itemDateSaved: TextLine = TextLine.EMPTY,
+    private val itemSubtitle: TextLine = TextLine.EMPTY,
     private val itemNote: TextLine = TextLine.EMPTY,
 ) {
 
     fun getItemTitle(context: Context) = itemTitle.getString(context)
+
+    fun getItemDateSaved(context: Context) = itemDateSaved.getString(context)
+
+    fun getSubtitle(context: Context) = itemSubtitle.getString(context)
 
     fun getItemNote(context: Context) = itemNote.getString(context)
 }

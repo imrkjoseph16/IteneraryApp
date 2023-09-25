@@ -28,4 +28,5 @@
     <string name="cancel">Cancel</string>
 
     <string name="storage_permission_text">This app needs access to your storage.</string>
+    <string name="empty_notes_title">Don\'t you have any travel plans yet?\nStart planning now!</string>
 </resources>

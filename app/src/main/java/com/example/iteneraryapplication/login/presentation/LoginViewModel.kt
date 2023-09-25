@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
-    private val _loginState = MutableLiveData<LoginState>()
+    private val _loginState = MutableLiveData<LoginState>(ShowLoginNoData)
     val loginState: LiveData<LoginState> get() = _loginState
 
     fun loginCredentials(credentials: Credentials) {

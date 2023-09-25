@@ -87,12 +87,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
-    // Room components
-    implementation("com.github.daolq3012:AssetSQLiteOpenHelper:V1.0.1")
-    implementation("androidx.room:room-runtime:2.4.3")
-    implementation("androidx.room:room-ktx:2.4.3")
-    kapt("androidx.room:room-compiler:2.4.3")
-
     // Scalable Unit Text Size
     implementation("com.intuit.ssp:ssp-android:1.0.6")
 
@@ -104,6 +98,9 @@ dependencies {
 
     // Gson Library
     implementation("com.google.code.gson:gson:2.10.1")
+
+    // Live Data to convert flows.
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
     testImplementation("junit:junit:4.13.2")
 

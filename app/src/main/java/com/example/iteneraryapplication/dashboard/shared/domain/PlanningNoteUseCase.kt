@@ -12,5 +12,5 @@ class PlanningNoteUseCase @Inject constructor(
 
     suspend fun saveNotes(notesType: String, notes: Notes) = dashboardRepository.saveNotes(notesType = notesType, notes = notes)
 
-    suspend fun getNotes(notesType: String) = dashboardRepository.getNotes(notesType = notesType)
+    fun getNotes(notesType: String) = dashboardRepository.getNotes(notesType = notesType)
 }
