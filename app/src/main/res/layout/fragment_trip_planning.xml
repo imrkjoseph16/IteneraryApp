@@ -42,7 +42,7 @@
             app:maxImageSize="30dp"
             app:fabCustomSize="60dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="120dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/ColorYellowNote"
             app:borderWidth="0dp"
             android:tint="@color/white"
