@@ -26,7 +26,10 @@ class TripPlanningFactory @Inject constructor() {
                 itemTitle = TextLine(text = data.notesTitle),
                 itemDateSaved = TextLine(text = data.notesDateSaved),
                 itemSubtitle = TextLine(text = data.notesSubtitle),
-                itemNote = TextLine(text = data.description)
+                itemNoteColor = data.notesColor,
+                itemNoteImage = data.notesImage,
+                itemNoteWebLink = data.notesWebLink,
+                itemNote = TextLine(text = data.notesDesc)
             )
         )
     }

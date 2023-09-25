@@ -1,23 +1,31 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
+import android.net.Uri
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardError
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardImageError
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardNoData
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowGetNoteSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveImageSuccess
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class DashboardRepository @Inject constructor(
     private val fireStore: FirebaseFirestore,
+    private val firebaseStorage: FirebaseStorage,
     firebaseUser: FirebaseUser?
 ) {
 
@@ -49,10 +57,23 @@ class DashboardRepository @Inject constructor(
                 if (error != null) value = ShowDashboardError(error)
                 else result?.forEach { listNotes.add(it.toObject(Notes::class.java)) }
 
-                value = ShowGetNoteSuccess(listNotes)
+                value = ShowGetNoteSuccess(notes = listNotes)
             }
 
             value = ShowDashboardDismissLoading
+        }
+    }
+
+    suspend fun saveNoteImage(notesType: String, imageUri: Uri) : String {
+        val ref: StorageReference = firebaseStorage.reference
+            .child("noteImages")
+            .child(userId)
+            .child(notesType)
+            .child(UUID.randomUUID().toString())
+
+        ref.putFile(imageUri).await().also {
+            return if (it.error == null) ref.downloadUrl.await().toString()
+            else error("failed to upload image")
         }
     }
 }

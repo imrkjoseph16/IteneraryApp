@@ -13,6 +13,9 @@ data class NoteItemViewDto(
     private val itemDateSaved: TextLine = TextLine.EMPTY,
     private val itemSubtitle: TextLine = TextLine.EMPTY,
     private val itemNote: TextLine = TextLine.EMPTY,
+    val itemNoteImage: String? = null,
+    val itemNoteWebLink: String? = null,
+    val itemNoteColor: String = "#202734",
 ) {
 
     fun getItemTitle(context: Context) = itemTitle.getString(context)

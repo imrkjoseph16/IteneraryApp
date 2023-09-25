@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +26,8 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideFireStore() = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage() = FirebaseStorage.getInstance()
 }

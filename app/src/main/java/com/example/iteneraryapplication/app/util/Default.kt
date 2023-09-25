@@ -15,5 +15,7 @@ class Default {
 
         const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm a"
         const val DATE_NAMED = "MMMM dd yyyy"
+
+        const val FIELD_REQUIRED = "This field must be required."
     }
 }
