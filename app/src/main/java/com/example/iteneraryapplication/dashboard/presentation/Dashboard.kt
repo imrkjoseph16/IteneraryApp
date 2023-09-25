@@ -2,8 +2,12 @@ package com.example.iteneraryapplication.dashboard.presentation
 
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.foundation.BaseActivity
+import com.example.iteneraryapplication.app.util.Default
 import com.example.iteneraryapplication.databinding.ActivityDashboardBinding
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRIP_PLANNING
@@ -11,10 +15,20 @@ import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.ITINERARY_MANAGEMENT
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.BUDGET_MANAGEMENT
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRAVEL_TIPS
+import com.example.iteneraryapplication.databinding.ActivityLoginBinding
+import com.example.iteneraryapplication.login.presentation.Login
+import com.example.iteneraryapplication.login.presentation.LoginViewModel
+import com.example.iteneraryapplication.login.presentation.ShowLoginDismissLoading
+import com.example.iteneraryapplication.login.presentation.ShowLoginError
+import com.example.iteneraryapplication.login.presentation.ShowLoginLoading
+import com.example.iteneraryapplication.login.presentation.ShowLoginSuccess
+import com.example.iteneraryapplication.register.presentation.Register
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class Dashboard : BaseActivity<ActivityDashboardBinding>() {
+
+    private val dashboardViewModel: DashboardViewModel by viewModels()
 
     override val inflater: (LayoutInflater) -> ActivityDashboardBinding
         get() = ActivityDashboardBinding::inflate
@@ -22,6 +36,10 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
     override fun onActivityCreated() {
         super.onActivityCreated()
         binding.apply {
+            toolbar.ivMenu.setOnClickListener {
+                logout()
+            }
+            setupObserver()
             setupViewPager()
             configureViews()
         }
@@ -52,4 +70,31 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun getPosition(fragments: DashboardFragments) = DashboardFragments.values().indexOf(fragments)
+
+    private fun logout(){
+        dashboardViewModel.logout()
+    }
+
+    private fun setupObserver() {
+        with(dashboardViewModel) {
+            logoutState.observe(this@Dashboard) { state ->
+                when(state){
+                    is ShowLogoutSuccess -> navigateActivityLogin()
+                    is ShowLogoutLoading -> binding.updateUIState(showLoading = true)
+                    is ShowLogoutDismissLoading -> binding.updateUIState(showLoading = false)
+                    is ShowLogoutError -> state.handleError().also { binding.updateUIState(showLoading = false) }
+                }
+            }
+        }
+    }
+
+    private fun ShowLogoutError.handleError() = Toast.makeText(this@Dashboard, throwable.message.toString(), Toast.LENGTH_LONG).show()
+
+    private fun ActivityDashboardBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
+
+    private fun navigateActivityLogin() {
+        navigationUtil.navigateActivity(context = this, className = Login::class.java)
+        this.finish()
+    }
+
 }
