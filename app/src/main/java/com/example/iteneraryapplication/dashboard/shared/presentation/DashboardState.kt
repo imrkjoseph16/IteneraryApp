@@ -1,6 +1,5 @@
 package com.example.iteneraryapplication.dashboard.shared.presentation
 
-import android.net.Uri
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 
 open class DashboardState
@@ -11,14 +10,21 @@ object ShowDashboardLoading : DashboardState()
 
 object ShowDashboardDismissLoading : DashboardState()
 
-object ShowDashboardSuccess : DashboardState()
-
 object ShowSaveNoteSuccess : DashboardState()
+
+data class GetNotesTypeData(val listNotes: List<Notes>?) : DashboardState()
 
 data class ShowSaveImageSuccess(val imageUrl: String) : DashboardState()
 
-data class ShowGetNoteSuccess(val notes: List<Notes>?) : DashboardState()
-
 data class ShowDashboardError(val throwable: Throwable) : DashboardState()
 
-data class ShowDashboardImageError(val throwable: Throwable) : DashboardState()
+// Logout State
+open class LogoutState
+
+object ShowLogoutLoading : LogoutState()
+
+object ShowLogoutDismissLoading : LogoutState()
+
+object ShowLogoutSuccess : LogoutState()
+
+data class ShowLogoutError(val throwable: Throwable) : LogoutState()

@@ -1,10 +1,8 @@
 package com.example.iteneraryapplication.dashboard.shared.presentation
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
 import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.dashboard.shared.domain.PlanningNoteUseCase
@@ -41,8 +39,6 @@ class DashboardSharedViewModel @Inject constructor(
             }
         }
     }
-
-    fun getNotes(notesType: String) = planningNoteUseCase.getNotes(notesType = notesType)
 
     fun uploadNoteImage(notesType: String, imageUri: Uri) {
         viewModelScope.launch {

@@ -16,7 +16,8 @@
 
     <androidx.cardview.widget.CardView
         style="@style/MatchWrapParent"
-        android:layout_margin="16dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="8dp"
         android:elevation="8dp"
         bind:setCustomColor="@{data.itemNoteColor}"
         app:cardCornerRadius="8dp">
@@ -91,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="@{data.itemNoteWebLink}"
+                bind:visible="@{data.itemNoteWebLink != null}"
                 android:textColor="@color/gray"
                 android:textSize="12dp"
                 tools:text="Sample web link url text" />

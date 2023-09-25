@@ -13,6 +13,18 @@ class NavigationUtil @Inject constructor() {
         }
     }
 
+    fun navigateActivity(
+        context: Context,
+        extraValueNamed: String,
+        extraValue: String,
+        className: Class<*>?
+    ) {
+        Intent(context, className).apply {
+            putExtra(extraValueNamed, extraValue)
+            context.startActivity(this)
+        }
+    }
+
     fun openExternalBrowser(context: Context, link: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         context.startActivity(intent)

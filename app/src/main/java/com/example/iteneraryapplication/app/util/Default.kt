@@ -8,14 +8,18 @@ class Default {
         const val READ_STORAGE_PERM = 123
 
         const val SOMETHING_WENT_WRONG = "Something went wrong, Please try again later"
-
+        const val FIELD_REQUIRED = "This field must be required."
         const val URL_REQUIRED_MSG = "Url is Required"
 
+        const val DATE_AND_TIME = "MM-dd-yyyy hh:mm"
+        const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm:ss a"
+        const val DATE_NAMED = "MMMM dd yyyy, hh:mm a"
+        const val DATE_TAP_HINT = "(Tap to change the date)"
+
+        const val BOOKING_URL = "https://www.philippineairlines.com/en/"
+
         const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
-
-        const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm a"
-        const val DATE_NAMED = "MMMM dd yyyy"
-
-        const val FIELD_REQUIRED = "This field must be required."
+        const val NOTES_TYPE_ITINERARY = "itinerary_management"
+        const val NOTES_DEFAULT_COLOR = "#202734"
     }
 }

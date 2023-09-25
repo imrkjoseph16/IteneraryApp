@@ -13,6 +13,10 @@ import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.ITINERARY_MANAGEMENT
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.BUDGET_MANAGEMENT
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRAVEL_TIPS
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutDismissLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutError
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutSuccess
 import com.example.iteneraryapplication.databinding.ToolbarBinding
 import com.example.iteneraryapplication.login.presentation.Login
 import dagger.hilt.android.AndroidEntryPoint

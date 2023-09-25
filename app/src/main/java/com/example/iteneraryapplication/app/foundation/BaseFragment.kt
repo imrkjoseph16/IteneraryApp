@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.iteneraryapplication.app.util.NavigationUtil
+import com.example.iteneraryapplication.app.util.ViewUtil
 import javax.inject.Inject
 
 abstract class BaseFragment<VB: ViewBinding> : Fragment() {
@@ -18,6 +19,9 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
 
     @Inject
     lateinit var navigationUtil: NavigationUtil
+
+    @Inject
+    lateinit var viewUtil: ViewUtil
 
     protected open fun onCreated(savedInstanceState: Bundle?) = Unit
 

@@ -1,6 +1,5 @@
 package com.example.iteneraryapplication.app.shared.view
 
-import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ fun setCustomHeight(view: View, @DimenRes margin: Int) {
 
 @BindingAdapter("android:src")
 fun setSrcIcon(imageView: AppCompatImageView, icon: Int?) {
-    if (icon != null) imageView.setImageResource(icon) else imageView.setImageResource(R.drawable.icon_empty_512px)
+    if (icon != null) imageView.setImageResource(icon) else imageView.setImageResource(R.drawable.icon_empty_planning)
 }
 
 

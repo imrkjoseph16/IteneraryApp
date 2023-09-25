@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iteneraryapplication.app.shared.model.Credentials
 import com.example.iteneraryapplication.app.util.coRunCatching
-import com.example.iteneraryapplication.login.domain.LoginUserCredentials
-import com.example.iteneraryapplication.login.presentation.LoginState
-import com.example.iteneraryapplication.login.presentation.ShowLoginDismissLoading
-import com.example.iteneraryapplication.login.presentation.ShowLoginError
-import com.example.iteneraryapplication.login.presentation.ShowLoginLoading
-import com.example.iteneraryapplication.login.presentation.ShowLoginSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.LogoutState
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutDismissLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutError
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowLogoutSuccess
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,7 +22,6 @@ class DashboardViewModel @Inject constructor(
 
     private val _logoutState = MutableLiveData<LogoutState>()
     val logoutState: LiveData<LogoutState> get() = _logoutState
-
 
     fun logout() {
         viewModelScope.launch {
@@ -42,15 +39,3 @@ class DashboardViewModel @Inject constructor(
         }
     }
 }
-
-open class LogoutState
-
-object ShowLogoutNoData : LogoutState()
-
-object ShowLogoutLoading : LogoutState()
-
-object ShowLogoutDismissLoading : LogoutState()
-
-object ShowLogoutSuccess : LogoutState()
-
-data class ShowLogoutError(val throwable: Throwable) : LogoutState()

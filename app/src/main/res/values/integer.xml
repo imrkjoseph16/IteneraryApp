@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="anim_duration_quick">100</integer>
+    <integer name="anim_duration_normal">300</integer>
+    <integer name="anim_duration_medium">800</integer>
+    <integer name="anim_duration_flip_card">300</integer>
+    <integer name="anim_duration_flip_card_half">150</integer>
+    <integer name="anim_duration_popup_badge">150</integer>
+</resources>

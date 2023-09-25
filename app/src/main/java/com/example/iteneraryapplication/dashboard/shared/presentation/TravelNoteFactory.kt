@@ -1,20 +1,34 @@
-package com.example.iteneraryapplication.dashboard.pages.tripplanning.presentation
+package com.example.iteneraryapplication.dashboard.shared.presentation
 
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.shared.component.TextLine
 import com.example.iteneraryapplication.app.shared.dto.data.NoteListItem
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.shared.dto.layout.SpaceItemViewDto
+import com.example.iteneraryapplication.app.util.DateUtil
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
-import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowGetNoteSuccess
 import javax.inject.Inject
 
-class TripPlanningFactory @Inject constructor() {
+class TravelNoteFactory @Inject constructor(
+    private val dateUtil: DateUtil
+) {
 
     fun createOverview(state: DashboardState) = when(state) {
-        is ShowGetNoteSuccess -> state.notes?.let { prepareList(it) } ?: emptyList()
+        is GetNotesTypeData -> state.listNotes
+            ?.toMutableList()
+            ?.checkDuplicateNotes()
+            ?.let { prepareList(it) } ?: emptyList()
         else -> listOf(SpaceItemViewDto(R.dimen.grid_0))
+    }
+
+    private fun MutableList<Notes>.checkDuplicateNotes() : List<Notes> {
+        val hashSet = HashSet<Notes>()
+        hashSet.addAll(this)
+        this.clear()
+        this.addAll(hashSet)
+
+        return this.toList()
     }
 
     /**
@@ -24,12 +38,15 @@ class TripPlanningFactory @Inject constructor() {
         NoteListItem(
             dto = NoteItemViewDto(
                 itemTitle = TextLine(text = data.notesTitle),
-                itemDateSaved = TextLine(text = data.notesDateSaved),
                 itemSubtitle = TextLine(text = data.notesSubtitle),
                 itemNoteColor = data.notesColor,
                 itemNoteImage = data.notesImage,
                 itemNoteWebLink = data.notesWebLink,
-                itemNote = TextLine(text = data.notesDesc)
+                itemNote = TextLine(text = data.notesDesc),
+                itemDateSaved = TextLine(text = dateUtil.convertDateFormat(
+                    dateValue = data.notesDateSaved,
+                    newDateFormat = DATE_NAMED)
+                ),
             )
         )
     }

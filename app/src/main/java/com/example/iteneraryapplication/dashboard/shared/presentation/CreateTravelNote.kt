@@ -12,6 +12,8 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Patterns
 import android.view.LayoutInflater
+import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -21,9 +23,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
+import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
@@ -41,11 +49,15 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private val viewModel: DashboardSharedViewModel by viewModels()
 
-    private var selectedColor: String = "#202734"
+    private var selectedColor: String = NOTES_DEFAULT_COLOR
 
     private var selectedNoteImage: Uri? = null
 
-    private var webLink = ""
+    private val notesTypeSelected by lazy {
+        intent.getStringExtra(TRAVEL_NOTES_TYPE_SELECTED)
+    }
+
+    lateinit var selectedDateTime: String
 
     override val inflater: (LayoutInflater) -> ActivityCreateTravelNoteBinding
         get() = ActivityCreateTravelNoteBinding::inflate
@@ -64,8 +76,26 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         super.onDestroy()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun ActivityCreateTravelNoteBinding.configureViews() {
-        tvDateTime.text = dateUtil.getCurrentDateTime()
+        screenTitle.setScreenTitle().also {
+            selectedDateTime = dateUtil.getCurrentDateTime()
+            tvDateTime.text = "$selectedDateTime $DATE_TAP_HINT"
+        }
+
+        tvDateTime.setOnClickListener {
+            showDatePicker { dateTime ->
+                tvDateTime.text = "${
+                    dateUtil.convertDateFormat(
+                        dateValue = dateTime,
+                        currentDateFormat = DATE_AND_TIME,
+                        newDateFormat = DATE_NAMED
+                    ).also { date ->
+                        date?.let { selectedDateTime }
+                    }
+                } $DATE_TAP_HINT"
+            }
+        }
 
         back.setOnClickListener {
             finish()
@@ -92,9 +122,16 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         buttonSaveNote.setOnClickListener {
             validateFields().also { valid ->
                 if (valid) selectedNoteImage?.let {
-                    viewModel.uploadNoteImage(NOTES_TYPE_TRIP_PLAN, it)
+                    viewModel.uploadNoteImage(notesTypeSelected.toString(), it)
                 } ?: binding.saveNotes()
             }
+        }
+    }
+
+    private fun TextView.setScreenTitle() {
+        when(notesTypeSelected) {
+            NOTES_TYPE_TRIP_PLAN -> text = getString(R.string.bottom_nav_trip_planning)
+            NOTES_TYPE_ITINERARY -> text = getString(R.string.bottom_nav_itinerary)
         }
     }
 
@@ -121,8 +158,8 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 launch {
                     viewModel.dashboardState.collectLatest { state ->
                         when (state) {
-                            is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
                             is ShowSaveNoteSuccess -> finish()
+                            is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
                             is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                             is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
                             is ShowDashboardError -> showToastMessage(
@@ -138,18 +175,20 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private fun ActivityCreateTravelNoteBinding.saveNotes(imageUrl: String? = null) {
         viewModel.saveNotes(
-            notesType = NOTES_TYPE_TRIP_PLAN,
+            notesType = notesTypeSelected.toString(),
             notes = Notes(
                 notesTitle = etNoteTitle.text.toString(),
-                notesDateSaved = dateUtil.getCurrentDateTime(),
+                notesDateSaved = selectedDateTime,
                 notesSubtitle = etNoteSubTitle.text.toString(),
                 notesColor = selectedColor,
                 notesDesc = etNoteDesc.text.toString(),
-                notesWebLink = etWebLink.text.toString(),
+                notesWebLink = etWebLink.checkWebLinkValue(),
                 notesImage = imageUrl
             )
         )
     }
+
+    private fun EditText.checkWebLinkValue() = if (text.toString() == "http://") null else text.toString()
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
@@ -160,7 +199,6 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 etWebLink.isEnabled = false
                 configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false)
                 tvWebLink.text = webLinkText
-                webLink = webLinkText
             } else {
                 showToastMessage(this@CreateTravelNote, URL_REQUIRED_MSG)
             }
@@ -250,5 +288,9 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     private fun showBottomSheetDialog() {
         val noteBottomSheetFragment = NoteBottomSheet.createInstance()
         noteBottomSheetFragment.show(supportFragmentManager,"Note Bottom Sheet")
+    }
+
+    companion object {
+        const val TRAVEL_NOTES_TYPE_SELECTED = "notes_type"
     }
 }

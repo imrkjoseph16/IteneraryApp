@@ -1,26 +1,33 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
 import android.net.Uri
+import android.util.Log
+import com.example.iteneraryapplication.app.shared.state.AppUiState
+import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
+import com.example.iteneraryapplication.app.shared.state.ShowAppUiLoading
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
+import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardError
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardImageError
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardNoData
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowGetNoteSuccess
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveImageSuccess
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.lang.Thread.State
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 @Singleton
 class DashboardRepository @Inject constructor(
@@ -31,11 +38,6 @@ class DashboardRepository @Inject constructor(
 
     private val userId = firebaseUser?.uid ?: error("failed to fetch userId")
 
-    // These data streams state flow,
-    // will collect all the current state and return it on the view.
-    private val _dataStream = MutableStateFlow<DashboardState>(ShowDashboardNoData)
-    fun getDashboardStream(): StateFlow<DashboardState> = _dataStream
-
     suspend fun saveNotes(notesType: String, notes: Notes) : Boolean {
         val saveDetailsStatus = fireStore.collection("notes")
             .document(userId)
@@ -45,22 +47,16 @@ class DashboardRepository @Inject constructor(
         return saveDetailsStatus.isSuccessful
     }
 
-    fun getNotes(notesType: String) {
-        _dataStream.apply {
-            value = ShowDashboardLoading
-
-            fireStore.collection("notes")
+    fun getNotes(notesType: String, getNotesItem: (appUiState: DashboardState) -> Unit) {
+        val fireStorePath = fireStore.collection("notes")
             .document(userId)
-            .collection(notesType).addSnapshotListener { result, error ->
-                val listNotes = mutableListOf<Notes>()
+            .collection(notesType)
+            .orderBy("notesDateSaved", Query.Direction.DESCENDING)
 
-                if (error != null) value = ShowDashboardError(error)
-                else result?.forEach { listNotes.add(it.toObject(Notes::class.java)) }
-
-                value = ShowGetNoteSuccess(notes = listNotes)
-            }
-
-            value = ShowDashboardDismissLoading
+        fireStorePath.addSnapshotListener { result, error ->
+            val resultNotes = mutableListOf<Notes>()
+            if (error == null) result?.forEach { resultNotes.add(it.toObject(Notes::class.java)) }
+            getNotesItem.invoke(GetNotesTypeData(listNotes = resultNotes))
         }
     }
 
