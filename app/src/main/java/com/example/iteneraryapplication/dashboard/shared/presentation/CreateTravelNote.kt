@@ -1,6 +1,5 @@
 package com.example.iteneraryapplication.dashboard.shared.presentation
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +8,6 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.EditText
@@ -25,7 +23,6 @@ import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
-import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
@@ -34,16 +31,15 @@ import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_BUDGET
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
-import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
+import com.example.iteneraryapplication.app.util.showBottomSheet
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import pub.devrel.easypermissions.EasyPermissions
 
 @AndroidEntryPoint
 class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
@@ -103,7 +99,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         showMoreOptionNote.setOnClickListener {
-            showBottomSheetDialog()
+            showBottomSheet(supportFragmentManager)
         }
 
         tvWebLink.setOnClickListener {
@@ -238,17 +234,15 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     }
 
     private fun readStorageTask() {
-        if (permissionUtil.hasReadStoragePerm(this).not()) {
-            requestStoragePermission()
-        } else {
-            pickImageFromGallery()
+        permissionUtil.run {
+            val context = this@CreateTravelNote
+            if (hasReadStoragePerm(context).not()) requestStoragePermission(context)
+            else pickImageFromGallery(
+                context = context,
+                activityResultLaunch = {
+                activityResultLauncher.launch(it)
+            })
         }
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun pickImageFromGallery(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(packageManager) != null) activityResultLauncher.launch(intent)
     }
 
     private var activityResultLauncher = registerForActivityResult(
@@ -276,20 +270,6 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 showToastMessage(this@CreateTravelNote, e.message.toString())
             }
         }
-    }
-
-    private fun requestStoragePermission() {
-        EasyPermissions.requestPermissions(
-            this,
-            getString(R.string.storage_permission_text),
-            READ_STORAGE_PERM,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-    }
-
-    private fun showBottomSheetDialog() {
-        val noteBottomSheetFragment = NoteBottomSheet.createInstance()
-        noteBottomSheetFragment.show(supportFragmentManager,"Note Bottom Sheet")
     }
 
     companion object {
