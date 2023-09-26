@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".dashboard.pages.budgetmanagement.BudgetManagementFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.iteneraryapplication.dashboard.pages.budgetmanagement.BudgetManagementViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/colorPrimaryDark">
 
-</FrameLayout>
+        <com.example.iteneraryapplication.app.widget.CustomRecyclerView
+            android:id="@+id/list_budgets"
+            android:paddingTop="20dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginHorizontal="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/shared_list_note_item" />
+
+        <include
+            android:id="@+id/loading_widget"
+            layout="@layout/shared_loading_widget"
+            android:visibility="gone"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_budget_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            app:maxImageSize="30dp"
+            app:fabCustomSize="60dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/ColorYellowNote"
+            app:borderWidth="0dp"
+            android:tint="@color/white"
+            android:scaleType="fitXY"
+            android:clickable="true"
+            app:rippleColor="@color/opacity_gray"
+            android:src="@drawable/icon_add_24px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/widget_empty_screen"
+            layout="@layout/shared_empty_list_item"
+            android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

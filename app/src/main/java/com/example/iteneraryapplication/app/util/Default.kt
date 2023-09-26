@@ -20,6 +20,7 @@ class Default {
 
         const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
         const val NOTES_TYPE_ITINERARY = "itinerary_management"
+        const val NOTES_TYPE_BUDGET = "budget_management"
         const val NOTES_DEFAULT_COLOR = "#202734"
     }
 }

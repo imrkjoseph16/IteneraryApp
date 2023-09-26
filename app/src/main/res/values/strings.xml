@@ -30,4 +30,7 @@
     <string name="storage_permission_text">This app needs access to your storage.</string>
     <string name="empty_notes_title">Don\'t you have any travel plans yet?\nStart planning now!</string>
     <string name="empty_notes_itinerary_title">Don\'t you have any itinerary plans\nor destination yet?\nStart planning now!</string>
+    <string name="empty_notes_budget_title">Still don\'t know how to budget your money?\nList all your expenses now!</string>
+
+    <string name="image_animation_tag">imageTransition</string>
 </resources>

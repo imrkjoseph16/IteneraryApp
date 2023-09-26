@@ -83,6 +83,8 @@
                 android:text="@{data.getItemNote(context)}"
                 android:textColor="@color/gray"
                 android:textSize="12dp"
+                android:maxLines="10"
+                android:ellipsize="end"
                 tools:text="Sample description text" />
 
             <TextView
@@ -92,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="@{data.itemNoteWebLink}"
+                android:textColorLink="@color/web_link_color"
                 bind:visible="@{data.itemNoteWebLink != null}"
                 android:textColor="@color/gray"
                 android:textSize="12dp"
@@ -104,9 +107,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
+                android:transitionName="@string/image_animation_tag"
                 android:maxHeight="120dp"
+                android:visibility="gone"
                 bind:visible="@{data.itemNoteImage != null}"
-                bind:glideImage="@{data.itemNoteImage}"/>
+                bind:glideImage="@{data.itemNoteImage}"
+                tools:visibility="visible"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

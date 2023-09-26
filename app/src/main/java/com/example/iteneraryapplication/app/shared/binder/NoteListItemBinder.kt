@@ -8,13 +8,14 @@ import com.example.iteneraryapplication.databinding.SharedListNoteItemBinding
 
 inline fun <reified T : Any> getListNoteItemBinder(
     crossinline dtoReceiverCard: (T) -> NoteItemViewDto,
-    crossinline onItemClick: (T) -> Unit = {}
+    crossinline onItemClick: (SharedListNoteItemBinding, NoteItemViewDto) -> Unit = { _: SharedListNoteItemBinding, _: NoteItemViewDto -> },
 ) = object : RecyclerViewHolder<SharedListNoteItemBinding, T> {
 
     override fun bind(binder: SharedListNoteItemBinding, item: T) {
         with(binder) {
-            data = dtoReceiverCard(item)
-            binder.root.setOnClickListener { onItemClick(item) }
+            val dto = dtoReceiverCard(item)
+            data = dto
+            root.setOnClickListener { onItemClick(binder, dto) }
             executePendingBindings()
         }
     }

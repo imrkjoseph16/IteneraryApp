@@ -11,6 +11,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#C6C0C0</color>
+    <color name="web_link_color">#0254FA</color>
     <color name="opacity_gray">#48C6C0C0</color>
 
     <!-- Clients Color-->

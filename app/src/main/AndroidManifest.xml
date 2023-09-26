@@ -18,6 +18,9 @@
         android:theme="@style/Theme.IteneraryApplication"
         tools:targetApi="31">
         <activity
+            android:name=".preview.PreviewNotesDetails"
+            android:exported="false" />
+        <activity
             android:name=".login.presentation.Login"
             android:exported="false" />
         <activity

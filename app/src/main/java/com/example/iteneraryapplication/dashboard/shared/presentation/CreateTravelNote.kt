@@ -31,6 +31,7 @@ import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_BUDGET
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
@@ -132,6 +133,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         when(notesTypeSelected) {
             NOTES_TYPE_TRIP_PLAN -> text = getString(R.string.bottom_nav_trip_planning)
             NOTES_TYPE_ITINERARY -> text = getString(R.string.bottom_nav_itinerary)
+            NOTES_TYPE_BUDGET -> text = getString(R.string.bottom_nav_budget)
         }
     }
 

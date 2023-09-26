@@ -2,6 +2,9 @@ package com.example.iteneraryapplication.dashboard.pages.itinerarymanagement
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +18,7 @@ import com.example.iteneraryapplication.app.shared.binder.getListNoteItemBinder
 import com.example.iteneraryapplication.app.shared.component.TextLine
 import com.example.iteneraryapplication.app.shared.dto.data.NoteListItem
 import com.example.iteneraryapplication.app.shared.dto.layout.EmptyItemViewDto
+import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
 import com.example.iteneraryapplication.app.shared.state.GetAppUiItems
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
@@ -23,6 +27,10 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTrav
 import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
 import com.example.iteneraryapplication.databinding.FragmentItineraryManagementBinding
 import com.example.iteneraryapplication.databinding.SharedEmptyListItemBinding
+import com.example.iteneraryapplication.databinding.SharedListNoteItemBinding
+import com.example.iteneraryapplication.preview.PreviewNotesDetails
+import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -49,6 +57,11 @@ class ItineraryManagementFragment : BaseFragment<FragmentItineraryManagementBind
         addItineraryNote.setOnClickListener {
             openTravelNoteScreen()
         }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(textSubmit: String) = true
+            override fun onQueryTextChange(text: String) = true.also { itineraryViewModel.searchNotes(text) }
+        })
     }
 
     private fun setupObserver() {
@@ -82,7 +95,12 @@ class ItineraryManagementFragment : BaseFragment<FragmentItineraryManagementBind
             recyclerViewAdapter.setDiffUtilCallBack(diffUtilCallback = ListItemPayloadDiffCallback())
             addItemBindings(viewHolders = SpaceItemViewDtoBinder)
             addItemBindings(viewHolders = EmptyItemBinder)
-            addItemBindings(viewHolders = getListNoteItemBinder(dtoReceiverCard = NoteListItem::dto))
+            addItemBindings(viewHolders = getListNoteItemBinder(
+                dtoReceiverCard = NoteListItem::dto,
+                onItemClick = { bind, dto ->
+                    navigatePreviewImage(binding = bind, dto = dto)
+                })
+            )
             executePendingBindings()
         }
     }
@@ -99,8 +117,19 @@ class ItineraryManagementFragment : BaseFragment<FragmentItineraryManagementBind
 
     private fun openTravelNoteScreen() = navigationUtil.navigateActivity(
         context = getAppCompatActivity(),
-        extraValueNamed = TRAVEL_NOTES_TYPE_SELECTED,
-        extraValue = NOTES_TYPE_ITINERARY,
+        bundle = bundleOf(TRAVEL_NOTES_TYPE_SELECTED to NOTES_TYPE_ITINERARY),
         className = CreateTravelNote::class.java
     )
+
+    private fun navigatePreviewImage(
+        binding: SharedListNoteItemBinding,
+        dto: NoteItemViewDto
+    ) {
+        navigationUtil.navigateImageTransition(
+            source = getAppCompatActivity(),
+            target = PreviewNotesDetails::class.java,
+            bundle = bundleOf(EXTRA_DATA_NOTES to Gson().toJson(dto)),
+            imageView = (binding.noteImage as ImageView).takeIf { dto.itemNoteImage != null }
+        )
+    }
 }

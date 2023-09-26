@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools"
+    tools:context=".preview.PreviewNotesDetails">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="data"
+            type="com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto"/>
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="30dp"
+            android:animateLayoutChanges="true"
+            android:background="@color/ColorBlackNote">
+
+            <TextView
+                style="@style/TextDateTheme"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="@{data.getItemDateSaved(context)}"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="@+id/image_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_close"
+                tools:text="sample title text" />
+
+            <ImageView
+                android:id="@+id/image_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="65dp"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/icon_close_24px"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/TextTitleTheme"
+                android:layout_marginHorizontal="20dp"
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_marginTop="16dp"
+                android:text="@{data.getItemTitle(context)}"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_close"
+                tools:text="sample title text" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/TextSubTitleTheme"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{data.getSubtitle(context)}"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:text="sample sub title text" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/TextSubTitleTheme"
+                android:layout_marginHorizontal="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                bind:visible="@{data.itemNoteWebLink != null}"
+                android:text="@{data.itemNoteWebLink}"
+                android:textAlignment="textStart"
+                android:autoLink="web"
+                android:textColorLink="@color/web_link_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                tools:text="sample web link text" />
+
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="0dp"
+                android:layout_height="600dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitXY"
+                android:transitionName="@string/image_animation_tag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                bind:glideImage="@{data.itemNoteImage}"
+                bind:visible="@{data.itemNoteImage != null}" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/TextDescriptionTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:text="@{data.getItemNote(context)}"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_preview"
+                tools:text="sample description text" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

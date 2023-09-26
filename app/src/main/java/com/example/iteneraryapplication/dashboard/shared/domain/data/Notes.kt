@@ -1,5 +1,8 @@
 package com.example.iteneraryapplication.dashboard.shared.domain.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Notes(
     val notesTitle: String? = null,
     val notesDateSaved: String? = null,

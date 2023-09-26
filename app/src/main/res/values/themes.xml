@@ -47,4 +47,32 @@
         <item name="android:textColorHint">@color/gray</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
+
+    <style name="TextDateTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="TextTitleTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="TextSubTitleTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="TextDescriptionTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
 </resources>
