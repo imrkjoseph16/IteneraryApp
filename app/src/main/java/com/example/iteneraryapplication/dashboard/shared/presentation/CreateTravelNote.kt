@@ -24,6 +24,7 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
+import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
@@ -33,10 +34,15 @@ import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_IT
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
+import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.app.util.showBottomSheet
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
+import com.example.iteneraryapplication.preview.PreviewNotesDetails
+import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
+import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -54,6 +60,10 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         intent.getStringExtra(TRAVEL_NOTES_TYPE_SELECTED)
     }
 
+    private val extraNotesData by lazy {
+        Gson().fromJson(intent.getStringExtra(EXTRA_DATA_NOTES), NoteItemViewDto::class.java) ?: null
+    }
+
     lateinit var selectedDateTime: String
 
     override val inflater: (LayoutInflater) -> ActivityCreateTravelNoteBinding
@@ -63,6 +73,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         super.onActivityCreated()
         binding.apply {
             configureBroadcastReceiver(isRegister = true)
+            handleResultIntent()
             configureViews()
             setupObserver()
         }
@@ -77,7 +88,18 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     private fun ActivityCreateTravelNoteBinding.configureViews() {
         screenTitle.setScreenTitle().also {
             selectedDateTime = dateUtil.getCurrentDateTime()
-            tvDateTime.text = "$selectedDateTime $DATE_TAP_HINT"
+
+            // Check if the intent extra notes data is null,
+            // then display the current date and time today.
+            currentDateTime = "$selectedDateTime $DATE_TAP_HINT".takeIf { extraNotesData == null }
+        }
+
+        back.setOnClickListener {
+            finish()
+        }
+
+        imgDelete.setOnClickListener {
+            deleteImage()
         }
 
         tvDateTime.setOnClickListener {
@@ -92,10 +114,6 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                     }
                 } $DATE_TAP_HINT"
             }
-        }
-
-        back.setOnClickListener {
-            finish()
         }
 
         showMoreOptionNote.setOnClickListener {
@@ -125,11 +143,22 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
     }
 
+    private fun deleteImage() {
+        binding.apply {
+            selectedNoteImage = null
+            imgNote.setImageResource(0)
+            layoutImage.setVisible(false)
+        }
+    }
+
+    private fun ActivityCreateTravelNoteBinding.handleResultIntent() { data = extraNotesData }
+
     private fun TextView.setScreenTitle() {
-        when(notesTypeSelected) {
-            NOTES_TYPE_TRIP_PLAN -> text = getString(R.string.bottom_nav_trip_planning)
-            NOTES_TYPE_ITINERARY -> text = getString(R.string.bottom_nav_itinerary)
-            NOTES_TYPE_BUDGET -> text = getString(R.string.bottom_nav_budget)
+        text = when(notesTypeSelected) {
+            NOTES_TYPE_TRIP_PLAN -> getString(R.string.bottom_nav_trip_planning)
+            NOTES_TYPE_ITINERARY -> getString(R.string.bottom_nav_itinerary)
+            NOTES_TYPE_BUDGET -> getString(R.string.bottom_nav_budget)
+            else -> getString(R.string.text_edit)
         }
     }
 
@@ -156,7 +185,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 launch {
                     viewModel.dashboardState.collectLatest { state ->
                         when (state) {
-                            is ShowSaveNoteSuccess -> finish()
+                            is ShowSaveNoteSuccess -> finish().also { setResult(REQUEST_CODE_CLEAR_HISTORY).takeIf { extraNotesData != null } }
                             is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
                             is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                             is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
@@ -175,13 +204,14 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         viewModel.saveNotes(
             notesType = notesTypeSelected.toString(),
             notes = Notes(
+                itemId = data?.itemId.takeIf { it != null } ?: generateRandomCharacters(),
                 notesTitle = etNoteTitle.text.toString(),
                 notesDateSaved = selectedDateTime,
                 notesSubtitle = etNoteSubTitle.text.toString(),
                 notesColor = selectedColor,
                 notesDesc = etNoteDesc.text.toString(),
                 notesWebLink = etWebLink.checkWebLinkValue(),
-                notesImage = imageUrl
+                notesImage = if (data?.itemNoteImage != null) data?.itemNoteImage else imageUrl
             )
         )
     }

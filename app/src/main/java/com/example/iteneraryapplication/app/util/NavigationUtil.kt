@@ -1,5 +1,6 @@
 package com.example.iteneraryapplication.app.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import com.example.iteneraryapplication.R
+import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
 import javax.inject.Inject
 
 class NavigationUtil @Inject constructor() {
@@ -20,13 +22,15 @@ class NavigationUtil @Inject constructor() {
     }
 
     fun navigateActivity(
-        context: Context,
+        context: Activity,
         bundle: Bundle? = null,
-        className: Class<*>?
+        className: Class<*>?,
+        noHistory: Boolean = false
     ) {
         Intent(context, className).apply {
             bundle?.let { putExtras(it) }
-            context.startActivity(this)
+            if (noHistory) context.startActivityForResult(this, REQUEST_CODE_CLEAR_HISTORY)
+            else context.startActivity(this)
         }
     }
 

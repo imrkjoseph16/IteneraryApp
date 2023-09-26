@@ -1,30 +1,16 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
 import android.net.Uri
-import android.util.Log
-import com.example.iteneraryapplication.app.shared.state.AppUiState
-import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
-import com.example.iteneraryapplication.app.shared.state.ShowAppUiLoading
+import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardError
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
-import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardNoData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import java.lang.Thread.State
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,7 +28,8 @@ class DashboardRepository @Inject constructor(
         val saveDetailsStatus = fireStore.collection("notes")
             .document(userId)
             .collection(notesType)
-            .add(notes)
+            .document(notes.itemId ?: generateRandomCharacters())
+            .set(notes)
         saveDetailsStatus.await()
         return saveDetailsStatus.isSuccessful
     }

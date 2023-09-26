@@ -18,7 +18,7 @@ class DashboardAdapter(
         TRIP_PLANNING("Trip Planning"),
         BOOKING("Hotel Booking"),
         ITINERARY_MANAGEMENT("Itinerary Management"),
-        BUDGET_MANAGEMENT("Budget Managment"),
+        BUDGET_MANAGEMENT("Budget Management"),
         TRAVEL_TIPS("Travel Tips")
     }
 

@@ -37,6 +37,7 @@ class TravelNoteFactory @Inject constructor(
     private fun prepareList(notes: List<Notes>) = notes.mapIndexed { _, data ->
         NoteListItem(
             dto = NoteItemViewDto(
+                itemId = data.itemId.orEmpty(),
                 itemTitle = TextLine(text = data.notesTitle),
                 itemSubtitle = TextLine(text = data.notesSubtitle),
                 itemNoteColor = data.notesColor,

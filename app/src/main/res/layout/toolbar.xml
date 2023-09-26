@@ -10,17 +10,18 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Trip Planning"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="My Notes"
         android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/logout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

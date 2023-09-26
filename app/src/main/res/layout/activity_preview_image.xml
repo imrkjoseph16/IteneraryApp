@@ -44,22 +44,38 @@
                 android:layout_height="32dp"
                 android:layout_marginTop="65dp"
                 android:layout_marginRight="20dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:backgroundTint="@color/white"
                 android:background="@drawable/icon_close_24px"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/edit_details"
                 style="@style/TextTitleTheme"
-                android:layout_marginHorizontal="20dp"
-                android:id="@+id/textView"
                 android:layout_width="0dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:text="@string/text_edit"
+                android:textAlignment="textStart"
+                android:textColor="@color/ColorYellowNote"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_close" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextTitleTheme"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@{data.getItemTitle(context)}"
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_close"
+                app:layout_constraintTop_toBottomOf="@+id/edit_details"
                 tools:text="sample title text" />
 
             <TextView
@@ -98,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="600dp"
                 android:layout_marginTop="16dp"
-                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 android:transitionName="@string/image_animation_tag"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

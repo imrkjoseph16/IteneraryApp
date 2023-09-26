@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/atomic_steel_blue"
+    android:background="@color/dim_gray"
     tools:context=".dashboard.presentation.Dashboard">
 
     <include
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="70dp"
         android:background="@drawable/bottom_nav_background"
         app:itemIconTint="@drawable/bottom_nav_state"
         app:itemTextColor="@drawable/bottom_nav_state"

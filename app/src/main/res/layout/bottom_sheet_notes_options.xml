@@ -156,7 +156,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:text="Pick Color"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/helvetica_rounded_bold"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -191,7 +191,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:text="Add Image"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/helvetica_rounded_bold"
             android:maxLines="1"
             android:ellipsize="end"
             />
@@ -231,7 +231,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:text="Add Web Link"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/helvetica_rounded_bold"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -268,7 +268,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:text="Delete Note"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/helvetica_bold"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>

@@ -128,7 +128,10 @@ class ItineraryManagementFragment : BaseFragment<FragmentItineraryManagementBind
         navigationUtil.navigateImageTransition(
             source = getAppCompatActivity(),
             target = PreviewNotesDetails::class.java,
-            bundle = bundleOf(EXTRA_DATA_NOTES to Gson().toJson(dto)),
+            bundle = bundleOf(
+                EXTRA_DATA_NOTES to Gson().toJson(dto),
+                TRAVEL_NOTES_TYPE_SELECTED to NOTES_TYPE_ITINERARY
+            ),
             imageView = (binding.noteImage as ImageView).takeIf { dto.itemNoteImage != null }
         )
     }

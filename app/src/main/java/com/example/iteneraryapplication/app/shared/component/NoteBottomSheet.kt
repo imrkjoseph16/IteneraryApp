@@ -19,7 +19,7 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     override val inflater: (LayoutInflater) -> BottomSheetNotesOptionsBinding
         get() = BottomSheetNotesOptionsBinding::inflate
 
-    private var selectedColor = "#171C26"
+    private var selectedColor = "#333333"
 
     override fun onBottomSheetCreated() {
         super.onBottomSheetCreated()
@@ -102,12 +102,12 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     private fun BottomSheetNotesOptionsBinding.configureNotes(selectedImage: Int) {
 
         val imageNoteList = buildList {
-            add(ImageNoteSetup(imgNote1, "#4e33ff"))
-            add(ImageNoteSetup(imgNote2, "#ffd633"))
-            add(ImageNoteSetup(imgNote3, "#ae3b76"))
+            add(ImageNoteSetup(imgNote1, "#404FF6"))
+            add(ImageNoteSetup(imgNote2, "#F4C057"))
+            add(ImageNoteSetup(imgNote3, "#EB5849"))
             add(ImageNoteSetup(imgNote4, "#0aebaf"))
             add(ImageNoteSetup(imgNote5, "#ff7746"))
-            add(ImageNoteSetup(imgNote6, "#202734"))
+            add(ImageNoteSetup(imgNote6, "#333333"))
         }
 
         selectedColor = imageNoteList[selectedImage].color

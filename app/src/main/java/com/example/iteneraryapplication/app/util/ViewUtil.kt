@@ -20,4 +20,15 @@ class ViewUtil @Inject constructor() {
             recyclerView.scheduleLayoutAnimation()
         }
     }
+
+    companion object {
+        fun generateRandomCharacters() : String {
+            // Descriptive alphabet using three CharRange objects, concatenated
+            val alphabet: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
+            // Build list from 20 random samples from the alphabet,
+            // and convert it to a string using "" as element separator
+            return List(20) { alphabet.random() }.joinToString("")
+        }
+    }
 }
