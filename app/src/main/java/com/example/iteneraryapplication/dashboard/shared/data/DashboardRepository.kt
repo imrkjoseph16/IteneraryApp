@@ -49,7 +49,7 @@ class DashboardRepository @Inject constructor(
         val fireStorePath = fireStore.collection("notes")
             .document(userId)
             .collection(notesType)
-            .orderBy("notesDateSaved", Query.Direction.DESCENDING)
+            .orderBy("notesTimeStampSaved", Query.Direction.DESCENDING)
 
         fireStorePath.addSnapshotListener { result, error ->
             val resultNotes = mutableListOf<Notes>()

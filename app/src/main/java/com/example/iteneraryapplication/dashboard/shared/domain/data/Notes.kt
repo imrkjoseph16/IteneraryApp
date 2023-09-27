@@ -1,5 +1,6 @@
 package com.example.iteneraryapplication.dashboard.shared.domain.data
 
+import com.example.iteneraryapplication.app.util.DateUtil.Companion.getCurrentTimeStamp
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -7,6 +8,7 @@ data class Notes(
     val itemId: String? = null,
     val notesTitle: String? = null,
     val notesDateSaved: String? = null,
+    val notesTimeStampSaved: String = getCurrentTimeStamp(),
     val notesSubtitle: String? = null,
     val notesColor: String = "#333333",
     val notesImage: String? = null,

@@ -2,6 +2,7 @@ package com.example.iteneraryapplication.app.util
 
 import android.annotation.SuppressLint
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME_NAMED
+import java.sql.Timestamp
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,5 +27,9 @@ class DateUtil @Inject constructor() {
         try { date = form.parse(dateValue) }
         catch (e: ParseException) { e.printStackTrace() }
        return date?.let { SimpleDateFormat(newDateFormat).format(it) } ?: dateValue
+    }
+
+    companion object {
+        fun getCurrentTimeStamp() = Timestamp(System.currentTimeMillis()).toString()
     }
 }
