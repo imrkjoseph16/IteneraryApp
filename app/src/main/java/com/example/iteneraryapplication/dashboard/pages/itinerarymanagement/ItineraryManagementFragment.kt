@@ -23,8 +23,8 @@ import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
 import com.example.iteneraryapplication.app.shared.state.GetAppUiItems
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.widget.ListItemPayloadDiffCallback
-import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTravelNote
-import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
+import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote
+import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
 import com.example.iteneraryapplication.databinding.FragmentItineraryManagementBinding
 import com.example.iteneraryapplication.databinding.SharedEmptyListItemBinding
 import com.example.iteneraryapplication.databinding.SharedListNoteItemBinding

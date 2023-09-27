@@ -2,6 +2,7 @@ package com.example.iteneraryapplication.dashboard.shared.data
 
 import android.net.Uri
 import android.widget.Toast
+import com.example.iteneraryapplication.app.util.Default.Companion.getRandomUUID
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
@@ -63,7 +64,7 @@ class DashboardRepository @Inject constructor(
             .child("noteImages")
             .child(userId)
             .child(notesType)
-            .child(UUID.randomUUID().toString())
+            .child(getRandomUUID())
 
         ref.putFile(imageUri).await().also {
             return if (it.error == null) ref.downloadUrl.await().toString()

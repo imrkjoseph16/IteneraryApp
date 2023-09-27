@@ -5,7 +5,6 @@
     <string name="title_email">Email</string>
     <string name="title_password">Password</string>
     <string name="title_phone_number">Phone Number</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Bottom Navigation Titles-->
@@ -35,4 +34,17 @@
     <string name="image_animation_tag">imageTransition</string>
     <string name="text_edit">Edit</string>
     <string name="text_notes">Notes</string>
+
+    <string name="pick_note_color">Pick Note Color</string>
+    <string name="add_web_link">Add Web Link</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_hand_writing">Add Hand Writing</string>
+
+    <!-- Hand writing text -->
+    <string name="action_settings">Settings</string>
+    <string name="start_new">New</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
+    <string name="save">Save</string>
+    <string name="paint">Paint</string>
 </resources>

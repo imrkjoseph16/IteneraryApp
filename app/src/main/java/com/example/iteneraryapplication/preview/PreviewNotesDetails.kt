@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import androidx.core.os.bundleOf
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
-import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTravelNote
-import com.example.iteneraryapplication.dashboard.shared.presentation.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
+import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote
+import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
 import com.example.iteneraryapplication.databinding.ActivityPreviewImageBinding
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint

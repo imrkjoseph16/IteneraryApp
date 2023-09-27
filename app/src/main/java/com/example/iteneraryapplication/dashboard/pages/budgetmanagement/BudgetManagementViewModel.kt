@@ -11,7 +11,7 @@ import com.example.iteneraryapplication.app.shared.state.ShowAppUiLoading
 import com.example.iteneraryapplication.app.shared.state.ShowAppUiNoData
 import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.dashboard.shared.domain.PlanningNoteUseCase
-import com.example.iteneraryapplication.dashboard.shared.presentation.TravelNoteFactory
+import com.example.iteneraryapplication.dashboard.shared.presentation.factory.TravelNoteFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

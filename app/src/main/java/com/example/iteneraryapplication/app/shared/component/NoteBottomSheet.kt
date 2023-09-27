@@ -1,14 +1,24 @@
 package com.example.iteneraryapplication.app.shared.component
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.iteneraryapplication.R
+import com.example.iteneraryapplication.R.color.ColorBlueNote
+import com.example.iteneraryapplication.R.color.ColorYellowNote
+import com.example.iteneraryapplication.R.color.ColorRedNote
+import com.example.iteneraryapplication.R.color.ColorWhiteNote
+import com.example.iteneraryapplication.R.color.ColorOrangeNote
+import com.example.iteneraryapplication.R.color.ColorBlackNote
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseBottomSheetFragment
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_DELETE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_HAND_WRITING
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_IMAGE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_WEB_URL
 import com.example.iteneraryapplication.databinding.BottomSheetNotesOptionsBinding
 
 class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>() {
@@ -87,27 +97,32 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
 
         // Bottom Option Listener
         layoutImage.setOnClickListener {
-            sendBroadCastIntent(extraValue = "Image").also { dismiss() }
+            sendBroadCastIntent(extraValue = ACTION_IMAGE).also { dismiss() }
         }
 
         layoutWebUrl.setOnClickListener {
-            sendBroadCastIntent(extraValue = "WebUrl").also { dismiss() }
+            sendBroadCastIntent(extraValue = ACTION_WEB_URL).also { dismiss() }
+        }
+
+        layoutHandWriting.setOnClickListener {
+            sendBroadCastIntent(extraValue = ACTION_HAND_WRITING).also { dismiss() }
         }
 
         layoutDeleteNote.setOnClickListener {
-            sendBroadCastIntent(extraValue = "DeleteNote").also { dismiss() }
+            sendBroadCastIntent(extraValue = ACTION_DELETE).also { dismiss() }
         }
     }
 
+    @SuppressLint("ResourceType")
     private fun BottomSheetNotesOptionsBinding.configureNotes(selectedImage: Int) {
-
+        
         val imageNoteList = buildList {
-            add(ImageNoteSetup(imgNote1, "#404FF6"))
-            add(ImageNoteSetup(imgNote2, "#F4C057"))
-            add(ImageNoteSetup(imgNote3, "#EB5849"))
-            add(ImageNoteSetup(imgNote4, "#0aebaf"))
-            add(ImageNoteSetup(imgNote5, "#ff7746"))
-            add(ImageNoteSetup(imgNote6, "#333333"))
+            add(ImageNoteSetup(imgNote1, resources.getString(ColorBlueNote)))
+            add(ImageNoteSetup(imgNote2, resources.getString(ColorYellowNote)))
+            add(ImageNoteSetup(imgNote3, resources.getString(ColorRedNote)))
+            add(ImageNoteSetup(imgNote4, resources.getString(ColorWhiteNote)))
+            add(ImageNoteSetup(imgNote5, resources.getString(ColorOrangeNote)))
+            add(ImageNoteSetup(imgNote6, resources.getString(ColorBlackNote)))
         }
 
         selectedColor = imageNoteList[selectedImage].color

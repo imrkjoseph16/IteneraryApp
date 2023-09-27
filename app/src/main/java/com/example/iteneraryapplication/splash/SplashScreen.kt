@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication
+package com.example.iteneraryapplication.splash
 
 import android.annotation.SuppressLint
 import android.os.Handler
@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<ActivitySplashBinding>() {
+class SplashScreen : BaseActivity<ActivitySplashBinding>() {
 
     override val inflater: (LayoutInflater) -> ActivitySplashBinding
         get() = ActivitySplashBinding::inflate

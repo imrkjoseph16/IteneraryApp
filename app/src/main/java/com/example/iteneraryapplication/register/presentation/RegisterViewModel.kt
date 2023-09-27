@@ -28,24 +28,20 @@ class RegisterViewModel @Inject constructor(
             updateUIState(state = ShowRegisterLoading)
 
             // This chainCall function execute a step by step network call.
-            chainCall(
-                { registerCredentialUseCase.registerCredentials(credentials = credentials) },
-                { registerCredentialUseCase.sendEmailVerification() },
-                { registerCredentialUseCase.saveFireStoreDetails(details = credentials.transformCredentials()) }
-            )
+            registerCredentialUseCase.apply {
+                chainCall(
+                    { registerCredentials(credentials = credentials) },
+                    { sendEmailVerification() },
+                    { saveFireStoreDetails(details = credentials.transformCredentials()) }
+                )
+            }
 
             updateUIState(state = ShowRegisterDismissLoading)
         }
     }
 
-    private fun Credentials.transformCredentials() = hashMapOf(
-        "email" to email,
-        "phoneNumber" to phoneNumber,
-        "password" to password
-    )
-
     private suspend fun<T : IRegisterCredential> chainCall(vararg calls: (suspend () -> T)) {
-        run chain@{
+        run chain@ {
             calls.onEachIndexed { _, codeToExecute ->
                 coRunCatching {
                     codeToExecute.invoke()
@@ -58,6 +54,12 @@ class RegisterViewModel @Inject constructor(
             }
         }
     }
+
+    private fun Credentials.transformCredentials() = hashMapOf(
+        "email" to email,
+        "phoneNumber" to phoneNumber,
+        "password" to password
+    )
 
     private fun updateUIState(state: RegisterState) {
         _registerState.value = state

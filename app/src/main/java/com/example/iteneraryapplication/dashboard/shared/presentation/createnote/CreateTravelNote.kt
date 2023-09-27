@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.shared.presentation
+package com.example.iteneraryapplication.dashboard.shared.presentation.createnote
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -24,6 +24,10 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_DELETE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_HAND_WRITING
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_IMAGE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_WEB_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
@@ -39,6 +43,15 @@ import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRand
 import com.example.iteneraryapplication.app.util.showBottomSheet
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
+import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardSharedViewModel
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardError
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteImageSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteNotesSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveImageSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveNoteSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.handwriting.HandWriting
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
@@ -250,6 +263,8 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
+    private fun navigateToHandWritingScreen() = navigationUtil.navigateActivity(this@CreateTravelNote, HandWriting::class.java)
+
     private fun checkWebUrl() {
         binding.apply {
             val webLinkText = etWebLink.text.toString()
@@ -280,9 +295,10 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 }
 
                 when (action) {
-                    "Image" -> permissionUtil.readStorageTask(this@CreateTravelNote, activityResultLauncher::launch)
-                    "WebUrl" -> configureWebLayout(isShowLayoutUrl = true)
-                    "DeleteNote" -> deletingNotes = true.also {
+                    ACTION_IMAGE -> permissionUtil.readStorageTask(this@CreateTravelNote, activityResultLauncher::launch)
+                    ACTION_WEB_URL -> configureWebLayout(isShowLayoutUrl = true)
+                    ACTION_HAND_WRITING -> navigateToHandWritingScreen()
+                    ACTION_DELETE -> deletingNotes = true.also {
                         if (data?.itemNoteImage != null) {
                             // if the existing notes data has a note image,
                             // delete first the image.
@@ -301,7 +317,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         notesTitle = etNoteTitle.text.toString(),
         notesDateSaved = selectedDateTime,
         notesSubtitle = etNoteSubTitle.text.toString(),
-        notesColor = selectedColor,
+        notesColor = data?.itemNoteColor.takeIf { it != NOTES_DEFAULT_COLOR } ?: selectedColor,
         notesDesc = etNoteDesc.text.toString(),
         notesWebLink = etWebLink.checkWebLinkValue(),
         notesImage = getNoteImagePath(imageUrl)

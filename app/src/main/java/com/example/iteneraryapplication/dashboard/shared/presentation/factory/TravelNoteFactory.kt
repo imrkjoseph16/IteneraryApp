@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.shared.presentation
+package com.example.iteneraryapplication.dashboard.shared.presentation.factory
 
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.shared.component.TextLine
@@ -8,6 +8,8 @@ import com.example.iteneraryapplication.app.shared.dto.layout.SpaceItemViewDto
 import com.example.iteneraryapplication.app.util.DateUtil
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
+import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
+import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
 import javax.inject.Inject
 
 class TravelNoteFactory @Inject constructor(

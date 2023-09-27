@@ -61,4 +61,8 @@
     <dimen name="grid_48">384dp</dimen>
     <dimen name="grid_49">392dp</dimen>
     <dimen name="grid_50">400dp</dimen>
+
+    <dimen name="small_brush">10dp</dimen>
+    <dimen name="medium_brush">20dp</dimen>
+    <dimen name="large_brush">40dp</dimen>
 </resources>

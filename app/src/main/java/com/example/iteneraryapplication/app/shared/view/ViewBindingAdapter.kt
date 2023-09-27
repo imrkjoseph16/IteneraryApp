@@ -12,7 +12,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.iteneraryapplication.R
-import com.google.android.material.imageview.ShapeableImageView
 
 @BindingAdapter("visible")
 fun setVisible(view: View, visible: Boolean) {
@@ -31,7 +30,6 @@ fun setSrcIcon(imageView: AppCompatImageView, icon: Int?) {
     if (icon != null) imageView.setImageResource(icon) else imageView.setImageResource(R.drawable.icon_empty_planning)
 }
 
-
 @BindingAdapter("setCustomColor")
 fun setBackgroundColor(view: CardView, customColor: String) = view.setCardBackgroundColor(Color.parseColor(customColor))
 
@@ -40,4 +38,11 @@ fun setGlideImageUrl(view: ImageView, imageUrl: String? = null) {
     if (imageUrl != null) Glide.with(view.context)
         .load(imageUrl)
         .into(view)
+}
+
+@BindingAdapter("getBackgroundColor")
+fun getBackgroundColor(view: View, color: String? = null) {
+    if (color != null) {
+
+    }
 }

@@ -2,6 +2,8 @@ package com.example.iteneraryapplication.app.shared.dto.layout
 
 import android.content.Context
 import com.example.iteneraryapplication.app.shared.component.TextLine
+import com.example.iteneraryapplication.app.util.Default.Companion.DEFAULT_HTTPS_URL
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
 
 /**
  * Reusable component for notes list item.
@@ -16,7 +18,7 @@ data class NoteItemViewDto(
     val itemId: String,
     val itemNoteImage: String? = null,
     val itemNoteWebLink: String? = null,
-    val itemNoteColor: String = "#333333",
+    val itemNoteColor: String? = NOTES_DEFAULT_COLOR,
 ) {
 
     fun getItemTitle(context: Context) = itemTitle.getString(context)
@@ -26,4 +28,8 @@ data class NoteItemViewDto(
     fun getSubtitle(context: Context) = itemSubtitle.getString(context)
 
     fun getItemNote(context: Context) = itemNote.getString(context)
+
+    fun getNoteWebLinkHost() = itemNoteWebLink?.replace(DEFAULT_HTTPS_URL, "") ?: ""
+
+    fun getDefaultURL() = DEFAULT_HTTPS_URL
 }

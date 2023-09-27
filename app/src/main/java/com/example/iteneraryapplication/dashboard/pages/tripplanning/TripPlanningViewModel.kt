@@ -14,7 +14,7 @@ import com.example.iteneraryapplication.dashboard.shared.domain.PlanningNoteUseC
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
-import com.example.iteneraryapplication.dashboard.shared.presentation.TravelNoteFactory
+import com.example.iteneraryapplication.dashboard.shared.presentation.factory.TravelNoteFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
