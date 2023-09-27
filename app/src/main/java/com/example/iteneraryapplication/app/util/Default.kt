@@ -9,12 +9,15 @@ class Default {
 
         const val SOMETHING_WENT_WRONG = "Something went wrong, Please try again later"
         const val FIELD_REQUIRED = "This field must be required."
-        const val URL_REQUIRED_MSG = "Url is Required"
+        const val URL_INVALID = "Url is invalid"
+        const val URL_REQUIRED_MSG = "Url is required"
 
         const val DATE_AND_TIME = "MM-dd-yyyy hh:mm"
         const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm:ss a"
         const val DATE_NAMED = "MMMM dd yyyy, hh:mm a"
         const val DATE_TAP_HINT = "(Tap to change the date)"
+
+        const val DEFAULT_HTTPS_URL = "https://"
 
         const val BOOKING_URL = "https://www.philippineairlines.com/en/"
 

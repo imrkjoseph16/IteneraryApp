@@ -242,7 +242,7 @@
                             android:inputType="textMultiLine"
                             android:paddingVertical="16dp"
                             android:paddingEnd="16dp"
-                            android:text="http://"
+                            android:text="https://"
                             android:textColor="@color/white"
                             android:textColorHint="@color/gray"
                             android:textSize="@dimen/_12ssp" />

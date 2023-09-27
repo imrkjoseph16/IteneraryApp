@@ -27,11 +27,13 @@ import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
+import com.example.iteneraryapplication.app.util.Default.Companion.DEFAULT_HTTPS_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_BUDGET
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
+import com.example.iteneraryapplication.app.util.Default.Companion.URL_INVALID
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.app.util.showBottomSheet
@@ -130,7 +132,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         buttonCancel.setOnClickListener {
-            configureWebLayout(isShowLayoutUrl = false).also { etWebLink.text.clear() }
+            configureWebLayout(isShowLayoutUrl = false).also { etWebLink.setText(DEFAULT_HTTPS_URL)}
         }
 
         buttonSaveNote.setOnClickListener {
@@ -244,7 +246,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
     }
 
-    private fun EditText.checkWebLinkValue() = if (text.toString() == "http://" || text.isEmpty()) null else text.toString()
+    private fun EditText.checkWebLinkValue() = if (text.toString() == DEFAULT_HTTPS_URL || text.isEmpty()) null else text.toString()
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
@@ -252,11 +254,9 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         binding.apply {
             val webLinkText = etWebLink.text.toString()
             if (Patterns.WEB_URL.matcher(webLinkText).matches()) {
-                etWebLink.isEnabled = false
-                configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false)
-                tvWebLink.text = webLinkText
+                configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false).also { tvWebLink.text = webLinkText }
             } else {
-                showToastMessage(this@CreateTravelNote, URL_REQUIRED_MSG)
+                showToastMessage(this@CreateTravelNote, URL_INVALID)
             }
         }
     }
