@@ -40,6 +40,21 @@ class DashboardSharedViewModel @Inject constructor(
         }
     }
 
+    fun deleteNotes(notesType: String? = null, notes: Notes) {
+        viewModelScope.launch {
+            _dashboardState.apply {
+                coRunCatching {
+                    planningNoteUseCase.deleteNotes(notesType, notes)
+                }.onSuccess { isDeleted ->
+                    value = if (isDeleted) ShowDeleteNotesSuccess
+                    else ShowDashboardError(Throwable(SOMETHING_WENT_WRONG))
+                }.onFailure {
+                    value = ShowDashboardError(it)
+                }
+            }
+        }
+    }
+
     fun uploadNoteImage(notesType: String, imageUri: Uri) {
         viewModelScope.launch {
             _dashboardState.apply {
@@ -56,5 +71,19 @@ class DashboardSharedViewModel @Inject constructor(
                 value = ShowDashboardDismissLoading
             }
         }
+    }
+
+    fun deleteNoteImage(imageUrl: String? = null) {
+       viewModelScope.launch {
+           _dashboardState.apply {
+               coRunCatching {
+                   planningNoteUseCase.deleteNoteImage(imageUrl)
+               }.onSuccess {
+                   value = ShowDeleteImageSuccess(it)
+               }.onFailure {
+                   value = ShowDashboardError(it)
+               }
+           }
+       }
     }
 }

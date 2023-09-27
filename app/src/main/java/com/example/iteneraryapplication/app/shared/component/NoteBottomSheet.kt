@@ -29,7 +29,7 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     }
     
     private fun BottomSheetNotesOptionsBinding.configureViews() {
-        layoutDeleteNote.setVisible(noteId != -1)
+        layoutDeleteNote.setVisible(existingNotes)
 
         fNote1.setOnClickListener {
             configureNotes(selectedImage = 0).also {
@@ -132,14 +132,10 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     )
 
     companion object {
-        var noteId = -1
-        
-        fun createInstance(id: Int = noteId): NoteBottomSheet{
-            val args = Bundle()
-            val fragment = NoteBottomSheet()
-            fragment.arguments = args
-            noteId = id
-            return fragment
+        var existingNotes = false
+
+        fun createInstance(isExistingNotes: Boolean = false) = NoteBottomSheet().apply {
+            existingNotes = isExistingNotes
         }
     }
 }

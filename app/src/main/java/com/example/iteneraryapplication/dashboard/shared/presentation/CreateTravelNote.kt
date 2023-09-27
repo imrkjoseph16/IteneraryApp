@@ -23,7 +23,6 @@ import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
-import com.example.iteneraryapplication.app.shared.component.NoteBottomSheet.Companion.noteId
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
@@ -39,7 +38,6 @@ import com.example.iteneraryapplication.app.util.showBottomSheet
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
-import com.example.iteneraryapplication.preview.PreviewNotesDetails
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
 import com.google.gson.Gson
@@ -54,6 +52,8 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private var selectedColor: String = NOTES_DEFAULT_COLOR
 
+    private var deletingNotes: Boolean = false
+
     private var selectedNoteImage: Uri? = null
 
     private val notesTypeSelected by lazy {
@@ -64,7 +64,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         Gson().fromJson(intent.getStringExtra(EXTRA_DATA_NOTES), NoteItemViewDto::class.java) ?: null
     }
 
-    lateinit var selectedDateTime: String
+    private lateinit var selectedDateTime: String
 
     override val inflater: (LayoutInflater) -> ActivityCreateTravelNoteBinding
         get() = ActivityCreateTravelNoteBinding::inflate
@@ -130,16 +130,34 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         buttonCancel.setOnClickListener {
-            if (noteId != -1) configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false)
-            else configureWebLayout(isShowLayoutUrl = false)
+            configureWebLayout(isShowLayoutUrl = false).also { etWebLink.text.clear() }
         }
 
         buttonSaveNote.setOnClickListener {
             validateFields().also { valid ->
-                if (valid) selectedNoteImage?.let {
-                    viewModel.uploadNoteImage(notesTypeSelected.toString(), it)
-                } ?: binding.saveNotes()
+                if (valid) getSaveDetailsState()
             }
+        }
+    }
+
+    private fun ActivityCreateTravelNoteBinding.getSaveDetailsState() {
+        // This "existingNoteImage" came from the existing saved notes.
+        val existingNoteImage = data?.itemNoteImage
+
+        if (selectedNoteImage != null) {
+            viewModel.uploadNoteImage(
+                notesType = notesTypeSelected.toString(),
+                imageUri = selectedNoteImage!!
+            )
+        }
+        // Check if the "existingNoteImage" has a value,
+        // also if (imgNote.drawable == null) it means the user,
+        // deleted the existing note image from the UI, so we need to,
+        // delete it first from the firebase storage then save the notes.
+        else if (existingNoteImage != null && imgNote.drawable == null) {
+            viewModel.deleteNoteImage(existingNoteImage)
+        } else {
+            binding.saveNotes()
         }
     }
 
@@ -185,10 +203,15 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 launch {
                     viewModel.dashboardState.collectLatest { state ->
                         when (state) {
-                            is ShowSaveNoteSuccess -> finish().also { setResult(REQUEST_CODE_CLEAR_HISTORY).takeIf { extraNotesData != null } }
-                            is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
                             is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                             is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
+                            is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
+                            is ShowDeleteNotesSuccess, is ShowSaveNoteSuccess -> goBackToPreviousScreen()
+                            // We need to check in this state if the "deletingNotes" is true,
+                            // then delete the current notes in the UI.
+                            // (because when deleting the notes, we check first the image if it's existing or not)
+                            is ShowDeleteImageSuccess -> if (deletingNotes) viewModel.deleteNotes(notesTypeSelected, binding.getCurrentNotes())
+                            else binding.saveNotes().takeIf { state.isDeleteSuccess }
                             is ShowDashboardError -> showToastMessage(
                                 context = this@CreateTravelNote,
                                 message = state.throwable.message.toString()
@@ -200,23 +223,28 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
     }
 
-    private fun ActivityCreateTravelNoteBinding.saveNotes(imageUrl: String? = null) {
+    private fun goBackToPreviousScreen() = finish().also { setResult(REQUEST_CODE_CLEAR_HISTORY).takeIf { extraNotesData != null } }
+
+    private fun ActivityCreateTravelNoteBinding.saveNotes(imageUrl: String? = null) =
         viewModel.saveNotes(
             notesType = notesTypeSelected.toString(),
-            notes = Notes(
-                itemId = data?.itemId.takeIf { it != null } ?: generateRandomCharacters(),
-                notesTitle = etNoteTitle.text.toString(),
-                notesDateSaved = selectedDateTime,
-                notesSubtitle = etNoteSubTitle.text.toString(),
-                notesColor = selectedColor,
-                notesDesc = etNoteDesc.text.toString(),
-                notesWebLink = etWebLink.checkWebLinkValue(),
-                notesImage = if (data?.itemNoteImage != null) data?.itemNoteImage else imageUrl
-            )
+            notes = getCurrentNotes(imageUrl)
         )
+
+    private fun ActivityCreateTravelNoteBinding.getNoteImagePath(imageUrl: String?) : String? {
+        // This "existingNoteImage" came from the existing saved notes.
+        val existingNoteImage = data?.itemNoteImage
+        return when {
+            // Check if the existing saved note image is not null,
+            // also verify if the imageViewNote is not being deleted,
+            // then still get the saved note image path.
+            existingNoteImage != null && imgNote.drawable != null -> existingNoteImage
+            // else get the new selected image (imageUrl).
+            else -> imageUrl
+        }
     }
 
-    private fun EditText.checkWebLinkValue() = if (text.toString() == "http://") null else text.toString()
+    private fun EditText.checkWebLinkValue() = if (text.toString() == "http://" || text.isEmpty()) null else text.toString()
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
@@ -234,16 +262,13 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     }
 
     private fun configureBroadcastReceiver(isRegister: Boolean) {
-        if (isRegister) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(
-                BroadcastReceiver, IntentFilter("bottom_sheet_action")
-            )
-        } else {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(BroadcastReceiver)
+        LocalBroadcastManager.getInstance(this).apply {
+            if (isRegister) registerReceiver(broadCastReceiver, IntentFilter("bottom_sheet_action"))
+            else unregisterReceiver(broadCastReceiver)
         }
     }
 
-    private val BroadcastReceiver = object : BroadcastReceiver() {
+    private val broadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
             binding.apply {
@@ -255,25 +280,32 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                 }
 
                 when (action) {
-                    "Image" -> readStorageTask()
+                    "Image" -> permissionUtil.readStorageTask(this@CreateTravelNote, activityResultLauncher::launch)
                     "WebUrl" -> configureWebLayout(isShowLayoutUrl = true)
-                    "DeleteNote" -> TODO("Will implement delete function")
+                    "DeleteNote" -> deletingNotes = true.also {
+                        if (data?.itemNoteImage != null) {
+                            // if the existing notes data has a note image,
+                            // delete first the image.
+                            viewModel.deleteNoteImage(imageUrl = data?.itemNoteImage)
+                        } else {
+                            viewModel.deleteNotes(notesTypeSelected, getCurrentNotes())
+                        }
+                    }
                 }
             }
         }
     }
 
-    private fun readStorageTask() {
-        permissionUtil.run {
-            val context = this@CreateTravelNote
-            if (hasReadStoragePerm(context).not()) requestStoragePermission(context)
-            else pickImageFromGallery(
-                context = context,
-                activityResultLaunch = {
-                activityResultLauncher.launch(it)
-            })
-        }
-    }
+    private fun ActivityCreateTravelNoteBinding.getCurrentNotes(imageUrl: String? = null) = Notes(
+        itemId = data?.itemId.takeIf { it != null } ?: generateRandomCharacters(),
+        notesTitle = etNoteTitle.text.toString(),
+        notesDateSaved = selectedDateTime,
+        notesSubtitle = etNoteSubTitle.text.toString(),
+        notesColor = selectedColor,
+        notesDesc = etNoteDesc.text.toString(),
+        notesWebLink = etWebLink.checkWebLinkValue(),
+        notesImage = getNoteImagePath(imageUrl)
+    )
 
     private var activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

@@ -99,5 +99,4 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
         navigationUtil.navigateActivity(context = this, className = Login::class.java)
         this.finish()
     }
-
 }

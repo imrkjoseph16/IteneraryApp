@@ -23,6 +23,7 @@
             android:layout_height="0dp"
             android:nestedScrollingEnabled="false"
             android:layout_marginHorizontal="12dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

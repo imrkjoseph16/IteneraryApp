@@ -16,7 +16,11 @@ class PlanningNoteUseCase @Inject constructor(
 
     suspend fun saveNotes(notesType: String, notes: Notes) = dashboardRepository.saveNotes(notesType = notesType, notes = notes)
 
+    suspend fun deleteNotes(notesType: String? = null, notes: Notes) = dashboardRepository.deleteNotes(notesType = notesType, notes = notes)
+
     suspend fun saveNoteImage(notesType: String, imageUri: Uri) = dashboardRepository.saveNoteImage(
         notesType = notesType, imageUri = imageUri
     )
+
+    suspend fun deleteNoteImage(imageUrl: String?) = dashboardRepository.deleteNoteImage(imageUrl)
 }

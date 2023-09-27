@@ -245,7 +245,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:visibility="gone"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
@@ -257,7 +256,7 @@
             android:src="@drawable/icon_delete_24px"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:tint="@color/white" />
+            app:tint="@color/ColorRedNote" />
 
         <TextView
             android:layout_width="match_parent"
@@ -265,10 +264,10 @@
             app:layout_constraintTop_toBottomOf="@id/etNoteTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"
+            android:textColor="@color/ColorRedNote"
             android:textSize="@dimen/_12ssp"
             android:text="Delete Note"
-            android:fontFamily="@font/helvetica_bold"
+            android:fontFamily="@font/helvetica_rounded_bold"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>

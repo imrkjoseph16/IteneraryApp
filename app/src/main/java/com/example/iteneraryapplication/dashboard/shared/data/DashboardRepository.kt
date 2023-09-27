@@ -1,6 +1,7 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
 import android.net.Uri
+import android.widget.Toast
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
@@ -34,6 +35,16 @@ class DashboardRepository @Inject constructor(
         return saveDetailsStatus.isSuccessful
     }
 
+    suspend fun deleteNotes(notesType: String? = null, notes: Notes) : Boolean {
+        val deleteDetailsStatus = fireStore.collection("notes")
+            .document(userId)
+            .collection(notesType ?: error("notesType is required"))
+            .document(notes.itemId ?: error("itemId not found"))
+            .delete()
+        deleteDetailsStatus.await()
+        return deleteDetailsStatus.isSuccessful
+    }
+
     fun getNotes(notesType: String, getNotesItem: (appUiState: DashboardState) -> Unit) {
         val fireStorePath = fireStore.collection("notes")
             .document(userId)
@@ -58,5 +69,12 @@ class DashboardRepository @Inject constructor(
             return if (it.error == null) ref.downloadUrl.await().toString()
             else error("failed to upload image")
         }
+    }
+
+    suspend fun deleteNoteImage(imageUrl: String?) : Boolean {
+        val imageRef = firebaseStorage.getReferenceFromUrl(imageUrl.orEmpty()).delete()
+        imageRef.await()
+
+        return imageRef.isSuccessful
     }
 }

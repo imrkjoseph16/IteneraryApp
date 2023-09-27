@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import pub.devrel.easypermissions.EasyPermissions
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class PermissionUtil @Inject constructor() {
 
-    fun hasReadStoragePerm(context: Context) = EasyPermissions.hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun hasReadStoragePerm(context: Context) = EasyPermissions.hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)
 
     @SuppressLint("QueryPermissionsNeeded")
     fun pickImageFromGallery(context: Activity, activityResultLaunch: (Intent) -> Unit = {}){
@@ -22,7 +23,7 @@ class PermissionUtil @Inject constructor() {
         if (intent.resolveActivity(context.packageManager) != null) activityResultLaunch(intent)
     }
 
-    fun requestStoragePermission(context: Activity) {
+    private fun requestStoragePermission(context: Activity) {
         EasyPermissions.requestPermissions(
             context,
             context.getString(R.string.storage_permission_text),
@@ -45,5 +46,18 @@ class PermissionUtil @Inject constructor() {
             cursor.close()
         }
         return filePath!!
+    }
+
+    fun readStorageTask(
+        context: Activity,
+        activityResultLaunch: (Intent) -> Unit = {}
+    ) {
+        run {
+            if (hasReadStoragePerm(context).not()) requestStoragePermission(context)
+            else pickImageFromGallery(
+                context = context,
+                activityResultLaunch = activityResultLaunch::invoke
+            )
+        }
     }
 }
