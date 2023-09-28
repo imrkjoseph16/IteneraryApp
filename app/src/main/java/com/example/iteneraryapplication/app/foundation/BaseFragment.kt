@@ -1,7 +1,6 @@
 package com.example.iteneraryapplication.app.foundation
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +42,7 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return initViewBinding(inflater, container)
-    }
+    ) = initViewBinding(inflater, container)
 
     private fun initViewBinding(
         inflater: LayoutInflater,
@@ -57,10 +54,9 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
 
     fun getAppCompatActivity(): AppCompatActivity = (activity as AppCompatActivity)
 
-    fun onBackPressedCallback(onBackClicked: () -> Unit) =
-        (activity as AppCompatActivity).onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object: OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() = onBackClicked.invoke()
-            })
-
+    fun onBackPressedCallBack(onBackClicked: () -> Unit) =
+    (activity as AppCompatActivity).onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+    onBackPressedCallback = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() = onBackClicked.invoke()
+    })
 }
