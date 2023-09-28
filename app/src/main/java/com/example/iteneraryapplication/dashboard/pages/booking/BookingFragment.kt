@@ -33,9 +33,5 @@ class BookingFragment : BaseFragment<FragmentBookingBinding>() {
         loadUrl(BOOKING_URL)
     }
 
-    private fun onKeyDown() {
-        binding.webview.apply {
-            if (canGoBack()) goBack() else getAppCompatActivity().finish()
-        }
-    }
+    private fun onKeyDown() = binding.webview.apply { if (canGoBack()) goBack() else getAppCompatActivity().finish() }
 }
