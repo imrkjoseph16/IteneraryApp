@@ -1,9 +1,11 @@
 package com.example.iteneraryapplication.app.foundation
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -54,4 +56,11 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
     }
 
     fun getAppCompatActivity(): AppCompatActivity = (activity as AppCompatActivity)
+
+    fun onBackPressedCallback(onBackClicked: () -> Unit) =
+        (activity as AppCompatActivity).onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() = onBackClicked.invoke()
+            })
+
 }
