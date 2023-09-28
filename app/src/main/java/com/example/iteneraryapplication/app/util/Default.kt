@@ -24,18 +24,25 @@ class Default {
         const val BOOKING_URL = "https://www.philippineairlines.com/en/"
 
         const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
-        const val NOTES_TYPE_ITINERARY = "itinerary_management"
         const val NOTES_TYPE_BUDGET = "budget_management"
         const val NOTES_DEFAULT_COLOR = "#202734"
 
+        const val ACTION = "action"
         const val ACTION_IMAGE = "Image"
         const val ACTION_WEB_URL = "WebUrl"
-        const val ACTION_HAND_WRITING = "Hand Writing"
         const val ACTION_DELETE = "DeleteNote"
+        const val ACTION_HAND_WRITING = "Hand Writing"
+        const val ACTION_SELECTED_COLOR = "action_selected_color"
+
+        const val BOTTOM_SHEET_ACTION = "bottom_sheet_action"
+        const val SELECTED_COLOR = "selected_color"
 
         const val IMAGE_FILE_SAVE_SUCCESS = "Saved successfully to gallery"
         const val IMAGE_FILE_PNG_FORMAT = ".png"
         const val IMAGE_FILE_DESCRIPTION = "drawing"
+
+        const val REQUEST_CODE_CLEAR_HISTORY = 0
+        const val REQUEST_CODE_GET_DRAWING = 1
 
         fun getRandomUUID() = UUID.randomUUID().toString()
     }

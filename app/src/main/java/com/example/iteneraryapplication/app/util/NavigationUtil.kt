@@ -10,26 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import com.example.iteneraryapplication.R
-import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
+import com.example.iteneraryapplication.app.util.Default.Companion.REQUEST_CODE_CLEAR_HISTORY
 import javax.inject.Inject
 
 class NavigationUtil @Inject constructor() {
-
-    fun navigateActivity(context: Context, className: Class<*>?) {
-        Intent(context, className).apply {
-            context.startActivity(this)
-        }
-    }
 
     fun navigateActivity(
         context: Activity,
         bundle: Bundle? = null,
         className: Class<*>?,
-        noHistory: Boolean = false
+        requestCode: Int? = null
     ) {
         Intent(context, className).apply {
             bundle?.let { putExtras(it) }
-            if (noHistory) context.startActivityForResult(this, REQUEST_CODE_CLEAR_HISTORY)
+            if (requestCode != null) context.startActivityForResult(this, requestCode)
             else context.startActivity(this)
         }
     }

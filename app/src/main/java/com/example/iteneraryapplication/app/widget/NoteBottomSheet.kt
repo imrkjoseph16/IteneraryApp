@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.app.shared.component
+package com.example.iteneraryapplication.app.widget
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,15 +10,19 @@ import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.R.color.ColorBlueNote
 import com.example.iteneraryapplication.R.color.ColorYellowNote
 import com.example.iteneraryapplication.R.color.ColorRedNote
-import com.example.iteneraryapplication.R.color.ColorWhiteNote
 import com.example.iteneraryapplication.R.color.ColorOrangeNote
 import com.example.iteneraryapplication.R.color.ColorBlackNote
+import com.example.iteneraryapplication.R.color.ColorGreenNote
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseBottomSheetFragment
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_DELETE
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_HAND_WRITING
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_IMAGE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_SELECTED_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_WEB_URL
+import com.example.iteneraryapplication.app.util.Default.Companion.BOTTOM_SHEET_ACTION
+import com.example.iteneraryapplication.app.util.Default.Companion.SELECTED_COLOR
 import com.example.iteneraryapplication.databinding.BottomSheetNotesOptionsBinding
 
 class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>() {
@@ -28,8 +32,6 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
 
     override val inflater: (LayoutInflater) -> BottomSheetNotesOptionsBinding
         get() = BottomSheetNotesOptionsBinding::inflate
-
-    private var selectedColor = "#333333"
 
     override fun onBottomSheetCreated() {
         super.onBottomSheetCreated()
@@ -42,74 +44,44 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
         layoutDeleteNote.setVisible(existingNotes)
 
         fNote1.setOnClickListener {
-            configureNotes(selectedImage = 0).also {
-                sendBroadCastIntent(
-                    extraValue = "Blue",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 0)
         }
 
         fNote2.setOnClickListener {
-            configureNotes(selectedImage = 1).also {
-                sendBroadCastIntent(
-                    extraValue = "Yellow",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 1)
         }
 
         fNote4.setOnClickListener {
-            configureNotes(selectedImage = 2).also {
-                sendBroadCastIntent(
-                    extraValue = "Purple",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 2)
         }
 
         fNote5.setOnClickListener {
-            configureNotes(selectedImage = 3).also {
-                sendBroadCastIntent(
-                    extraValue = "Green",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 3)
         }
 
         fNote6.setOnClickListener {
-            configureNotes(selectedImage = 4).also {
-                sendBroadCastIntent(
-                    extraValue = "Orange",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 4)
         }
 
         fNote7.setOnClickListener {
-            configureNotes(selectedImage = 5).also {
-                sendBroadCastIntent(
-                    extraValue = "Black",
-                    secondExtraValue = selectedColor
-                )
-            }
+            configureNotes(selectedImage = 5)
         }
 
         // Bottom Option Listener
         layoutImage.setOnClickListener {
-            sendBroadCastIntent(extraValue = ACTION_IMAGE).also { dismiss() }
+            sendBroadCastIntent(actionValue = ACTION_IMAGE, canDismiss = true)
         }
 
         layoutWebUrl.setOnClickListener {
-            sendBroadCastIntent(extraValue = ACTION_WEB_URL).also { dismiss() }
+            sendBroadCastIntent(actionValue = ACTION_WEB_URL, canDismiss = true)
         }
 
         layoutHandWriting.setOnClickListener {
-            sendBroadCastIntent(extraValue = ACTION_HAND_WRITING).also { dismiss() }
+            sendBroadCastIntent(actionValue = ACTION_HAND_WRITING, canDismiss = true)
         }
 
         layoutDeleteNote.setOnClickListener {
-            sendBroadCastIntent(extraValue = ACTION_DELETE).also { dismiss() }
+            sendBroadCastIntent(actionValue = ACTION_DELETE, canDismiss = true)
         }
     }
 
@@ -120,25 +92,34 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
             add(ImageNoteSetup(imgNote1, resources.getString(ColorBlueNote)))
             add(ImageNoteSetup(imgNote2, resources.getString(ColorYellowNote)))
             add(ImageNoteSetup(imgNote3, resources.getString(ColorRedNote)))
-            add(ImageNoteSetup(imgNote4, resources.getString(ColorWhiteNote)))
+            add(ImageNoteSetup(imgNote4, resources.getString(ColorGreenNote)))
             add(ImageNoteSetup(imgNote5, resources.getString(ColorOrangeNote)))
             add(ImageNoteSetup(imgNote6, resources.getString(ColorBlackNote)))
         }
 
-        selectedColor = imageNoteList[selectedImage].color
         imageNoteList.onEachIndexed { currentImage, imageNoteSetup ->
             imageNoteSetup.imageView.setImageResource(
                 if (currentImage == selectedImage) R.drawable.icon_tick_24px
                 else 0
             )
         }
+
+        sendBroadCastIntent(
+            actionValue = ACTION_SELECTED_COLOR,
+            extraSelectedColor = imageNoteList[selectedImage].color
+        )
     }
 
-    private fun sendBroadCastIntent(extraValue: String, secondExtraValue: String? = null) {
-        val intent = Intent("bottom_sheet_action")
-        intent.putExtra("action",extraValue)
-        intent.putExtra("selectedColor", secondExtraValue).takeIf { secondExtraValue != null }
+    private fun sendBroadCastIntent(
+        actionValue: String,
+        extraSelectedColor: String? = null,
+        canDismiss: Boolean = false
+    ) {
+        val intent = Intent(BOTTOM_SHEET_ACTION)
+        intent.putExtra(ACTION, actionValue)
+        intent.putExtra(SELECTED_COLOR, extraSelectedColor)
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+        if (canDismiss) dismiss()
     }
 
     data class ImageNoteSetup(
@@ -149,7 +130,7 @@ class NoteBottomSheet : BaseBottomSheetFragment<BottomSheetNotesOptionsBinding>(
     companion object {
         var existingNotes = false
 
-        fun createInstance(isExistingNotes: Boolean = false) = NoteBottomSheet().apply {
+        fun createInstance(isExistingNotes: Boolean) = NoteBottomSheet().apply {
             existingNotes = isExistingNotes
         }
     }

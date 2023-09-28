@@ -5,12 +5,16 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import androidx.activity.result.ActivityResultLauncher
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.util.Default.Companion.READ_STORAGE_PERM
 import pub.devrel.easypermissions.EasyPermissions
+import android.provider.MediaStore.Images.Media.insertImage
+import android.view.View
+import com.example.iteneraryapplication.app.util.Default.Companion.IMAGE_FILE_DESCRIPTION
+import com.example.iteneraryapplication.app.util.Default.Companion.IMAGE_FILE_PNG_FORMAT
 import javax.inject.Inject
 
 class PermissionUtil @Inject constructor() {
@@ -60,4 +64,25 @@ class PermissionUtil @Inject constructor() {
             )
         }
     }
+
+    fun getImageUri(context: Context, bitmap: View?) : Uri? {
+        try {
+            bitmap?.isDrawingCacheEnabled = true
+            val imageSaved = Uri.parse(
+                insertImage(
+                    context.contentResolver, bitmap?.drawingCache,
+                context.getString(R.string.app_name) +
+                    IMAGE_FILE_PNG_FORMAT,
+                    IMAGE_FILE_DESCRIPTION
+                )
+            )
+            bitmap?.destroyDrawingCache()
+
+            return imageSaved
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
+    fun getBitmapImage(context: Context, imageUri: Uri?) = imageUri?.let { BitmapFactory.decodeStream(context.contentResolver.openInputStream(it)) }
 }

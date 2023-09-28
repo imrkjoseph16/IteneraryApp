@@ -3,9 +3,9 @@ package com.example.iteneraryapplication.dashboard.presentation
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.iteneraryapplication.dashboard.pages.booking.BookingFragment
+import com.example.iteneraryapplication.dashboard.pages.flightbooking.FlightBookingFragment
 import com.example.iteneraryapplication.dashboard.pages.budgetmanagement.BudgetManagementFragment
-import com.example.iteneraryapplication.dashboard.pages.itinerarymanagement.ItineraryManagementFragment
+import com.example.iteneraryapplication.dashboard.pages.hotelbooking.HotelBookingFragment
 import com.example.iteneraryapplication.dashboard.pages.traveltips.TravelTipsFragment
 import com.example.iteneraryapplication.dashboard.pages.tripplanning.TripPlanningFragment
 
@@ -26,8 +26,8 @@ class DashboardAdapter(
 
     override fun createFragment(position: Int) = when(DashboardFragments.values()[position]) {
         DashboardFragments.TRIP_PLANNING -> TripPlanningFragment()
-        DashboardFragments.BOOKING -> BookingFragment()
-        DashboardFragments.ITINERARY_MANAGEMENT -> ItineraryManagementFragment()
+        DashboardFragments.BOOKING -> FlightBookingFragment()
+        DashboardFragments.ITINERARY_MANAGEMENT -> HotelBookingFragment()
         DashboardFragments.BUDGET_MANAGEMENT -> BudgetManagementFragment()
         DashboardFragments.TRAVEL_TIPS -> TravelTipsFragment()
     }

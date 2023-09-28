@@ -1,10 +1,10 @@
-package com.example.iteneraryapplication.app.widget
+package com.example.iteneraryapplication.app.shared.component
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.example.iteneraryapplication.app.widget.CustomRecyclerView.Companion.calculateItemViewType
+import com.example.iteneraryapplication.app.shared.component.CustomRecyclerView.Companion.calculateItemViewType
 import java.lang.IllegalStateException
 
 open class ViewHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)

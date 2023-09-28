@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.app.shared.component
+package com.example.iteneraryapplication.app.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -42,7 +42,7 @@ class HandDrawingView(
         setupDrawing()
     }
 
-    fun startNew() = drawCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR).also { invalidate() }
+    fun startNew() = drawCanvas?.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR).also { invalidate() }
 
     fun setErase(isErase: Boolean) {
         erase = isErase

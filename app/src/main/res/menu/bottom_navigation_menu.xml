@@ -12,9 +12,9 @@
         android:title="@string/bottom_nav_booking" />
 
     <item
-        android:id="@+id/bottom_nav_itinerary"
+        android:id="@+id/bottom_nav_hotel_booking"
         android:icon="@drawable/icon_directions_car_24px"
-        android:title="@string/bottom_nav_itinerary" />
+        android:title="@string/bottom_nav_hotel_booking" />
 
     <item
         android:id="@+id/bottom_nav_budget"

@@ -60,7 +60,7 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
     private fun MenuItem.toFragment() = when(itemId) {
         R.id.bottom_nav_trip_planning -> TRIP_PLANNING
         R.id.bottom_nav_booking -> BOOKING
-        R.id.bottom_nav_itinerary -> ITINERARY_MANAGEMENT
+        R.id.bottom_nav_hotel_booking -> ITINERARY_MANAGEMENT
         R.id.bottom_nav_budget -> BUDGET_MANAGEMENT
         R.id.bottom_nav_travel_tips -> TRAVEL_TIPS
         else -> error("unknown id")

@@ -8,6 +8,10 @@
 
     <data>
         <variable
+            name="dto"
+            type="com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto" />
+
+        <variable
             name="viewModel"
             type="com.example.iteneraryapplication.dashboard.pages.tripplanning.TripPlanningViewModel"/>
     </data>
@@ -48,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.iteneraryapplication.app.widget.CustomRecyclerView
+        <com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
             android:id="@+id/list_planning"
             android:layout_width="0dp"
             android:layout_height="0dp"

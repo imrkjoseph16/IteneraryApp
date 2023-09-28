@@ -16,7 +16,9 @@ class TravelNoteFactory @Inject constructor(
     private val dateUtil: DateUtil
 ) {
 
-    fun createOverview(state: DashboardState) = when(state) {
+    fun createOverview(
+        state: DashboardState
+    ) = when(state) {
         is GetNotesTypeData -> state.listNotes
             ?.toMutableList()
             ?.checkDuplicateNotes()
@@ -36,7 +38,9 @@ class TravelNoteFactory @Inject constructor(
     /**
      * (prepareList) creating the layout component.
      * */
-    private fun prepareList(notes: List<Notes>) = notes.mapIndexed { _, data ->
+    private fun prepareList(notes: List<Notes>) = setupNotesDetails(notes)
+
+    private fun setupNotesDetails(notes: List<Notes>)= notes.mapIndexed { _, data ->
         NoteListItem(
             dto = NoteItemViewDto(
                 itemId = data.itemId.orEmpty(),
@@ -46,9 +50,11 @@ class TravelNoteFactory @Inject constructor(
                 itemNoteImage = data.notesImage,
                 itemNoteWebLink = data.notesWebLink,
                 itemNote = TextLine(text = data.notesDesc),
-                itemDateSaved = TextLine(text = dateUtil.convertDateFormat(
-                    dateValue = data.notesDateSaved,
-                    newDateFormat = DATE_NAMED)
+                itemDateSaved = TextLine(
+                    text = dateUtil.convertDateFormat(
+                        dateValue = data.notesDateSaved,
+                        newDateFormat = DATE_NAMED
+                    )
                 ),
             )
         )

@@ -75,4 +75,9 @@
         <item name="android:textColor">@color/gray</item>
         <item name="android:fontFamily">@font/helvetica_regular</item>
     </style>
+
+    <style name="ThemeDialog" parent="android:Theme.Holo.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
 </resources>

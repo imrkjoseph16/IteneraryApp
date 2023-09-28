@@ -39,10 +39,3 @@ fun setGlideImageUrl(view: ImageView, imageUrl: String? = null) {
         .load(imageUrl)
         .into(view)
 }
-
-@BindingAdapter("getBackgroundColor")
-fun getBackgroundColor(view: View, color: String? = null) {
-    if (color != null) {
-
-    }
-}

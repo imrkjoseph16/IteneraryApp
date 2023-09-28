@@ -40,9 +40,38 @@ class DashboardSharedViewModel @Inject constructor(
         }
     }
 
+    fun executeDeleteNoteState(
+        willDeleteImage: Boolean = false,
+        noteImageUrl: String? = null,
+        notesType: String? = null,
+        notes: Notes
+    ) {
+        if (willDeleteImage) {
+            deleteNoteImage(imageUrl = noteImageUrl)
+        } else {
+            deleteNotes(notesType, notes)
+        }
+    }
+
+    fun deleteNoteImage(imageUrl: String? = null) {
+        viewModelScope.launch {
+            _dashboardState.apply {
+                coRunCatching {
+                    planningNoteUseCase.deleteNoteImage(imageUrl)
+                }.onSuccess {
+                    value = ShowDeleteImageSuccess(it)
+                }.onFailure {
+                    value = ShowDashboardError(it)
+                }
+            }
+        }
+    }
+
     fun deleteNotes(notesType: String? = null, notes: Notes) {
         viewModelScope.launch {
             _dashboardState.apply {
+                value = ShowDashboardLoading
+
                 coRunCatching {
                     planningNoteUseCase.deleteNotes(notesType, notes)
                 }.onSuccess { isDeleted ->
@@ -51,6 +80,8 @@ class DashboardSharedViewModel @Inject constructor(
                 }.onFailure {
                     value = ShowDashboardError(it)
                 }
+
+                value = ShowDashboardDismissLoading
             }
         }
     }
@@ -71,19 +102,5 @@ class DashboardSharedViewModel @Inject constructor(
                 value = ShowDashboardDismissLoading
             }
         }
-    }
-
-    fun deleteNoteImage(imageUrl: String? = null) {
-       viewModelScope.launch {
-           _dashboardState.apply {
-               coRunCatching {
-                   planningNoteUseCase.deleteNoteImage(imageUrl)
-               }.onSuccess {
-                   value = ShowDeleteImageSuccess(it)
-               }.onFailure {
-                   value = ShowDashboardError(it)
-               }
-           }
-       }
     }
 }

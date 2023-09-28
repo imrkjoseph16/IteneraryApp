@@ -1,7 +1,6 @@
 package com.example.iteneraryapplication.dashboard.shared.data
 
 import android.net.Uri
-import android.widget.Toast
 import com.example.iteneraryapplication.app.util.Default.Companion.getRandomUUID
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
@@ -13,7 +12,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,7 +48,7 @@ class DashboardRepository @Inject constructor(
         val fireStorePath = fireStore.collection("notes")
             .document(userId)
             .collection(notesType)
-            .orderBy("notesTimeStampSaved", Query.Direction.DESCENDING)
+            .orderBy("notesTimeStampSaved", Query.Direction.ASCENDING)
 
         fireStorePath.addSnapshotListener { result, error ->
             val resultNotes = mutableListOf<Notes>()

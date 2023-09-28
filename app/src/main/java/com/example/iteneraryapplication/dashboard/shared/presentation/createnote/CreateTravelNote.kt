@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.util.Patterns
@@ -24,23 +23,28 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_DELETE
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_HAND_WRITING
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_IMAGE
+import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_SELECTED_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_WEB_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
 import com.example.iteneraryapplication.app.util.Default.Companion.DEFAULT_HTTPS_URL
+import com.example.iteneraryapplication.app.util.Default.Companion.IMAGE_FILE_DESCRIPTION
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_BUDGET
-import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_ITINERARY
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
-import com.example.iteneraryapplication.app.util.Default.Companion.SOMETHING_WENT_WRONG
+import com.example.iteneraryapplication.app.util.Default.Companion.REQUEST_CODE_CLEAR_HISTORY
+import com.example.iteneraryapplication.app.util.Default.Companion.REQUEST_CODE_GET_DRAWING
+import com.example.iteneraryapplication.app.util.Default.Companion.SELECTED_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_INVALID
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
-import com.example.iteneraryapplication.app.util.showBottomSheet
+import com.example.iteneraryapplication.app.util.convertToUri
+import com.example.iteneraryapplication.app.util.showBottomNotesOption
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardSharedViewModel
@@ -54,7 +58,6 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveNo
 import com.example.iteneraryapplication.dashboard.shared.presentation.handwriting.HandWriting
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
-import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.REQUEST_CODE_CLEAR_HISTORY
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -132,7 +135,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         showMoreOptionNote.setOnClickListener {
-            showBottomSheet(supportFragmentManager)
+            showBottomNotesOption(context = supportFragmentManager, canDelete = data != null)
         }
 
         tvWebLink.setOnClickListener {
@@ -189,7 +192,6 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     private fun TextView.setScreenTitle() {
         text = when(notesTypeSelected) {
             NOTES_TYPE_TRIP_PLAN -> getString(R.string.bottom_nav_trip_planning)
-            NOTES_TYPE_ITINERARY -> getString(R.string.bottom_nav_itinerary)
             NOTES_TYPE_BUDGET -> getString(R.string.bottom_nav_budget)
             else -> getString(R.string.text_edit)
         }
@@ -224,7 +226,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                             is ShowDeleteNotesSuccess, is ShowSaveNoteSuccess -> goBackToPreviousScreen()
                             // We need to check in this state if the "deletingNotes" is true,
                             // then delete the current notes in the UI.
-                            // (because when deleting the notes, we check first the image if it's existing or not)
+                            // (because when deleting the notes, we're checking the image if it's existing or not)
                             is ShowDeleteImageSuccess -> if (deletingNotes) viewModel.deleteNotes(notesTypeSelected, binding.getCurrentNotes())
                             else binding.saveNotes().takeIf { state.isDeleteSuccess }
                             is ShowDashboardError -> showToastMessage(
@@ -263,7 +265,11 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private fun ActivityCreateTravelNoteBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
-    private fun navigateToHandWritingScreen() = navigationUtil.navigateActivity(this@CreateTravelNote, HandWriting::class.java)
+    private fun navigateToHandWritingScreen() = navigationUtil.navigateActivity(
+        context = this@CreateTravelNote,
+        className = HandWriting::class.java,
+        requestCode = REQUEST_CODE_GET_DRAWING
+    )
 
     private fun checkWebUrl() {
         binding.apply {
@@ -285,31 +291,30 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private val broadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-
             binding.apply {
-                val action = intent?.getStringExtra("action")
-
-                if (intent?.getStringExtra("selectedColor") != null) {
-                    selectedColor = intent.getStringExtra("selectedColor") ?: "#171C26"
-                    colorView.setBackgroundColor(Color.parseColor(selectedColor))
-                }
-
-                when (action) {
+                when (intent?.getStringExtra(ACTION)) {
+                    ACTION_SELECTED_COLOR -> receiveSelectedColor(intent)
                     ACTION_IMAGE -> permissionUtil.readStorageTask(this@CreateTravelNote, activityResultLauncher::launch)
                     ACTION_WEB_URL -> configureWebLayout(isShowLayoutUrl = true)
                     ACTION_HAND_WRITING -> navigateToHandWritingScreen()
                     ACTION_DELETE -> deletingNotes = true.also {
-                        if (data?.itemNoteImage != null) {
-                            // if the existing notes data has a note image,
-                            // delete first the image.
-                            viewModel.deleteNoteImage(imageUrl = data?.itemNoteImage)
-                        } else {
-                            viewModel.deleteNotes(notesTypeSelected, getCurrentNotes())
-                        }
+                        // if the existing notes data has a note image (data?.itemNoteImage != null)
+                        // delete first the image.
+                        viewModel.executeDeleteNoteState(
+                            willDeleteImage = data?.itemNoteImage != null,
+                            noteImageUrl = data?.itemNoteImage,
+                            notesType = notesTypeSelected,
+                            notes = getCurrentNotes()
+                        )
                     }
                 }
             }
         }
+    }
+
+    private fun receiveSelectedColor(intent: Intent?) {
+        selectedColor = intent?.getStringExtra(SELECTED_COLOR) ?: NOTES_DEFAULT_COLOR
+        binding.colorView.setBackgroundColor(Color.parseColor(selectedColor))
     }
 
     private fun ActivityCreateTravelNoteBinding.getCurrentNotes(imageUrl: String? = null) = Notes(
@@ -328,26 +333,34 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     ) { activityResult: ActivityResult ->
         if (activityResult.resultCode == RESULT_OK) {
             val result = activityResult.data
-            handleActivityResult(result?.data).takeIf { result != null }
+            handleSelectedImage(result?.data).takeIf { result != null }
         }
     }
 
-    private fun handleActivityResult(data: Uri?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?) {
+        super.onActivityResult(requestCode, resultCode, result)
+        if (requestCode == REQUEST_CODE_GET_DRAWING) handleDrawingImage(result)
+    }
+
+    private fun handleDrawingImage(data: Intent?) {
+        data?.let { binding.setNoteImage(convertToUri(it.getStringExtra(IMAGE_FILE_DESCRIPTION))) }
+    }
+
+    private fun handleSelectedImage(uri: Uri?) {
         binding.apply {
             try {
-                data?.let {
-                    val inputStream = contentResolver.openInputStream(data)
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    imgNote.setImageBitmap(bitmap)
-                    imgNote.setVisible(true)
-                    layoutImage.setVisible(true)
-
-                    selectedNoteImage = data
-                } ?: showToastMessage(this@CreateTravelNote, SOMETHING_WENT_WRONG)
+                setNoteImage(uri)
             } catch (e: Exception) {
                 showToastMessage(this@CreateTravelNote, e.message.toString())
             }
         }
+    }
+
+    private fun ActivityCreateTravelNoteBinding.setNoteImage(uri: Uri?) {
+        imgNote.setImageBitmap(permissionUtil.getBitmapImage(this@CreateTravelNote, uri))
+        imgNote.setVisible(true)
+        layoutImage.setVisible(true)
+        selectedNoteImage = uri
     }
 
     companion object {

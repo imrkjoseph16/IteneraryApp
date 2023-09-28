@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.app.widget
+package com.example.iteneraryapplication.app.shared.component
 
 class ListItemDiffCallback : ItemsDiffCallback() {
 

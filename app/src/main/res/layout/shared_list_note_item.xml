@@ -47,73 +47,94 @@
                     android:id="@+id/item_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/helvetica_rounded_bold"
+                    android:maxLines="2"
+                    android:text="@{data.getItemTitle(context)}"
                     android:textColor="@color/white"
                     android:textSize="18dp"
-                    android:maxLines="2"
+                    tools:ignore="RtlCompat"
+                    tools:text="Sample title text" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_light"
+                    android:textSize="12dp"
+                    android:textColor="@color/text_color"
+                    android:text="@{data.getItemDateSaved(context)}"
+                    bind:visible="@{data.getItemDateSaved(context) != null}"
+                    tools:text="Sample item saved text" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/helvetica_rounded_bold"
-                    android:text="@{data.getItemTitle(context)}"
-                    tools:text="Sample title text"
-                    tools:ignore="RtlCompat" />
+                    android:text="@{data.getSubtitle(context)}"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp"
+                    tools:text="Sample subtitle text" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_regular"
+                    android:text="@{data.getItemNote(context)}"
+                    android:textColor="@color/gray"
+                    android:textSize="16dp"
+                    android:maxLines="10"
+                    android:ellipsize="end"
+                    tools:text="Sample description text" />
+
+                <TextView
+                    android:autoLink="web"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_rounded_bold"
+                    android:text="@{data.itemNoteWebLink}"
+                    android:textColorLink="@color/web_link_color"
+                    bind:visible="@{data.itemNoteWebLink != null}"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp"
+                    tools:text="Sample web link url text" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/helvetica_light"
-                        android:textSize="12dp"
-                        android:textColor="@color/text_color"
-                        android:text="@{data.getItemDateSaved(context)}"
-                        bind:visible="@{data.getItemDateSaved(context) != null}"
-                        tools:text="Sample item saved text" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/helvetica_rounded_bold"
-                        android:text="@{data.getSubtitle(context)}"
-                        android:textColor="@color/gray"
-                        android:textSize="14dp"
-                        tools:text="Sample subtitle text" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/helvetica_regular"
-                        android:text="@{data.getItemNote(context)}"
-                        android:textColor="@color/gray"
-                        android:textSize="16dp"
-                        android:maxLines="10"
-                        android:ellipsize="end"
-                        tools:text="Sample description text" />
-
-                    <TextView
-                        android:autoLink="web"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/helvetica_rounded_bold"
-                        android:text="@{data.itemNoteWebLink}"
-                        android:textColorLink="@color/web_link_color"
-                        bind:visible="@{data.itemNoteWebLink != null}"
-                        android:textColor="@color/gray"
-                        android:textSize="14dp"
-                        tools:text="Sample web link url text" />
-
-                    <TextView
-                        android:autoLink="web"
                         android:layout_width="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/helvetica_regular"
-                        android:text="@string/text_notes"
-                        android:padding="10dp"
+                        android:layout_alignStart="@+id/delete_note"
+                        android:autoLink="web"
                         android:background="@drawable/background_circular"
-                        android:textColorLink="@color/web_link_color"
-                        bind:visible="@{data.itemNoteImage == null}"
+                        android:fontFamily="@font/helvetica_regular"
+                        android:padding="10dp"
+                        android:text="@string/text_notes"
                         android:textColor="@color/gray"
-                        android:textSize="12dp" />
+                        android:textColorLink="@color/web_link_color"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:visible="@{data.itemNoteImage == null}" />
+
+                    <ImageView
+                        android:id="@+id/delete_note"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/icon_trash_3d_24px"
+                        android:clickable="true"
+                        android:foreground="?selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </LinearLayout>
     </androidx.cardview.widget.CardView>

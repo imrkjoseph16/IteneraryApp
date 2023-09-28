@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.pages.booking
+package com.example.iteneraryapplication.dashboard.pages.flightbooking
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.iteneraryapplication.app.foundation.BaseFragment
 import com.example.iteneraryapplication.app.util.Default.Companion.BOOKING_URL
-import com.example.iteneraryapplication.databinding.FragmentBookingBinding
+import com.example.iteneraryapplication.databinding.FragmentFlightBookingBinding
 
-class BookingFragment : BaseFragment<FragmentBookingBinding>() {
+class FlightBookingFragment : BaseFragment<FragmentFlightBookingBinding>() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentBookingBinding
-        get() = FragmentBookingBinding::inflate
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFlightBookingBinding
+        get() = FragmentFlightBookingBinding::inflate
 
     override fun onFragmentCreated() {
         super.onFragmentCreated()

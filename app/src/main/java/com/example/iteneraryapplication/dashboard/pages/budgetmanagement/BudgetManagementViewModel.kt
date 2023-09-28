@@ -11,6 +11,9 @@ import com.example.iteneraryapplication.app.shared.state.ShowAppUiLoading
 import com.example.iteneraryapplication.app.shared.state.ShowAppUiNoData
 import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.dashboard.shared.domain.PlanningNoteUseCase
+import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
+import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
+import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
 import com.example.iteneraryapplication.dashboard.shared.presentation.factory.TravelNoteFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +32,8 @@ class BudgetManagementViewModel @Inject constructor(
 
     val items = _uiState.asStateFlow()
 
+    private val cacheListNotes = mutableListOf<Notes>()
+
     fun getNotes(notesType: String) {
         viewModelScope.launch {
             _uiState.apply {
@@ -36,16 +41,7 @@ class BudgetManagementViewModel @Inject constructor(
 
                 coRunCatching {
                     planningNoteUseCase.getNotes(notesType = notesType) { state ->
-                        travelNoteFactory.createOverview(state = state).also { newUiItems ->
-                            update {
-                                GetAppUiItems(
-                                    uiStateModel = AppUiStateModel(
-                                        items = newUiItems,
-                                        isEmptyData = newUiItems.isEmpty()
-                                    )
-                                )
-                            }
-                        }
+                        getUiItems(state)
                     }
                 }.onFailure {
                     value = ShowAppUiError(it)
@@ -53,6 +49,32 @@ class BudgetManagementViewModel @Inject constructor(
 
                 value = ShowAppUiDismissLoading
             }
+        }
+    }
+
+    private fun getUiItems(state: DashboardState) {
+        (state as GetNotesTypeData).listNotes?.toMutableList()?.let { cacheListNotes.addAll(it) }
+        travelNoteFactory.createOverview(state = state).also { newUiItems ->
+            _uiState.update {
+                GetAppUiItems(
+                    uiStateModel = AppUiStateModel(
+                        items = newUiItems,
+                        isEmptyData = newUiItems.isEmpty()
+                    )
+                )
+            }
+        }
+    }
+
+    fun searchNotes(searchKey: String) {
+        viewModelScope.launch {
+            getUiItems(
+                state = GetNotesTypeData(
+                    listNotes = cacheListNotes.filter {
+                        it.notesTitle?.startsWith(searchKey, ignoreCase = true) == true
+                    }
+                )
+            )
         }
     }
 }

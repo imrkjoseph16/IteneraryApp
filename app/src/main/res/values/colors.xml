@@ -26,12 +26,12 @@
     <color name="plum_violet">#DCD5DC</color>
     <color name="text_color">#7D7D7D</color>
 
-    <color name="ColorDefaultNote">#606570</color>
+    <color name="ColorDefaultNote">#202734</color>
     <color name="ColorBlueNote">#404FF6</color>
     <color name="ColorYellowNote">#F4C057</color>
     <color name="ColorRedNote">#EB5849</color>
     <color name="ColorWhiteNote">#ffffff</color>
     <color name="ColorOrangeNote">#ff7746</color>
     <color name="ColorBlackNote">#333333</color>
-    <color name="ColorGreenNote">#0aebaf</color>
+    <color name="ColorGreenNote">#1FBE94</color>
 </resources>
