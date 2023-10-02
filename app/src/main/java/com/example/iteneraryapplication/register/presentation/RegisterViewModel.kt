@@ -9,7 +9,7 @@ import com.example.iteneraryapplication.register.domain.RegisterCredentialUseCas
 import com.example.iteneraryapplication.register.domain.data.ICreateUserCredential
 import com.example.iteneraryapplication.register.domain.data.ISaveDetailsFireStore
 import com.example.iteneraryapplication.register.domain.data.ISendEmailVerification
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.example.iteneraryapplication.register.domain.data.IRegisterCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,16 +23,16 @@ class RegisterViewModel @Inject constructor(
     private val _registerState = MutableLiveData<RegisterState>(ShowRegisterNoData)
     val registerState: LiveData<RegisterState> get() = _registerState
 
-    fun registerCredentials(credentials: Credentials) {
+    fun registerCredentials(userDetails: UserDetails) {
         viewModelScope.launch {
             updateUIState(state = ShowRegisterLoading)
 
             // This chainCall function execute a step by step network call.
             registerCredentialUseCase.apply {
                 chainCall(
-                    { registerCredentials(credentials = credentials) },
+                    { registerCredentials(userDetails = userDetails) },
                     { sendEmailVerification() },
-                    { saveFireStoreDetails(details = credentials.transformCredentials()) }
+                    { saveFireStoreDetails(details = userDetails.transformCredentials()) }
                 )
             }
 
@@ -55,7 +55,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun Credentials.transformCredentials() = hashMapOf(
+    private fun UserDetails.transformCredentials() = hashMapOf(
         "email" to email,
         "phoneNumber" to phoneNumber,
         "password" to password

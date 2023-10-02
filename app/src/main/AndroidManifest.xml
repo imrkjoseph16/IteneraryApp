@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -23,6 +23,10 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".profile.Profile"
+            android:exported="false" />
+
+        <activity
             android:name=".splash.SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -31,27 +35,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".preview.PreviewNotesDetails"
             android:exported="false" />
-
         <activity
             android:name=".login.presentation.Login"
             android:exported="false" />
-
         <activity
             android:name=".dashboard.shared.presentation.createnote.CreateTravelNote"
             android:exported="false" />
-
         <activity
             android:name=".dashboard.shared.presentation.handwriting.HandWriting"
             android:exported="false" />
-
         <activity
             android:name=".register.presentation.Register"
             android:exported="false" />
-
         <activity
             android:name=".dashboard.presentation.Dashboard"
             android:exported="false" />

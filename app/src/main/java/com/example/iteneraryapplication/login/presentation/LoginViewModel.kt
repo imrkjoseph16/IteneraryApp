@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.login.domain.LoginUserCredentials
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,13 +21,13 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableLiveData<LoginState>(ShowLoginNoData)
     val loginState: LiveData<LoginState> get() = _loginState
 
-    fun loginCredentials(credentials: Credentials) {
+    fun loginCredentials(userDetails: UserDetails) {
         viewModelScope.launch {
             _loginState.apply {
                 value = ShowLoginLoading
 
                 coRunCatching {
-                    loginUserCredentials.invoke(credentials)
+                    loginUserCredentials.invoke(userDetails)
                 }.onSuccess {
                     value = ShowLoginSuccess(firebaseAuth.currentUser?.isEmailVerified)
                 }.onFailure {

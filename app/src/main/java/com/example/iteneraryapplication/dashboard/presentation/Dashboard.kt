@@ -15,6 +15,7 @@ import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRAVEL_TIPS
 import com.example.iteneraryapplication.databinding.ToolbarBinding
 import com.example.iteneraryapplication.login.presentation.Login
+import com.example.iteneraryapplication.profile.Profile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
         super.onActivityCreated()
         binding.apply {
             configureViews()
+            configureToolbar()
             setupViewPager()
         }
     }
@@ -40,13 +42,23 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun ActivityDashboardBinding.configureViews() {
-        toolbar.ivMenu.setOnClickListener {
-            showLogoutReminder()
-        }
+
 
         bottomNavigation.setOnItemSelectedListener { item ->
             viewPager.setCurrentItem(getPosition(item.toFragment()), true)
             true
+        }
+    }
+
+    private fun ActivityDashboardBinding.configureToolbar() {
+        toolbar.apply {
+            ivProfile.setOnClickListener {
+                navigateActivityProfile()
+            }
+
+            ivMenu.setOnClickListener {
+                showLogoutReminder()
+            }
         }
     }
 
@@ -91,6 +103,8 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
 
     private fun navigateActivityLogin() {
         navigationUtil.navigateActivity(context = this, className = Login::class.java)
-        this.finish()
+        finish()
     }
+
+    private fun navigateActivityProfile() = navigationUtil.navigateActivity(context = this, className = Profile::class.java)
 }

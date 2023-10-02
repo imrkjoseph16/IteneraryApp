@@ -1,6 +1,6 @@
 package com.example.iteneraryapplication.app.shared.model
 
-data class Credentials(
+data class UserDetails(
     val firstName: String? = null,
     val lastName: String? = null,
     val suffix: String? = null,
@@ -8,7 +8,7 @@ data class Credentials(
     val address: String? = null,
     val city: String? = null,
     val region: String? = null,
-    val email: String,
+    val email: String? = null,
     val phoneNumber: String? = null,
-    val password: String
+    val password: String? = null
 )

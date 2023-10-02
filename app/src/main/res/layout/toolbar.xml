@@ -5,16 +5,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20dp">
 
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:padding="6dp"
+        android:background="@drawable/background_circular"
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        android:src="@drawable/icon_person_24px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:fontFamily="@font/helvetica_bold"
+        android:layout_marginStart="12dp"
         android:text="My Notes"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_profile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

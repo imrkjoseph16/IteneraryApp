@@ -1,13 +1,13 @@
 package com.example.iteneraryapplication.register.domain
 
 import com.example.iteneraryapplication.register.data.repository.RegisterRepository
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import javax.inject.Inject
 
 class RegisterCredentialUseCase @Inject constructor(
     private val registerRepository: RegisterRepository
 ) {
-    suspend fun registerCredentials(credentials: Credentials) = registerRepository.registerCredentials(credentials)
+    suspend fun registerCredentials(userDetails: UserDetails) = registerRepository.registerCredentials(userDetails)
 
     suspend fun sendEmailVerification() = registerRepository.sendEmailVerification()
 

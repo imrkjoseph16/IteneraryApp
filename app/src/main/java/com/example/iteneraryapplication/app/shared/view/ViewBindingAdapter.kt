@@ -6,6 +6,7 @@ import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -59,5 +60,15 @@ fun setCustomExpenses(view: TextView, list: MutableList<Expenses>? = null) {
 
         if (view.id == R.id.total_expenses) view.text = Html.fromHtml("${view.context.getString(R.string.total_amount)}: " +
                 "<font color=\"#1FBE94\">₱${it.totalAmount.toString()}</font>")
+    }
+}
+
+@BindingAdapter("setSpinnerText")
+fun setSpinnerText(view: Spinner, word: String? = null) {
+    if (word != null) {
+        view.context.resources.getStringArray(R.array.gender_list)
+            .onEachIndexed { index, gender ->
+            if (word == gender) view.setSelection(index)
+        }
     }
 }

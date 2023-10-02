@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.foundation.BaseActivity
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.example.iteneraryapplication.app.util.Default.Companion.EMAIL_VERIFICATION_MSG
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.databinding.ActivityRegisterBinding
@@ -42,7 +42,7 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
                 )
             ).also { valid ->
                 if (valid) submitForm(
-                    Credentials(
+                    UserDetails(
                         firstName = inputFirstName.text.toString(),
                         lastName = inputLastName.text.toString(),
                         suffix = inputSuffix.text.toString(),
@@ -93,7 +93,7 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
             listOfEditText
         )
 
-    private fun submitForm(credentials: Credentials) = viewModel.registerCredentials(credentials)
+    private fun submitForm(userDetails: UserDetails) = viewModel.registerCredentials(userDetails)
 
     private fun ActivityRegisterBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 }

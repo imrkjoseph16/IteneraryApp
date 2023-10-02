@@ -6,7 +6,7 @@ import com.example.iteneraryapplication.register.data.dto.SendEmailVerificationR
 import com.example.iteneraryapplication.register.domain.data.ICreateUserCredential
 import com.example.iteneraryapplication.register.domain.data.ISaveDetailsFireStore
 import com.example.iteneraryapplication.register.domain.data.ISendEmailVerification
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -18,10 +18,10 @@ class RegisterRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) {
-    suspend fun registerCredentials(credentials: Credentials) : ICreateUserCredential {
+    suspend fun registerCredentials(userDetails: UserDetails) : ICreateUserCredential {
         val authResult = firebaseAuth.createUserWithEmailAndPassword(
-            credentials.email,
-            credentials.password
+            userDetails.email.orEmpty(),
+            userDetails.password.orEmpty()
         ).await()
         return RegisterCredentialResponse(authResult)
     }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,7 +17,7 @@ import com.example.iteneraryapplication.app.util.Default.Companion.EMAIL_NOT_VER
 import com.example.iteneraryapplication.dashboard.presentation.Dashboard
 import com.example.iteneraryapplication.databinding.ActivityLoginBinding
 import com.example.iteneraryapplication.register.presentation.Register
-import com.example.iteneraryapplication.app.shared.model.Credentials
+import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.example.iteneraryapplication.app.widget.DialogFactory.DialogAttributes
 import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showCustomDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,17 +46,26 @@ class Login : BaseActivity<ActivityLoginBinding>() {
         checkNotificationPermission()
 
         buttonLogin.setOnClickListener {
-            loginViewModel.loginCredentials(
-                Credentials(
-                    email = etEmail.text.toString(),
-                    password = etPassword.text.toString()
+            validateFields(
+                listOf(etEmail, etPassword)
+            ).also { valid ->
+                if (valid) loginViewModel.loginCredentials(
+                    UserDetails(
+                        email = etEmail.text.toString(),
+                        password = etPassword.text.toString()
+                    )
                 )
-            )
+            }
         }
 
         tvRegisterAccount.setOnClickListener { navigateActivityRegister() }
         beginJourney.setOnClickListener { isBeginJourney = true }
     }
+
+    private fun ActivityLoginBinding.validateFields(listOfEditText: List<EditText>) =
+        validationUtil.validateFields(
+            listOfEditText
+        )
 
     private fun setupObserver() {
         with(loginViewModel) {
