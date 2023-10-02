@@ -12,9 +12,7 @@ class TravelTipsFragment : BaseFragment<FragmentTravelTipsBinding>() {
 
     override fun onFragmentCreated() {
         super.onFragmentCreated()
-        binding.apply {
-            configureViews()
-        }
+        binding.apply { configureViews() }
     }
 
     private fun FragmentTravelTipsBinding.configureViews() {

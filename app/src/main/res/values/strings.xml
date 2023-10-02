@@ -4,7 +4,7 @@
     <string name="title_login">Login</string>
     <string name="title_email">Email</string>
     <string name="title_password">Password</string>
-    <string name="title_phone_number">Phone Number</string>
+    <string name="title_phone_number">Phone number</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Bottom Navigation Titles-->
@@ -66,4 +66,16 @@
     <string name="text_expenses">Expenses</string>
 
     <string name="total_amount">Total Amount</string>
+    <string name="title_first_name">First name</string>
+    <string name="title_last_name">Last name</string>
+    <string name="title_suffix">Suffix</string>
+    <string name="title_address">Address</string>
+    <string name="title_coming_soon_stay_tuned">COMING SOON\nStay tuned.</string>
+
+    <string-array name="gender_list">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Non-binary</item>
+        <item>LGBTQA+</item>
+    </string-array>
 </resources>

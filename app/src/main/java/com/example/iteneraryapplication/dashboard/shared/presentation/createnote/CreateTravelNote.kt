@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.iteneraryapplication.R
+import com.example.iteneraryapplication.app.extension.notEmpty
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
@@ -76,7 +77,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private var selectedColor: String = NOTES_DEFAULT_COLOR
 
-    private var listOfExpenses: MutableList<Expenses>? = null
+    private var listOfExpenses: MutableList<Expenses> = mutableListOf()
 
     private var deletingNotes: Boolean = false
 
@@ -210,7 +211,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         totalAmount = calculateExpenses(expensesAmount, totalAmount ?: 0)
         textTotalAmount = "${getString(R.string.total_amount)}: ₱$totalAmount"
 
-        listOfExpenses!!.add(
+        listOfExpenses.add(
             Expenses(
                 typeOfExpenses = typeOfExpense,
                 expensesAmount = expensesAmount,
@@ -398,7 +399,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         notesDesc = etNoteDesc.text.toString(),
         notesWebLink = etWebLink.checkWebLinkValue(),
         notesImage = getNoteImagePath(imageUrl),
-        listOfExpenses = listOfExpenses
+        listOfExpenses = if (listOfExpenses.isEmpty()) extraNotesData?.itemListOfExpenses else listOfExpenses.notEmpty()
     )
 
     private var activityResultLauncher = registerForActivityResult(

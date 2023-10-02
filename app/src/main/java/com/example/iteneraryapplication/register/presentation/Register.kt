@@ -1,12 +1,15 @@
 package com.example.iteneraryapplication.register.presentation
 
 import android.view.LayoutInflater
+import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.activity.viewModels
+import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.foundation.BaseActivity
+import com.example.iteneraryapplication.app.shared.model.Credentials
 import com.example.iteneraryapplication.app.util.Default.Companion.EMAIL_VERIFICATION_MSG
 import com.example.iteneraryapplication.app.util.showToastMessage
 import com.example.iteneraryapplication.databinding.ActivityRegisterBinding
-import com.example.iteneraryapplication.app.shared.model.Credentials
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,13 +30,34 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
 
     private fun ActivityRegisterBinding.configureViews() {
         buttonRegister.setOnClickListener {
-            submitForm(
-                Credentials(
-                email = etEmail.text.toString(),
-                phoneNumber = etPhoneNumber.text.toString(),
-                password = etPassword.text.toString())
-            )
+            validateFields(
+                listOf(
+                    inputFirstName,
+                    inputLastName,
+                    inputSuffix,
+                    inputAddress,
+                    inputEmail,
+                    inputPhoneNumber,
+                    inputPassword
+                )
+            ).also { valid ->
+                if (valid) submitForm(
+                    Credentials(
+                        firstName = inputFirstName.text.toString(),
+                        lastName = inputLastName.text.toString(),
+                        suffix = inputSuffix.text.toString(),
+                        gender = inputGender.inputSpinner.selectedItem.toString(),
+                        address = inputAddress.text.toString(),
+                        city = inputCity.inputSpinner.selectedItem.toString(),
+                        region = inputRegion.inputSpinner.selectedItem.toString(),
+                        email = inputEmail.text.toString(),
+                        phoneNumber = inputPhoneNumber.text.toString(),
+                        password = inputPassword.text.toString())
+                )
+            }
         }
+
+        setupDropDownList()
     }
 
     private fun setupObserver() {
@@ -53,6 +77,21 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
             }
         }
     }
+
+    private fun ActivityRegisterBinding.setupDropDownList() {
+        val adapter = ArrayAdapter(
+            /* context = */ this@Register,
+            /* resource = */ R.layout.shared_spinner_item,
+            /* objects = */ resources.getStringArray(R.array.gender_list)
+        )
+        adapter.setDropDownViewResource(R.layout.shared_spinner_item)
+        inputGender.inputSpinner.adapter = adapter
+    }
+
+    private fun ActivityRegisterBinding.validateFields(listOfEditText: List<EditText>) =
+        validationUtil.validateFields(
+            listOfEditText
+        )
 
     private fun submitForm(credentials: Credentials) = viewModel.registerCredentials(credentials)
 
