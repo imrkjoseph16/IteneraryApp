@@ -17,11 +17,15 @@ class Default {
         const val DATE_AND_TIME = "MM-dd-yyyy hh:mm"
         const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm:ss a"
         const val DATE_NAMED = "MMMM dd yyyy, hh:mm a"
+        const val DATE_TIME_IN_MILLIS = "EEE MMM dd HH:mm:ss z yyyy"
         const val DATE_TAP_HINT = "(Tap to change the date)"
 
         const val DEFAULT_HTTPS_URL = "https://"
 
-        const val BOOKING_URL = "https://www.philippineairlines.com/en/"
+        const val REMINDER_TITLE = "Reminder"
+
+        const val FLIGHT_BOOKING_URL = "https://www.philippineairlines.com/en/"
+        const val HOTEL_BOOKING_URL = "https://www.trivago.com"
 
         const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
         const val NOTES_TYPE_BUDGET = "budget_management"

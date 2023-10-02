@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="expenses"
+            type="String"/>
+
+        <variable
+            name="textTotalAmount"
+            type="String"/>
+
+        <variable
+            name="totalAmount"
+            type="Integer"/>
+
+        <variable
+            name="data"
+            type="com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_list_expenses"
+            android:fontFamily="@font/helvetica_regular"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:textColor="@color/dim_gray"/>
+
+        <EditText
+            android:id="@+id/type_of_expenses"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white"
+            android:background="@drawable/background_circular"
+            android:backgroundTint="@color/opacity_gray"
+            android:fontFamily="@font/helvetica_regular"
+            android:hint="@string/text_type_of_expenses"
+            android:paddingHorizontal="16dp"
+            android:textColorHint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <EditText
+            android:id="@+id/amount_field"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/background_circular"
+            android:hint="@string/text_expenses_amount"
+            android:fontFamily="@font/helvetica_regular"
+            android:backgroundTint="@color/opacity_gray"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray"
+            android:inputType="number"
+            app:layout_constraintEnd_toStartOf="@+id/button_add_amount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_of_expenses" />
+
+        <Button
+            android:id="@+id/button_add_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:background="@drawable/background_button"
+            android:fontFamily="@font/helvetica_bold"
+            android:text="@string/text_add"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/amount_field"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_of_expenses"
+            tools:textColor="@color/dim_gray"/>
+
+        <TextView
+            android:id="@+id/tv_list_of_expenses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/helvetica_regular"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            bind:setCustomAmountExpenses="@{data.itemListOfExpenses}"
+            bind:setText="@{expenses}"
+            bind:visible="@{expenses != null || data.itemListOfExpenses != null}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amount_field"
+            tools:textColor="@color/dim_gray" />
+
+        <TextView
+            android:id="@+id/total_expenses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/helvetica_regular"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            bind:setCustomAmountExpenses="@{data.itemListOfExpenses}"
+            bind:setText="@{textTotalAmount}"
+            bind:visible="@{textTotalAmount != null || data.itemListOfExpenses != null}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_list_of_expenses"
+            tools:textColor="@color/dim_gray" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

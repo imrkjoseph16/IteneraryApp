@@ -19,10 +19,10 @@ class SplashScreen : BaseActivity<ActivitySplashBinding>() {
 
     override fun onActivityCreated() {
         super.onActivityCreated()
-        startSplashScreen()
+        executeScreenDelayed()
     }
 
-    private fun startSplashScreen() {
+    private fun executeScreenDelayed() {
         Handler(Looper.getMainLooper()).postDelayed({
             checkCurrentScreenState().also { finish() }
         }, 5000)

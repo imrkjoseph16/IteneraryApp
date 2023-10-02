@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
+                android:paddingBottom="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,12 +180,24 @@
                         android:textSize="16dp" />
                 </LinearLayout>
 
+                <include
+                    android:id="@+id/widget_budget_management"
+                    layout="@layout/shared_budget_management"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/l1"
+                    bind:data="@{data}"/>
+
                 <RelativeLayout
                     android:id="@+id/layoutImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     bind:visible="@{data.itemNoteImage != null}"
-                    app:layout_constraintTop_toBottomOf="@id/l1">
+                    app:layout_constraintTop_toBottomOf="@id/widget_budget_management">
 
                     <ImageView
                         android:id="@+id/imgNote"
@@ -201,8 +214,8 @@
                         android:layout_height="@dimen/_22sdp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:src="@drawable/icon_trash_3d_24px" />
@@ -319,20 +332,21 @@
                     android:id="@+id/etNoteDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="150dp"
                     android:layout_margin="16dp"
-                    android:background="@null"
+                    android:background="@drawable/background_circular"
                     android:fontFamily="@font/helvetica_regular"
                     android:gravity="start"
                     android:hint="@string/notes_desc"
                     android:inputType="textMultiLine"
+                    android:paddingHorizontal="16dp"
                     android:paddingVertical="16dp"
                     android:paddingEnd="16dp"
+                    android:tag="description"
+                    android:text="@{data.getItemNote(context)}"
                     android:textAlignment="textStart"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray"
-                    android:text="@{data.getItemNote(context)}"
-                    android:textSize="18dp"
-                    android:tag="description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvWebLink" />

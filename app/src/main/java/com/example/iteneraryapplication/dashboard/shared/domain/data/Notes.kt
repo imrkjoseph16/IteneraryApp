@@ -1,9 +1,8 @@
 package com.example.iteneraryapplication.dashboard.shared.domain.data
 
 import com.example.iteneraryapplication.app.util.DateUtil.Companion.getCurrentTimeStamp
-import kotlinx.serialization.Serializable
+import com.example.iteneraryapplication.dashboard.shared.data.Expenses
 
-@Serializable
 data class Notes(
     val itemId: String? = null,
     val notesTitle: String? = null,
@@ -13,5 +12,6 @@ data class Notes(
     val notesColor: String = "#333333",
     val notesImage: String? = null,
     val notesWebLink: String? = null,
-    val notesDesc: String? = null
+    val notesDesc: String? = null,
+    val listOfExpenses: MutableList<Expenses>? = null
 )

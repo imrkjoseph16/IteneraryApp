@@ -8,18 +8,13 @@ import java.util.Calendar
 fun AppCompatActivity.showDatePicker(
     onDatePickerCallback: (dateTime: String) -> Unit
 ) {
-    var selectedDate: String
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
     val calendar = Calendar.getInstance()
-    mYear = calendar[Calendar.YEAR]
-    mMonth = calendar[Calendar.MONTH]
-    mDay = calendar[Calendar.DAY_OF_MONTH]
+    val mYear = calendar[Calendar.YEAR]
+    val mMonth = calendar[Calendar.MONTH]
+    val mDay = calendar[Calendar.DAY_OF_MONTH]
 
     DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
-            selectedDate = "$dayOfMonth-$monthOfYear-$year"
+            val selectedDate = "${(monthOfYear + 1)}-$dayOfMonth-$year"
             showTimePicker(date = selectedDate, onDatePickerCallback = onDatePickerCallback)
         }, mYear, mMonth, mDay
     ).also {
@@ -32,12 +27,9 @@ fun AppCompatActivity.showTimePicker(
     date: String,
     onDatePickerCallback: (dateTime: String) -> Unit
 ) {
-    var mHour: Int
-    var mMinute: Int
-
     val c = Calendar.getInstance()
-    mHour = c[Calendar.HOUR_OF_DAY]
-    mMinute = c[Calendar.MINUTE]
+    var mHour = c[Calendar.HOUR_OF_DAY]
+    var mMinute = c[Calendar.MINUTE]
 
     TimePickerDialog(
         this, { _, hourOfDay, minute ->

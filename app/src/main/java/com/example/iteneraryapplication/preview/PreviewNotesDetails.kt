@@ -107,7 +107,7 @@ class PreviewNotesDetails : BaseActivity<ActivityPreviewDetailsBinding>() {
         DialogFactory.showCustomDialog(this@PreviewNotesDetails,
             DialogFactory.DialogAttributes(
                 title = getString(R.string.dialog_delete_title),
-                subTitle = getString(R.string.dialog_delete_subtitle),
+                subTitle = getString(R.string.dialog_subtitle),
                 primaryButtonTitle = getString(R.string.action_cancel),
                 secondaryButtonTitle = getString(R.string.action_delete)
             ), secondaryButtonClicked = {

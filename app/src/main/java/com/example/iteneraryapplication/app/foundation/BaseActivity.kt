@@ -12,6 +12,7 @@ import com.example.iteneraryapplication.app.util.DateUtil
 import com.example.iteneraryapplication.app.util.NavigationUtil
 import com.example.iteneraryapplication.app.util.PermissionUtil
 import com.example.iteneraryapplication.app.util.ValidationUtil
+import com.example.iteneraryapplication.app.util.ViewUtil
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
@@ -35,6 +36,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     @Inject
     lateinit var validationUtil: ValidationUtil
+
+    @Inject
+    lateinit var viewUtil: ViewUtil
 
     protected open fun onActivityCreated() { initViewBinding() }
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.iteneraryapplication.app.util.NavigationUtil
 import com.example.iteneraryapplication.app.util.ViewUtil
+import com.example.iteneraryapplication.dashboard.presentation.Dashboard
 import javax.inject.Inject
 
 abstract class BaseFragment<VB: ViewBinding> : Fragment() {
@@ -53,6 +54,8 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
     }
 
     fun getAppCompatActivity(): AppCompatActivity = (activity as AppCompatActivity)
+
+    fun getDashBoardInstance(): Dashboard = (activity as Dashboard)
 
     fun onBackPressedCallBack(onBackClicked: () -> Unit) =
     (activity as AppCompatActivity).onBackPressedDispatcher.addCallback(viewLifecycleOwner,

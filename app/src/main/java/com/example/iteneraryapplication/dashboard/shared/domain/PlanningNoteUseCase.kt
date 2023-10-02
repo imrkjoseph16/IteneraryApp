@@ -1,7 +1,7 @@
 package com.example.iteneraryapplication.dashboard.shared.domain
 
 import android.net.Uri
-import com.example.iteneraryapplication.dashboard.shared.data.DashboardRepository
+import com.example.iteneraryapplication.dashboard.shared.data.repository.DashboardRepository
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import dagger.Reusable

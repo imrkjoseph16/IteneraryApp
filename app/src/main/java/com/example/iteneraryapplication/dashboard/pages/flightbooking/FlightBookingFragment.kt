@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.iteneraryapplication.app.foundation.BaseFragment
-import com.example.iteneraryapplication.app.util.Default.Companion.BOOKING_URL
+import com.example.iteneraryapplication.app.util.Default.Companion.FLIGHT_BOOKING_URL
 import com.example.iteneraryapplication.databinding.FragmentFlightBookingBinding
 
 class FlightBookingFragment : BaseFragment<FragmentFlightBookingBinding>() {
@@ -30,8 +30,8 @@ class FlightBookingFragment : BaseFragment<FragmentFlightBookingBinding>() {
         settings.databaseEnabled = true
         settings.minimumFontSize = 1
         settings.minimumLogicalFontSize = 1
-        loadUrl(BOOKING_URL)
+        loadUrl(FLIGHT_BOOKING_URL)
     }
 
-    private fun onKeyDown() = binding.webview.apply { if (canGoBack()) goBack() else getAppCompatActivity().finish() }
+    private fun onKeyDown() = binding.webview.apply { if (canGoBack()) goBack() else getDashBoardInstance().showExitAppReminder() }
 }

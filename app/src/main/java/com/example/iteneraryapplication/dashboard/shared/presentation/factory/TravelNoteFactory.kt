@@ -6,6 +6,7 @@ import com.example.iteneraryapplication.app.shared.dto.data.NoteListItem
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.shared.dto.layout.SpaceItemViewDto
 import com.example.iteneraryapplication.app.util.DateUtil
+import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertDateFormat
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
@@ -21,12 +22,12 @@ class TravelNoteFactory @Inject constructor(
     ) = when(state) {
         is GetNotesTypeData -> state.listNotes
             ?.toMutableList()
-            ?.checkDuplicateNotes()
+            ?.removeDuplicateNotes()
             ?.let { prepareList(it) } ?: emptyList()
         else -> listOf(SpaceItemViewDto(R.dimen.grid_0))
     }
 
-    private fun MutableList<Notes>.checkDuplicateNotes() : List<Notes> {
+    private fun MutableList<Notes>.removeDuplicateNotes() : List<Notes> {
         val hashSet = HashSet<Notes>()
         hashSet.addAll(this)
         this.clear()
@@ -50,9 +51,10 @@ class TravelNoteFactory @Inject constructor(
                 itemNoteImage = data.notesImage,
                 itemNoteWebLink = data.notesWebLink,
                 itemNote = TextLine(text = data.notesDesc),
+                itemListOfExpenses = data.listOfExpenses,
                 itemDateSaved = TextLine(
-                    text = dateUtil.convertDateFormat(
-                        dateValue = data.notesDateSaved,
+                    text = convertDateFormat(
+                        dateValue = data.notesDateSaved.orEmpty(),
                         newDateFormat = DATE_NAMED
                     )
                 ),

@@ -23,6 +23,7 @@ import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.extension.showDatePicker
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
+import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertDateFormat
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_DELETE
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_HAND_WRITING
@@ -30,7 +31,7 @@ import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_IMAGE
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_SELECTED_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.ACTION_WEB_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
-import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME_NAMED
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_TAP_HINT
 import com.example.iteneraryapplication.app.util.Default.Companion.DEFAULT_HTTPS_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.IMAGE_FILE_DESCRIPTION
@@ -42,10 +43,14 @@ import com.example.iteneraryapplication.app.util.Default.Companion.REQUEST_CODE_
 import com.example.iteneraryapplication.app.util.Default.Companion.SELECTED_COLOR
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_INVALID
 import com.example.iteneraryapplication.app.util.Default.Companion.URL_REQUIRED_MSG
+import com.example.iteneraryapplication.app.util.ViewUtil.Companion.appendStringBuilder
 import com.example.iteneraryapplication.app.util.ViewUtil.Companion.generateRandomCharacters
+import com.example.iteneraryapplication.app.util.ViewUtil.Companion.calculateExpenses
+import com.example.iteneraryapplication.app.util.ViewUtil.Companion.scheduleNotification
 import com.example.iteneraryapplication.app.util.convertToUri
 import com.example.iteneraryapplication.app.util.showBottomNotesOption
 import com.example.iteneraryapplication.app.util.showToastMessage
+import com.example.iteneraryapplication.dashboard.shared.data.Expenses
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardSharedViewModel
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
@@ -57,6 +62,7 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveIm
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowSaveNoteSuccess
 import com.example.iteneraryapplication.dashboard.shared.presentation.handwriting.HandWriting
 import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
+import com.example.iteneraryapplication.databinding.SharedBudgetManagementBinding
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,6 +75,8 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     private val viewModel: DashboardSharedViewModel by viewModels()
 
     private var selectedColor: String = NOTES_DEFAULT_COLOR
+
+    private var listOfExpenses: MutableList<Expenses>? = null
 
     private var deletingNotes: Boolean = false
 
@@ -123,13 +131,11 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         tvDateTime.setOnClickListener {
             showDatePicker { dateTime ->
                 tvDateTime.text = "${
-                    dateUtil.convertDateFormat(
+                    convertDateFormat(
                         dateValue = dateTime,
                         currentDateFormat = DATE_AND_TIME,
-                        newDateFormat = DATE_NAMED
-                    ).also { date ->
-                        date?.let { selectedDateTime }
-                    }
+                        newDateFormat = DATE_AND_TIME_NAMED
+                    ).also { date -> selectedDateTime = date }
                 } $DATE_TAP_HINT"
             }
         }
@@ -152,10 +158,76 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
 
         buttonSaveNote.setOnClickListener {
-            validateFields().also { valid ->
+            validateFields(listOf(
+                etNoteTitle,
+                etNoteSubTitle,
+                etNoteDesc
+            )).also { valid ->
                 if (valid) getSaveDetailsState()
             }
         }
+
+        // Budget Management components.
+        widgetBudgetManagement.apply {
+            root.setVisible(notesTypeSelected == NOTES_TYPE_BUDGET)
+
+            buttonAddAmount.setOnClickListener {
+                validateFields(
+                    listOf(
+                        typeOfExpenses,
+                        amountField,
+                    )
+                ).also { valid ->
+                    if (valid) addExpenses()
+                }
+            }
+        }
+    }
+
+    private fun SharedBudgetManagementBinding.addExpenses() {
+        val typeOfExpense = typeOfExpenses.text.toString()
+        val amountExpense = amountField.text.toString()
+
+        expenses += appendStringBuilder(
+            word = "$typeOfExpense: " +
+                    amountExpense
+        ).also { clearFields() }
+
+        getTotalExpenses(typeOfExpense = typeOfExpense, expensesAmount = amountExpense)
+    }
+
+    private fun SharedBudgetManagementBinding.appendIfNotesListExpensesExist() {
+        data?.itemListOfExpenses?.onEach {
+            appendStringBuilder(word = "${it.typeOfExpenses}: " + it.expensesAmount)
+        }
+    }
+
+    private fun SharedBudgetManagementBinding.getTotalExpenses(
+        typeOfExpense: String,
+        expensesAmount: String
+    ) {
+
+        totalAmount = calculateExpenses(expensesAmount, totalAmount ?: 0)
+        textTotalAmount = "${getString(R.string.total_amount)}: ₱$totalAmount"
+
+        listOfExpenses!!.add(
+            Expenses(
+                typeOfExpenses = typeOfExpense,
+                expensesAmount = expensesAmount,
+                totalAmount = totalAmount!!
+            )
+        )
+    }
+
+    private fun SharedBudgetManagementBinding.calculateIfNotesAmountExist() : Int {
+        var totalAmount = 0
+        data?.itemListOfExpenses?.forEach { totalAmount = Integer.parseInt(it.expensesAmount!!) }
+        return totalAmount
+    }
+
+    private fun SharedBudgetManagementBinding.clearFields() {
+        typeOfExpenses.text.clear()
+        amountField.text.clear()
     }
 
     private fun ActivityCreateTravelNoteBinding.getSaveDetailsState() {
@@ -197,13 +269,9 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         }
     }
 
-    private fun ActivityCreateTravelNoteBinding.validateFields() =
+    private fun ActivityCreateTravelNoteBinding.validateFields(listOfEditText: List<EditText>) =
         validationUtil.validateFields(
-            listOf(
-                etNoteTitle,
-                etNoteSubTitle,
-                etNoteDesc
-            )
+            listOfEditText
         )
 
     private fun ActivityCreateTravelNoteBinding.configureWebLayout(
@@ -223,7 +291,11 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
                             is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                             is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
                             is ShowSaveImageSuccess -> binding.saveNotes(imageUrl = state.imageUrl)
-                            is ShowDeleteNotesSuccess, is ShowSaveNoteSuccess -> goBackToPreviousScreen()
+                            is ShowDeleteNotesSuccess -> goBackToPreviousScreen()
+                            is ShowSaveNoteSuccess -> scheduleNotification(
+                                context = this@CreateTravelNote,
+                                notes = binding.getCurrentNotes()
+                            ).also { goBackToPreviousScreen() }
                             // We need to check in this state if the "deletingNotes" is true,
                             // then delete the current notes in the UI.
                             // (because when deleting the notes, we're checking the image if it's existing or not)
@@ -274,7 +346,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     private fun checkWebUrl() {
         binding.apply {
             val webLinkText = etWebLink.text.toString()
-            if (Patterns.WEB_URL.matcher(webLinkText).matches()) {
+            if (viewUtil.checkPatternValid(Patterns.WEB_URL, webLinkText)) {
                 configureWebLayout(isShowWebLink = true, isShowLayoutUrl = false).also { tvWebLink.text = webLinkText }
             } else {
                 showToastMessage(this@CreateTravelNote, URL_INVALID)
@@ -325,7 +397,8 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         notesColor = data?.itemNoteColor.takeIf { it != NOTES_DEFAULT_COLOR } ?: selectedColor,
         notesDesc = etNoteDesc.text.toString(),
         notesWebLink = etWebLink.checkWebLinkValue(),
-        notesImage = getNoteImagePath(imageUrl)
+        notesImage = getNoteImagePath(imageUrl),
+        listOfExpenses = listOfExpenses
     )
 
     private var activityResultLauncher = registerForActivityResult(

@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
 import com.example.iteneraryapplication.app.foundation.BaseFragment
@@ -33,6 +32,7 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardS
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardLoading
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteImageSuccess
+import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteNotesSuccess
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
 import com.example.iteneraryapplication.databinding.FragmentBudgetManagementBinding
@@ -92,6 +92,7 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
                     with(sharedViewModel) {
                         dashboardState.collectLatest { newState ->
                             when(newState) {
+                                is ShowDeleteNotesSuccess -> getBudgetNotes()
                                 is ShowDashboardLoading -> binding.updateUIState(showLoading = true)
                                 is ShowDashboardDismissLoading -> binding.updateUIState(showLoading = false)
                                 is ShowDeleteImageSuccess -> deleteNotes(
@@ -105,8 +106,10 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
             }
         }
 
-        budgetManagementViewModel.getNotes(notesType = NOTES_TYPE_BUDGET)
+        getBudgetNotes()
     }
+
+    private fun getBudgetNotes() = budgetManagementViewModel.getNotes(notesType = NOTES_TYPE_BUDGET)
 
     private fun transformSelectedNotes(dto: NoteItemViewDto?) : Notes {
         val context = getAppCompatActivity()
@@ -118,7 +121,8 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
             notesColor = dto?.itemNoteColor ?: Default.NOTES_DEFAULT_COLOR,
             notesDesc = dto?.getItemNote(context),
             notesWebLink = dto?.itemNoteWebLink,
-            notesImage = dto?.itemNoteImage
+            notesImage = dto?.itemNoteImage,
+            listOfExpenses = dto?.itemListOfExpenses
         )
     }
 
@@ -135,14 +139,13 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
     private fun FragmentBudgetManagementBinding.setupListNotes() {
         listBudgets.apply {
             recyclerViewAdapter.setDiffUtilCallBack(diffUtilCallback = ListItemPayloadDiffCallback())
-            layoutManager = GridLayoutManager(context, 2)
             addItemBindings(viewHolders = SpaceItemViewDtoBinder)
             addItemBindings(viewHolders = EmptyItemBinder)
             addItemBindings(viewHolders = getListNoteItemBinder(
                 dtoReceiverCard = NoteListItem::dto,
                 onDeleteClick = { dto -> showDeleteNoteDialog(dto = dto) },
                 onItemClick = { bind, dto ->
-                    navigatePreviewImage(binding = bind, dto = dto)
+                    navigatePreviewDetails(binding = bind, dto = dto)
                 }
             ))
             executePendingBindings()
@@ -155,7 +158,7 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
         showCustomDialog(getAppCompatActivity(),
             DialogAttributes(
                 title = getString(R.string.dialog_delete_title),
-                subTitle = getString(R.string.dialog_delete_subtitle),
+                subTitle = getString(R.string.dialog_subtitle),
                 primaryButtonTitle = getString(R.string.action_cancel),
                 secondaryButtonTitle = getString(R.string.action_delete)
             ), secondaryButtonClicked = {
@@ -182,7 +185,7 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
         className = CreateTravelNote::class.java
     )
 
-    private fun navigatePreviewImage(
+    private fun navigatePreviewDetails(
         binding: SharedListNoteItemBinding,
         dto: NoteItemViewDto
     ) {

@@ -102,6 +102,44 @@
                     android:textSize="14dp"
                     tools:text="Sample web link url text" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textColor="@color/ColorRedNote"
+                    android:textSize="14dp"
+                    android:text="@string/text_list_expenses"
+                    bind:visible="@{data.itemListOfExpenses != null}"
+                    tools:textColor="@color/gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_regular"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:maxLines="5"
+                    android:ellipsize="end"
+                    bind:visible="@{data.itemListOfExpenses != null}"
+                    bind:setCustomAmountExpenses="@{data.itemListOfExpenses}"
+                    tools:text="Sample list of expenses text"
+                    tools:textColor="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/total_expenses"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_regular"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    bind:visible="@{data.itemListOfExpenses != null}"
+                    bind:setCustomAmountExpenses="@{data.itemListOfExpenses}"
+                    tools:text="Sample list of expenses text"
+                    tools:textColor="@color/gray"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
@@ -115,14 +153,14 @@
                         android:background="@drawable/background_circular"
                         android:fontFamily="@font/helvetica_regular"
                         android:padding="10dp"
-                        android:text="@string/text_notes"
+                        android:text="@{data.itemListOfExpenses != null ? @string/text_expenses : @string/text_notes}"
                         android:textColor="@color/gray"
                         android:textColorLink="@color/web_link_color"
                         android:textSize="12dp"
+                        tools:text="Notes"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        bind:visible="@{data.itemNoteImage == null}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/delete_note"

@@ -16,8 +16,8 @@ class DashboardAdapter(
 
     enum class DashboardFragments(val value: String) {
         TRIP_PLANNING("Trip Planning"),
-        BOOKING("Hotel Booking"),
-        ITINERARY_MANAGEMENT("Itinerary Management"),
+        FLIGHT_BOOKING("Flight Booking"),
+        HOTEL_BOOKING("Hotel Booking"),
         BUDGET_MANAGEMENT("Budget Management"),
         TRAVEL_TIPS("Travel Tips")
     }
@@ -26,8 +26,8 @@ class DashboardAdapter(
 
     override fun createFragment(position: Int) = when(DashboardFragments.values()[position]) {
         DashboardFragments.TRIP_PLANNING -> TripPlanningFragment()
-        DashboardFragments.BOOKING -> FlightBookingFragment()
-        DashboardFragments.ITINERARY_MANAGEMENT -> HotelBookingFragment()
+        DashboardFragments.FLIGHT_BOOKING -> FlightBookingFragment()
+        DashboardFragments.HOTEL_BOOKING -> HotelBookingFragment()
         DashboardFragments.BUDGET_MANAGEMENT -> BudgetManagementFragment()
         DashboardFragments.TRAVEL_TIPS -> TravelTipsFragment()
     }

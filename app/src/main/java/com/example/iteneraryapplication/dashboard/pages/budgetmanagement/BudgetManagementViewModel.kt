@@ -5,9 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.iteneraryapplication.app.shared.state.AppUiState
 import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
 import com.example.iteneraryapplication.app.shared.state.GetAppUiItems
-import com.example.iteneraryapplication.app.shared.state.ShowAppUiDismissLoading
 import com.example.iteneraryapplication.app.shared.state.ShowAppUiError
-import com.example.iteneraryapplication.app.shared.state.ShowAppUiLoading
 import com.example.iteneraryapplication.app.shared.state.ShowAppUiNoData
 import com.example.iteneraryapplication.app.util.coRunCatching
 import com.example.iteneraryapplication.dashboard.shared.domain.PlanningNoteUseCase
@@ -37,8 +35,6 @@ class BudgetManagementViewModel @Inject constructor(
     fun getNotes(notesType: String) {
         viewModelScope.launch {
             _uiState.apply {
-                value = ShowAppUiLoading
-
                 coRunCatching {
                     planningNoteUseCase.getNotes(notesType = notesType) { state ->
                         getUiItems(state)
@@ -46,8 +42,6 @@ class BudgetManagementViewModel @Inject constructor(
                 }.onFailure {
                     value = ShowAppUiError(it)
                 }
-
-                value = ShowAppUiDismissLoading
             }
         }
     }

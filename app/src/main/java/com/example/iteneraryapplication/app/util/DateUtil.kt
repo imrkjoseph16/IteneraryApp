@@ -5,8 +5,10 @@ import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME
 import java.sql.Timestamp
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
+
 
 class DateUtil @Inject constructor() {
 
@@ -16,20 +18,31 @@ class DateUtil @Inject constructor() {
         return sdf.format(Date())
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun convertDateFormat(
-        dateValue: String? = null,
-        currentDateFormat: String = DATE_AND_TIME_NAMED,
-        newDateFormat: String
-    ) : String? {
-        val form = SimpleDateFormat(currentDateFormat)
-        var date: Date? = null
-        try { date = form.parse(dateValue) }
-        catch (e: ParseException) { e.printStackTrace() }
-       return date?.let { SimpleDateFormat(newDateFormat).format(it) } ?: dateValue
-    }
-
     companion object {
         fun getCurrentTimeStamp() = Timestamp(System.currentTimeMillis()).toString()
+
+        @SuppressLint("SimpleDateFormat")
+        fun convertDateFormat(
+            dateValue: String,
+            currentDateFormat: String = DATE_AND_TIME_NAMED,
+            newDateFormat: String
+        ) : String {
+            val form = SimpleDateFormat(currentDateFormat)
+            var date: Date? = null
+            try { date = form.parse(dateValue) }
+            catch (e: ParseException) { e.printStackTrace() }
+            return date?.let { SimpleDateFormat(newDateFormat).format(it) } ?: dateValue
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun convertStringDateToCalendar(
+            dateValue: String,
+            currentDateFormat: String
+        ) : Calendar {
+            val cal: Calendar = Calendar.getInstance()
+            val sdf = SimpleDateFormat(currentDateFormat)
+            cal.time = sdf.parse(dateValue) as Date
+            return cal
+        }
     }
 }

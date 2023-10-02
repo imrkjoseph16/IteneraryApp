@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.shared.data
+package com.example.iteneraryapplication.dashboard.shared.data.repository
 
 import android.net.Uri
 import com.example.iteneraryapplication.app.util.Default.Companion.getRandomUUID
