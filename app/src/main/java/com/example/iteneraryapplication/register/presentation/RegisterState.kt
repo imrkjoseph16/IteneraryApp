@@ -14,6 +14,10 @@ object EmailVerificationSuccess : RegisterState()
 
 object SaveFireStoreDetailsSuccess : RegisterState()
 
+data class GetCitiesSuccess(var listOfCities: MutableList<String>?) : RegisterState()
+
+data class GetRegionSuccess(var listOfRegion: MutableList<String>?) : RegisterState()
+
 data class RegisterCredentialSuccess(val authResult: AuthResult) : RegisterState()
 
 data class ShowRegisterError(val throwable: Throwable) : RegisterState()

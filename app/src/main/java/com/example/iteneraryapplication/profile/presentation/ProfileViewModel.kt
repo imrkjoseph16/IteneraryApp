@@ -1,10 +1,10 @@
-package com.example.iteneraryapplication.profile
+package com.example.iteneraryapplication.profile.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iteneraryapplication.app.shared.domain.ProfileUseCase
+import com.example.iteneraryapplication.profile.domain.ProfileUseCase
 import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.example.iteneraryapplication.app.util.coRunCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +23,9 @@ class ProfileViewModel @Inject constructor(
     fun getProfileDetails() {
         viewModelScope.launch {
             coRunCatching {
-                profileUseCase.getProfileDetails { details ->
-                    _profileDetails.value = details
-                }
+                profileUseCase.getProfileDetails()
+            }.onSuccess { details ->
+                _profileDetails.value = details
             }
         }
     }

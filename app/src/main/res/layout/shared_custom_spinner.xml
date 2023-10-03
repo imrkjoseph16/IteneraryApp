@@ -21,6 +21,7 @@
             android:alpha="0.9"
             android:background="@drawable/et_custom"
             android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent"
             bind:setSpinnerText="@{spinnerText}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

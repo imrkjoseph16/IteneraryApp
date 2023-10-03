@@ -72,6 +72,9 @@
     <string name="title_address">Address</string>
     <string name="title_coming_soon_stay_tuned">COMING SOON\nStay tuned.</string>
 
+    <string name="title_cities">City</string>
+    <string name="title_regions">Region</string>
+
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>

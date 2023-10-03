@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.profile
+package com.example.iteneraryapplication.profile.presentation
 
 import android.view.LayoutInflater
 import androidx.activity.viewModels

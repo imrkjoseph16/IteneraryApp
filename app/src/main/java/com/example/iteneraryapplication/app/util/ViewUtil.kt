@@ -47,6 +47,8 @@ class ViewUtil @Inject constructor() {
 
     fun checkPatternValid(pattern: Pattern, text: String) = pattern.matcher(text).matches()
 
+    fun verifyIfNegativeNumber(number: Int) = number < 0
+
     companion object {
         fun generateRandomCharacters() : String {
             // Descriptive alphabet using three CharRange objects, concatenated

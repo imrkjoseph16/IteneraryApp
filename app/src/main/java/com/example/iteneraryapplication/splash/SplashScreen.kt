@@ -31,8 +31,10 @@ class SplashScreen : BaseActivity<ActivitySplashBinding>() {
     private fun checkCurrentScreenState() {
         // Check currentUser state if already logged in.
         // then automatically navigateToDashboard()
-        if (firebaseAuth.currentUser?.uid != null) navigateActivityDashboard()
-        else navigateActivityLogin()
+        with(firebaseAuth.currentUser) {
+            if (this?.uid?.isNotEmpty() == true && this.isEmailVerified) navigateActivityDashboard()
+            else navigateActivityLogin()
+        }
     }
 
     private fun navigateActivityLogin() = navigationUtil.navigateActivity(context = this, className = Login::class.java)

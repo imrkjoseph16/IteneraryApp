@@ -7,17 +7,24 @@ import com.example.iteneraryapplication.register.domain.data.ICreateUserCredenti
 import com.example.iteneraryapplication.register.domain.data.ISaveDetailsFireStore
 import com.example.iteneraryapplication.register.domain.data.ISendEmailVerification
 import com.example.iteneraryapplication.app.shared.model.UserDetails
+import com.example.iteneraryapplication.register.data.api.RegisterApi
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.Lazy
 import kotlinx.coroutines.tasks.await
+import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RegisterRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val fireStore: FirebaseFirestore
+    private val fireStore: FirebaseFirestore,
+    private val retrofit: Lazy<Retrofit>
 ) {
+
+    private val registerApi: RegisterApi by lazy { retrofit.get().create(RegisterApi::class.java) }
+
     suspend fun registerCredentials(userDetails: UserDetails) : ICreateUserCredential {
         val authResult = firebaseAuth.createUserWithEmailAndPassword(
             userDetails.email.orEmpty(),
@@ -38,4 +45,8 @@ class RegisterRepository @Inject constructor(
         saveDetailsStatus.await()
         return SaveDetailsFireStore(saveDetailsStatus.isSuccessful)
     }
+
+    suspend fun getCities() = registerApi.getCities()
+
+    suspend fun getRegions() = registerApi.getRegions()
 }

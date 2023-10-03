@@ -1,8 +1,9 @@
-package com.example.iteneraryapplication.app.shared.data
+package com.example.iteneraryapplication.profile.data
 
 import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,13 +15,11 @@ class ProfileRepository @Inject constructor(
 
     private val userId = firebaseUser?.uid ?: error("failed to fetch userId")
 
-    fun getProfileDetails(details: (details: UserDetails?) -> Unit) {
+    suspend fun getProfileDetails() : UserDetails? {
         val fireStorePath = fireStore.collection("user").document(userId).get()
+        fireStorePath.await()
 
-        fireStorePath.addOnCompleteListener {
-            if (it.isSuccessful) details.invoke(
-                it.result.toObject(UserDetails::class.java)
-            )
-        }
+        if (fireStorePath.isSuccessful) return fireStorePath.result.toObject(UserDetails::class.java)
+        else error("failed to fetch details")
     }
 }

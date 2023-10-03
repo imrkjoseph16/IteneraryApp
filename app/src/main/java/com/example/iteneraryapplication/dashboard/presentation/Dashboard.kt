@@ -15,7 +15,7 @@ import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRAVEL_TIPS
 import com.example.iteneraryapplication.databinding.ToolbarBinding
 import com.example.iteneraryapplication.login.presentation.Login
-import com.example.iteneraryapplication.profile.Profile
+import com.example.iteneraryapplication.profile.presentation.Profile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -129,7 +129,7 @@
                 android:alpha="0.9"
                 android:drawableTint="@color/gray"
                 android:drawablePadding="10dp"
-                android:drawableStart="@drawable/icon_person_24px"
+                android:drawableStart="@drawable/icon_home_24px"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 android:textSize="15dp" />

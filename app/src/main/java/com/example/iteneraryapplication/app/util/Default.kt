@@ -20,10 +20,10 @@ class Default {
         const val DATE_TIME_IN_MILLIS = "EEE MMM dd HH:mm:ss z yyyy"
         const val DATE_TAP_HINT = "(Tap to change the date)"
 
-        const val DEFAULT_HTTPS_URL = "https://"
-
         const val REMINDER_TITLE = "Reminder"
 
+        const val DEFAULT_HTTPS_URL = "https://"
+        const val PLACES_BASE_URL = "https://ph-locations-api.buonzz.com/"
         const val FLIGHT_BOOKING_URL = "https://www.philippineairlines.com/en/"
         const val HOTEL_BOOKING_URL = "https://www.trivago.com"
 
@@ -49,5 +49,11 @@ class Default {
         const val REQUEST_CODE_GET_DRAWING = 1
 
         fun getRandomUUID() = UUID.randomUUID().toString()
+    }
+}
+
+class Network {
+    companion object {
+        const val APPLICATION_JSON = "Content-Type: application/json"
     }
 }

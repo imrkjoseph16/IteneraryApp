@@ -1,10 +1,14 @@
 package com.example.iteneraryapplication.register.presentation
 
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.activity.viewModels
 import com.example.iteneraryapplication.R
+import com.example.iteneraryapplication.app.extension.notEmpty
 import com.example.iteneraryapplication.app.foundation.BaseActivity
 import com.example.iteneraryapplication.app.shared.model.UserDetails
 import com.example.iteneraryapplication.app.util.Default.Companion.EMAIL_VERIFICATION_MSG
@@ -46,10 +50,10 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
                         firstName = inputFirstName.text.toString(),
                         lastName = inputLastName.text.toString(),
                         suffix = inputSuffix.text.toString(),
-                        gender = inputGender.inputSpinner.selectedItem.toString(),
+                        gender = inputGender.inputSpinner.notEmpty(),
                         address = inputAddress.text.toString(),
-                        city = inputCity.inputSpinner.selectedItem.toString(),
-                        region = inputRegion.inputSpinner.selectedItem.toString(),
+                        city = inputCity.inputSpinner.notEmpty(),
+                        region = inputRegion.inputSpinner.notEmpty(),
                         email = inputEmail.text.toString(),
                         phoneNumber = inputPhoneNumber.text.toString(),
                         password = inputPassword.text.toString())
@@ -57,20 +61,44 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
             }
         }
 
-        setupDropDownList()
+
+        inputCity.inputSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    selectedItemView: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    viewModel.searchCityByRegion(
+                        cityPosition = position.dec()
+                    )
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>?) = Unit
+            }
+
+        // Setup the gender spinner and the list of items.
+        setupDropDownList(spinner = inputGender.inputSpinner)
     }
 
     private fun setupObserver() {
         with(viewModel) {
             registerState.observe(this@Register) { state ->
                 when(state) {
-                    is SaveFireStoreDetailsSuccess -> finish()
+                    is SaveFireStoreDetailsSuccess -> binding.updateUIState(showLoading = false).also { finish() }
                     is ShowRegisterLoading -> binding.updateUIState(showLoading = true)
                     is ShowRegisterDismissLoading -> binding.updateUIState(showLoading = false)
-                    is EmailVerificationSuccess -> showToastMessage(this@Register, EMAIL_VERIFICATION_MSG).also {
-                        binding.updateUIState(showLoading = false)
-                    }
-                    is ShowRegisterError ->  state.throwable.message?.let {
+                    is GetCitiesSuccess -> setupDropDownList(
+                        stringArray = state.listOfCities.also { it?.add(0, getString(R.string.title_cities)) },
+                        spinner = binding.inputCity.inputSpinner
+                    )
+                    is GetRegionSuccess -> setupDropDownList(
+                        stringArray = state.listOfRegion.also { if (it?.isEmpty() == true) it.add(0, getString(R.string.title_regions)) },
+                        spinner = binding.inputRegion.inputSpinner
+                    )
+                    is EmailVerificationSuccess -> showToastMessage(this@Register, EMAIL_VERIFICATION_MSG)
+                    is ShowRegisterError -> state.throwable.message?.let {
                         showToastMessage(this@Register, state.throwable.message.toString())
                     }
                 }
@@ -78,14 +106,17 @@ class Register : BaseActivity<ActivityRegisterBinding>() {
         }
     }
 
-    private fun ActivityRegisterBinding.setupDropDownList() {
+    private fun setupDropDownList(
+        stringArray: List<String>? = null,
+        spinner: Spinner
+    ) {
         val adapter = ArrayAdapter(
             /* context = */ this@Register,
             /* resource = */ R.layout.shared_spinner_item,
-            /* objects = */ resources.getStringArray(R.array.gender_list)
+            /* objects = */ stringArray?.toTypedArray() ?: resources.getStringArray(R.array.gender_list)
         )
         adapter.setDropDownViewResource(R.layout.shared_spinner_item)
-        inputGender.inputSpinner.adapter = adapter
+        spinner.adapter = adapter
     }
 
     private fun ActivityRegisterBinding.validateFields(listOfEditText: List<EditText>) =
