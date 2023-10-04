@@ -17,21 +17,32 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="match_parent">
 
-        <SearchView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="66"
+            android:background="@drawable/background_wave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
             android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="58dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:queryBackground="@android:color/transparent"
             android:layout_marginEnd="16dp"
             android:background="@drawable/background_search_view"
             android:iconifiedByDefault="false"
-            android:queryHint="Find your notes..."
-            android:searchIcon="@drawable/icon_search_24px"
+            android:hint="@string/find_your_notes"
+            android:paddingStart="16dp"
+            android:drawableStart="@drawable/icon_search_24px"
+            android:drawablePadding="6dp"
+            android:drawableTint="@color/colorLightBrown"
             android:theme="@style/ThemeOverlay.search"
             app:closeIcon="@drawable/icon_close_white_24px"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +54,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="12dp"
-            android:nestedScrollingEnabled="false"
             android:paddingTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

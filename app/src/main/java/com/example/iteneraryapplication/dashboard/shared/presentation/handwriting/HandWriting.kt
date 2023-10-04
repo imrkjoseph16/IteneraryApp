@@ -123,7 +123,7 @@ class HandWriting : BaseActivity<ActivityHandWritingBinding>() {
         }
     }
 
-    private fun HandDrawingView.eraseDrawing() = setErase(true).also { setBrushSize(getLastBrushSize()) }
+    private fun HandDrawingView.eraseDrawing() = setErase().also { setBrushSize(getLastBrushSize()) }
 
     private fun HandDrawingView.downloadDrawImage() {
         permissionUtil.getImageUri(

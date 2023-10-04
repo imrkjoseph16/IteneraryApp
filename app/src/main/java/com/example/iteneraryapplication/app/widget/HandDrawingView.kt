@@ -7,12 +7,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.example.iteneraryapplication.R
 
 class HandDrawingView(
@@ -21,7 +20,6 @@ class HandDrawingView(
 
     // Drawing Path
     private var drawPath: Path? = null
-    private var erase = false
 
     // Drawing and Canvas Paint
     private var drawPaint: Paint? = null
@@ -42,11 +40,10 @@ class HandDrawingView(
         setupDrawing()
     }
 
-    fun startNew() = drawCanvas?.drawColor(Color.WHITE, PorterDuff.Mode.CLEAR).also { invalidate() }
+    fun startNew() = setDrawColorBackground().also { invalidate() }
 
-    fun setErase(isErase: Boolean) {
-        erase = isErase
-        if (erase) drawPaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) else drawPaint?.xfermode = null
+    fun setErase() {
+        drawPaint?.color = context.getColor(R.color.colorLightBeige)
     }
 
     fun getLastBrushSize() = lastBrushSize
@@ -60,10 +57,13 @@ class HandDrawingView(
         }
     }
 
+    private fun setDrawColorBackground() = drawCanvas?.drawColor(ContextCompat.getColor(context, R.color.colorLightBeige))
+
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(width, height, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(canvasBitmap!!)
+        setDrawColorBackground()
     }
 
     override fun onDraw(canvas: Canvas) {

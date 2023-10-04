@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/iv_profile"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="6dp"
         android:background="@drawable/background_circular"
         android:clickable="true"
@@ -17,28 +17,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/colorLightBrown" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:fontFamily="@font/helvetica_bold"
+        android:fontFamily="@font/poppins_medium"
         android:layout_marginStart="12dp"
         android:text="My Notes"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textColor="@color/colorLightBrown"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_profile"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_menu"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/logout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

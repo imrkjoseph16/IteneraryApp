@@ -14,7 +14,7 @@
     <color name="dim_gray">#292929</color>
     <color name="nav_gray">#2F2D2E</color>
     <color name="web_link_color">#0254FA</color>
-    <color name="search_bar_color">#333333</color>
+    <color name="search_bar_color">#EFE6C8</color>
     <color name="opacity_gray">#48C6C0C0</color>
 
     <!-- Clients Color-->
@@ -24,14 +24,19 @@
     <color name="tomato_orange">#E46F44</color>
     <color name="pink_shell">#E8AA9B</color>
     <color name="plum_violet">#DCD5DC</color>
-    <color name="text_color">#7D7D7D</color>
+    <color name="text_color">#676262</color>
 
-    <color name="ColorDefaultNote">#202734</color>
-    <color name="ColorBlueNote">#404FF6</color>
+    <color name="ColorDefaultNote">#F5ECCB</color>
+    <color name="ColorBlueNote">#98B7DB</color>
     <color name="ColorYellowNote">#F4C057</color>
     <color name="ColorRedNote">#EB5849</color>
     <color name="ColorWhiteNote">#ffffff</color>
     <color name="ColorOrangeNote">#ff7746</color>
     <color name="ColorBlackNote">#333333</color>
-    <color name="ColorGreenNote">#1FBE94</color>
+    <color name="ColorGreenNote">#A8D672</color>
+
+    <color name="colorBeige">#F6ECC9</color>
+    <color name="colorLightBeige">#FFF2D8</color>
+    <color name="colorLightBrown">#BCA37F</color>
+    <color name="colorMediumBlue">#113946</color>
 </resources>

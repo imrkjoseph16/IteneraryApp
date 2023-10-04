@@ -3,6 +3,7 @@ package com.example.iteneraryapplication.app.extension
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.iteneraryapplication.R
 import java.util.Calendar
 
 fun AppCompatActivity.showDatePicker(
@@ -13,7 +14,7 @@ fun AppCompatActivity.showDatePicker(
     val mMonth = calendar[Calendar.MONTH]
     val mDay = calendar[Calendar.DAY_OF_MONTH]
 
-    DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
+    DatePickerDialog(this, R.style.DatePickerTheme, { _, year, monthOfYear, dayOfMonth ->
             val selectedDate = "${(monthOfYear + 1)}-$dayOfMonth-$year"
             showTimePicker(date = selectedDate, onDatePickerCallback = onDatePickerCallback)
         }, mYear, mMonth, mDay

@@ -29,7 +29,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dim_gray">
+        android:background="@color/colorLightBeige">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
@@ -62,14 +62,14 @@
                     android:src="@drawable/icon_back_24px"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:tint="@color/colorLightBrown" />
 
                 <View
                     android:id="@+id/view"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@color/colorLightBrown"
                     app:layout_constraintEnd_toEndOf="@+id/button_save_note"
                     app:layout_constraintStart_toStartOf="@+id/back"
                     app:layout_constraintTop_toBottomOf="@+id/screen_title" />
@@ -78,9 +78,9 @@
                     android:id="@+id/screen_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica_rounded_bold"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/colorLightBrown"
+                    android:textSize="18dp"
                     android:layout_marginTop="@dimen/_42sdp"
                     app:layout_constraintEnd_toEndOf="@+id/button_save_note"
                     app:layout_constraintStart_toStartOf="@+id/back"
@@ -93,12 +93,13 @@
                     android:layout_marginTop="@dimen/_40sdp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
+                    android:background="@drawable/background_circular"
                     android:src="@drawable/icon_tick_24px"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:tint="@color/colorLightBrown" />
 
                 <EditText
                     android:id="@+id/etNoteTitle"
@@ -110,13 +111,13 @@
                     android:paddingEnd="16dp"
                     android:background="@null"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_bold"
+                    android:fontFamily="@font/poppins_medium"
                     android:hint="@string/notes_title"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/gray"
-                    android:textSize="20dp"
+                    android:textColor="@color/colorMediumBlue"
+                    android:textColorHint="@color/colorLightBrown"
+                    android:textSize="16dp"
                     android:tag="title"
                     android:text="@{data.getItemTitle(context)}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -125,24 +126,20 @@
 
                 <TextView
                     android:id="@+id/tvDateTime"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_bold"
-                    android:maxLines="1"
                     android:clickable="true"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_regular"
                     android:foreground="?attr/selectableItemBackground"
+                    android:maxLines="1"
                     android:text="@{(data.getItemDateSaved(context) == null) ? currentDateTime : data.getItemDateSaved(context)}"
-                    android:textColor="@color/gray"
-                    android:textColorHint="@color/opacity_gray"
-                    android:textSize="@dimen/_8ssp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textColor="@color/colorLightBrown"
+                    android:textSize="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/etNoteTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/etNoteTitle"
+                    tools:text="Notes Date"/>
 
                 <LinearLayout
                     android:id="@+id/l1"
@@ -168,16 +165,16 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:ellipsize="end"
-                        android:fontFamily="@font/helvetica_rounded_bold"
+                        android:fontFamily="@font/poppins_medium"
                         android:hint="@string/notes_sub_title"
                         android:text="@{data.getSubtitle(context)}"
                         android:inputType="text"
                         android:maxLines="1"
                         android:padding="16dp"
                         android:tag="subtitle"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/gray"
-                        android:textSize="16dp" />
+                        android:textColor="@color/colorMediumBlue"
+                        android:textColorHint="@color/colorLightBrown"
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <include
@@ -195,30 +192,35 @@
                 <RelativeLayout
                     android:id="@+id/layoutImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_300sdp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="16dp"
                     bind:visible="@{data.itemNoteImage != null}"
+                    android:background="@drawable/background_circular"
                     app:layout_constraintTop_toBottomOf="@id/widget_budget_management">
 
                     <ImageView
                         android:id="@+id/imgNote"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_300sdp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
                         bind:glideImage="@{data.itemNoteImage}" />
 
                     <ImageView
                         android:id="@+id/imgDelete"
-                        android:layout_width="@dimen/_22sdp"
-                        android:layout_height="@dimen/_22sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_trash_3d_24px" />
+                        android:src="@drawable/icon_delete_24px"
+                        app:tint="@color/ColorRedNote" />
 
                 </RelativeLayout>
 
@@ -249,15 +251,15 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:fontFamily="@font/helvetica_regular"
+                            android:fontFamily="@font/poppins_regular"
                             android:hint="@string/web_url"
                             android:inputType="textMultiLine"
                             android:paddingVertical="16dp"
                             android:paddingEnd="16dp"
                             android:text="@{data.itemNoteWebLink == null ? data.getDefaultURL() : data.itemNoteWebLink}"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/gray"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textColor="@color/colorMediumBlue"
+                            android:textColorHint="@color/colorLightBrown"
+                            android:textSize="14dp" />
 
                         <ImageView
                             android:id="@+id/imgUrlDelete"
@@ -278,10 +280,10 @@
                         <Button
                             android:id="@+id/button_cancel"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="@dimen/_28sdp"
                             android:background="@drawable/button_custom"
                             android:clickable="true"
-                            android:fontFamily="@font/helvetica_bold"
+                            android:fontFamily="@font/poppins_regular"
                             android:foreground="?attr/selectableItemBackground"
                             android:text="@string/cancel"
                             android:textAllCaps="false"
@@ -291,11 +293,11 @@
                         <Button
                             android:id="@+id/button_ok"
                             android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="@dimen/_28sdp"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:background="@drawable/button_custom"
                             android:clickable="true"
-                            android:fontFamily="@font/helvetica_bold"
+                            android:fontFamily="@font/poppins_regular"
                             android:foreground="?attr/selectableItemBackground"
                             android:text="@string/ok"
                             android:textAllCaps="false"
@@ -315,13 +317,13 @@
                     android:autoLink="web"
                     android:textColorLink="@color/web_link_color"
                     android:ellipsize="end"
-                    android:fontFamily="@font/helvetica_bold"
+                    android:fontFamily="@font/poppins_bold"
                     android:paddingVertical="16dp"
                     android:text="@{data.itemNoteWebLink}"
                     android:paddingEnd="16dp"
                     android:textColor="@color/gray"
                     android:textColorHint="@color/gray"
-                    android:textSize="@dimen/_12ssp"
+                    android:textSize="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutWebUrl"
@@ -335,7 +337,7 @@
                     android:minHeight="150dp"
                     android:layout_margin="16dp"
                     android:background="@drawable/background_circular"
-                    android:fontFamily="@font/helvetica_regular"
+                    android:fontFamily="@font/poppins_regular"
                     android:gravity="start"
                     android:hint="@string/notes_desc"
                     android:inputType="textMultiLine"
@@ -343,10 +345,11 @@
                     android:paddingVertical="16dp"
                     android:paddingEnd="16dp"
                     android:tag="description"
+                    android:textSize="14dp"
                     android:text="@{data.getItemNote(context)}"
                     android:textAlignment="textStart"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/gray"
+                    android:textColor="@color/colorMediumBlue"
+                    android:textColorHint="@color/colorLightBrown"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvWebLink" />

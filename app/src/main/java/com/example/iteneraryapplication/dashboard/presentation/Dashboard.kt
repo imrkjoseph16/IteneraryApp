@@ -14,7 +14,6 @@ import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.BUDGET_MANAGEMENT
 import com.example.iteneraryapplication.dashboard.presentation.DashboardAdapter.DashboardFragments.TRAVEL_TIPS
 import com.example.iteneraryapplication.databinding.ToolbarBinding
-import com.example.iteneraryapplication.login.presentation.Login
 import com.example.iteneraryapplication.profile.presentation.Profile
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,8 +41,6 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
     }
 
     private fun ActivityDashboardBinding.configureViews() {
-
-
         bottomNavigation.setOnItemSelectedListener { item ->
             viewPager.setCurrentItem(getPosition(item.toFragment()), true)
             true
@@ -54,10 +51,6 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
         toolbar.apply {
             ivProfile.setOnClickListener {
                 navigateActivityProfile()
-            }
-
-            ivMenu.setOnClickListener {
-                showLogoutReminder()
             }
         }
     }
@@ -88,23 +81,6 @@ class Dashboard : BaseActivity<ActivityDashboardBinding>() {
                 secondaryButtonTitle = getString(R.string.action_yes)
             ), secondaryButtonClicked = ::finish
         )
-
-    private fun showLogoutReminder() =
-        showCustomDialog(this,
-            DialogAttributes(
-                title = getString(R.string.dialog_logout_title),
-                subTitle = getString(R.string.dialog_subtitle),
-                primaryButtonTitle = getString(R.string.action_cancel),
-                secondaryButtonTitle = getString(R.string.action_delete)
-            ), secondaryButtonClicked = ::logoutUser
-        )
-
-    private fun logoutUser() = firebaseAuth.signOut().also { navigateActivityLogin() }
-
-    private fun navigateActivityLogin() {
-        navigationUtil.navigateActivity(context = this, className = Login::class.java)
-        finish()
-    }
 
     private fun navigateActivityProfile() = navigationUtil.navigateActivity(context = this, className = Profile::class.java)
 }

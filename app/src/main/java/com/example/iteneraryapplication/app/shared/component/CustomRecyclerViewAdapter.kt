@@ -29,7 +29,6 @@ class CustomRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
     /**
      * This method will update the new data items in the existing list of adapter items using [DiffUtil]
      * */
-
     fun updateItems(items: List<Any>) {
         itemsDiffCallBack?.let {
             val diffCallback = it.apply {
@@ -53,7 +52,6 @@ class CustomRecyclerViewAdapter : RecyclerView.Adapter<ViewHolder>() {
     /**
      * To set/reset new data items in the adapter
      * */
-
     fun setDataItems(items: List<Any>) {
         this.items.apply {
             clear()

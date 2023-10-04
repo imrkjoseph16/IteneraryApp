@@ -16,6 +16,7 @@ class Default {
 
         const val DATE_AND_TIME = "MM-dd-yyyy hh:mm"
         const val DATE_AND_TIME_NAMED = "MMMM dd yyyy, hh:mm:ss a"
+        const val DATE_SHORT_NAMED = "MMM. dd yyyy, hh:mm a"
         const val DATE_NAMED = "MMMM dd yyyy, hh:mm a"
         const val DATE_TIME_IN_MILLIS = "EEE MMM dd HH:mm:ss z yyyy"
         const val DATE_TAP_HINT = "(Tap to change the date)"
@@ -29,7 +30,7 @@ class Default {
 
         const val NOTES_TYPE_TRIP_PLAN = "trip_planning"
         const val NOTES_TYPE_BUDGET = "budget_management"
-        const val NOTES_DEFAULT_COLOR = "#202734"
+        const val NOTES_DEFAULT_COLOR = "#F5ECCB"
 
         const val ACTION = "action"
         const val ACTION_IMAGE = "Image"

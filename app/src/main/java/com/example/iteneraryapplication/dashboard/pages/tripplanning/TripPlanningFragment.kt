@@ -3,8 +3,8 @@ package com.example.iteneraryapplication.dashboard.pages.tripplanning
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -37,7 +37,6 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashbo
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteImageSuccess
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
-import com.example.iteneraryapplication.databinding.ActivityCreateTravelNoteBinding
 import com.example.iteneraryapplication.databinding.FragmentTripPlanningBinding
 import com.example.iteneraryapplication.databinding.SharedEmptyListItemBinding
 import com.example.iteneraryapplication.databinding.SharedListNoteItemBinding
@@ -74,15 +73,14 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
              openTravelNoteScreen()
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(textSubmit: String) = true
-            override fun onQueryTextChange(text: String) = true.also { planningViewModel.searchNotes(text) }
-        })
-
         imageChangeLayout.setOnClickListener {
             showPopupMenu(onMenuItemClick = { count ->
                 listPlanning.setupListLayoutManager(spanCount = count.handleSpanCount())
             }, it)
+        }
+
+        searchView.doAfterTextChanged { text ->
+            true.also { planningViewModel.searchNotes(text.toString()) }
         }
     }
 
@@ -98,6 +96,7 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
         listPlanning.apply {
             recyclerViewAdapter.setDiffUtilCallBack(diffUtilCallback = ListItemPayloadDiffCallback())
             setupListLayoutManager()
+            setHasFixedSize(true)
             addItemBindings(viewHolders = SpaceItemViewDtoBinder)
             addItemBindings(viewHolders = EmptyItemBinder)
             addItemBindings(viewHolders = getListNoteItemBinder(

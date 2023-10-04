@@ -96,8 +96,8 @@ class Login : BaseActivity<ActivityLoginBinding>() {
     private fun checkNotificationPermission() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS)
+                    /* context = */ this,
+                    /* permission = */ Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED)
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             true

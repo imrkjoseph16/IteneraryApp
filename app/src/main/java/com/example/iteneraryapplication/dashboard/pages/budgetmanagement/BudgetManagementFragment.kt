@@ -3,8 +3,8 @@ package com.example.iteneraryapplication.dashboard.pages.budgetmanagement
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -69,10 +69,9 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
             openTravelNoteScreen()
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(textSubmit: String) = true
-            override fun onQueryTextChange(text: String) = true.also { budgetManagementViewModel.searchNotes(text) }
-        })
+        searchView.doAfterTextChanged { text ->
+            true.also { budgetManagementViewModel.searchNotes(text.toString()) }
+        }
     }
 
     private fun setupObserver() {
@@ -139,6 +138,7 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
     private fun FragmentBudgetManagementBinding.setupListNotes() {
         listBudgets.apply {
             recyclerViewAdapter.setDiffUtilCallBack(diffUtilCallback = ListItemPayloadDiffCallback())
+            setHasFixedSize(true)
             addItemBindings(viewHolders = SpaceItemViewDtoBinder)
             addItemBindings(viewHolders = EmptyItemBinder)
             addItemBindings(viewHolders = getListNoteItemBinder(
@@ -148,6 +148,7 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
                     navigatePreviewDetails(binding = bind, dto = dto)
                 }
             ))
+            viewUtil.animateRecyclerView(this, true)
             executePendingBindings()
         }
     }

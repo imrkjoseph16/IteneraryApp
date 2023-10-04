@@ -8,7 +8,7 @@
     android:orientation="vertical"
     app:behavior_peekHeight="40dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorMediumBlue">
     
     <FrameLayout
         app:layout_constraintStart_toStartOf="parent"
@@ -155,9 +155,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="16dp"
             android:text="@string/pick_note_color"
-            android:fontFamily="@font/helvetica_rounded_bold"
+            android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -169,7 +169,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimary"
         android:gravity="center"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="horizontal">
@@ -189,9 +188,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="14dp"
             android:text="@string/add_image"
-            android:fontFamily="@font/helvetica_rounded_bold"
+            android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -203,7 +202,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimary"
         android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
@@ -225,9 +223,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="14dp"
             android:text="@string/add_web_link"
-            android:fontFamily="@font/helvetica_rounded_bold"
+            android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -239,7 +237,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimary"
         android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
@@ -261,9 +258,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="14dp"
             android:text="@string/add_hand_writing"
-            android:fontFamily="@font/helvetica_rounded_bold"
+            android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -275,7 +272,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimary"
         android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
@@ -297,9 +293,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/ColorRedNote"
-            android:textSize="@dimen/_12ssp"
-            android:text="Delete Note"
-            android:fontFamily="@font/helvetica_rounded_bold"
+            android:textSize="14dp"
+            android:text="@string/delete_note"
+            android:fontFamily="@font/poppins_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>

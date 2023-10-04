@@ -5,7 +5,7 @@
     android:maxLines="1"
     android:textSize="16dp"
     android:padding="16dp"
-    android:fontFamily="@font/helvetica_regular"
+    android:fontFamily="@font/poppins_regular"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"

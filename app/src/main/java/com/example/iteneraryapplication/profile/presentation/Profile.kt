@@ -2,8 +2,12 @@ package com.example.iteneraryapplication.profile.presentation
 
 import android.view.LayoutInflater
 import androidx.activity.viewModels
+import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.foundation.BaseActivity
+import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showCustomDialog
+import com.example.iteneraryapplication.app.widget.DialogFactory.DialogAttributes
 import com.example.iteneraryapplication.databinding.ActivityProfileBinding
+import com.example.iteneraryapplication.login.presentation.Login
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +31,10 @@ class Profile : BaseActivity<ActivityProfileBinding>() {
             finish()
         }
 
+        actionLogout.setOnClickListener {
+            showLogoutReminder()
+        }
+
         viewModel.getProfileDetails()
     }
 
@@ -36,5 +44,23 @@ class Profile : BaseActivity<ActivityProfileBinding>() {
                 binding.data = details
             }
         }
+    }
+
+    private fun showLogoutReminder() =
+        showCustomDialog(
+            this,
+            DialogAttributes(
+                title = getString(R.string.dialog_logout_title),
+                subTitle = getString(R.string.dialog_subtitle),
+                primaryButtonTitle = getString(R.string.action_cancel),
+                secondaryButtonTitle = getString(R.string.action_delete)
+            ), secondaryButtonClicked = ::logoutUser
+        )
+
+    private fun logoutUser() = firebaseAuth.signOut().also { navigateActivityLogin() }
+
+    private fun navigateActivityLogin() {
+        navigationUtil.navigateActivity(context = this, className = Login::class.java)
+        finishAffinity()
     }
 }

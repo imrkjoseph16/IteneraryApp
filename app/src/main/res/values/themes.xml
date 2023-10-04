@@ -42,42 +42,46 @@
 
     <style name="ThemeOverlay.search" parent="AppTheme">
         <!-- Text color -->
-        <item name="android:editTextColor">@color/white</item>
+        <item name="android:editTextColor">@color/colorMediumBlue</item>
         <!-- Hint text color -->
-        <item name="android:textColorHint">@color/gray</item>
-        <item name="android:fontFamily">@font/helvetica_regular</item>
+        <item name="android:textColorHint">@color/colorLightBrown</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="TextDateTheme">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/gray</item>
-        <item name="android:fontFamily">@font/helvetica_regular</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="TextTitleTheme">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">@font/helvetica_rounded_bold</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TextSubTitleTheme">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">@font/helvetica_regular</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="TextDescriptionTheme">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/gray</item>
-        <item name="android:fontFamily">@font/helvetica_regular</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="ThemeDialog" parent="android:Theme.Holo.Dialog">
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
+    <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorMediumBlue</item>
     </style>
 </resources>
