@@ -26,21 +26,14 @@
             android:rotation="120"
             android:background="@drawable/background_wave" />
 
-        <EditText
-            android:id="@+id/search_view"
+        <include
+            android:id="@+id/search_widget"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="14dp"
-            android:background="@drawable/background_search_view"
-            android:drawableStart="@drawable/icon_search_24px"
-            android:drawablePadding="6dp"
-            android:drawableTint="@color/colorLightBrown"
-            android:hint="@string/find_your_notes"
-            android:iconifiedByDefault="false"
-            android:paddingStart="16dp"
-            android:theme="@style/ThemeOverlay.search"
+            layout="@layout/shared_widget_searchview"
             android:layout_toStartOf="@+id/image_change_layout"/>
 
         <ImageView
@@ -69,7 +62,7 @@
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_below="@+id/search_view"
+            android:layout_below="@+id/search_widget"
             tools:listitem="@layout/shared_list_note_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

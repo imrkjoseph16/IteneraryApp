@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
+
+    <EditText
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@drawable/background_search_view"
+        android:drawableStart="@drawable/icon_search_24px"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/colorLightBrown"
+        android:hint="@string/find_your_notes"
+        android:iconifiedByDefault="false"
+        android:paddingStart="16dp"
+        android:theme="@style/ThemeOverlay.search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/clear_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_close_24px"
+        app:layout_constraintBottom_toBottomOf="@+id/search_view"
+        app:layout_constraintEnd_toEndOf="@+id/search_view"
+        app:layout_constraintTop_toTopOf="@+id/search_view"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:visibility="gone"
+        app:tint="@color/colorLightBrown" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

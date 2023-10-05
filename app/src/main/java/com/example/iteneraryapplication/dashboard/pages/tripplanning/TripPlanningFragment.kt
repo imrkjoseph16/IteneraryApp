@@ -79,8 +79,13 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
             }
         }
 
-        searchView.doAfterTextChanged { text ->
-            true.also { planningViewModel.searchNotes(text.toString()) }
+        searchWidget.apply {
+            searchView.doAfterTextChanged { text ->
+                text?.isNotEmpty()?.let { clearSearch.setVisible(it) }
+                true.also { planningViewModel.searchNotes(text.toString()) }
+            }
+
+            clearSearch.setOnClickListener { searchView.text.clear() }
         }
     }
 
