@@ -7,5 +7,5 @@
         android:width="1.0dip"
         android:color="@color/gray" />
 
-    <solid android:color="@color/ColorDefaultNote"/>/>
+    <solid android:color="@color/ColorDefaultNote"/>
 </shape>

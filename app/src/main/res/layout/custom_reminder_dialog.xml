@@ -81,6 +81,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:layout_marginEnd="10dp"
                     android:textSize="14dp"
+                    android:textAllCaps="false"
                     android:layout_height="wrap_content"
                     tools:text="Cancel"/>
 
@@ -95,6 +96,7 @@
                     android:backgroundTint="@color/colorMediumBlue"
                     android:layout_weight="1"
                     android:textSize="14dp"
+                    android:textAllCaps="false"
                     android:text="@{data.secondaryButtonTitle}"
                     android:fontFamily="@font/poppins_regular"
                     android:layout_height="wrap_content"

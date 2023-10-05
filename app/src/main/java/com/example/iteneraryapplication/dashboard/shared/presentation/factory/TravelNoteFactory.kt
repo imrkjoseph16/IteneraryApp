@@ -5,17 +5,16 @@ import com.example.iteneraryapplication.app.shared.component.TextLine
 import com.example.iteneraryapplication.app.shared.dto.data.NoteListItem
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.shared.dto.layout.SpaceItemViewDto
-import com.example.iteneraryapplication.app.util.DateUtil
 import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertDateFormat
-import com.example.iteneraryapplication.app.util.Default.Companion.DATE_SHORT_NAMED
+import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertStringDateToCalendar
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME_NAMED
+import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
 import javax.inject.Inject
 
-class TravelNoteFactory @Inject constructor(
-    private val dateUtil: DateUtil
-) {
+class TravelNoteFactory @Inject constructor() {
 
     fun createOverview(
         state: DashboardState
@@ -23,17 +22,9 @@ class TravelNoteFactory @Inject constructor(
         is GetNotesTypeData -> state.listNotes
             ?.toMutableList()
             ?.removeDuplicateNotes()
+            ?.sortListByPinnedAndDate()
             ?.let { prepareList(it) } ?: emptyList()
         else -> listOf(SpaceItemViewDto(R.dimen.grid_0))
-    }
-
-    private fun MutableList<Notes>.removeDuplicateNotes() : List<Notes> {
-        val hashSet = HashSet<Notes>()
-        hashSet.addAll(this)
-        this.clear()
-        this.addAll(hashSet)
-
-        return this.toList()
     }
 
     /**
@@ -52,13 +43,37 @@ class TravelNoteFactory @Inject constructor(
                 itemNoteWebLink = data.notesWebLink,
                 itemNote = TextLine(text = data.notesDesc),
                 itemListOfExpenses = data.listOfExpenses,
+                canPinnedNote = data.canPinnedNote,
                 itemDateSaved = TextLine(
                     text = convertDateFormat(
                         dateValue = data.notesDateSaved.orEmpty(),
-                        newDateFormat = DATE_SHORT_NAMED
+                        newDateFormat = DATE_AND_TIME_NAMED
                     )
                 ),
             )
         )
     }
+
+    private fun MutableList<Notes>.removeDuplicateNotes() : MutableList<Notes> {
+        val hashSet = HashSet<Notes>()
+        hashSet.addAll(this)
+        this.clear()
+        this.addAll(hashSet)
+
+        return this
+    }
+
+    private fun List<Notes>.sortListByPinnedAndDate() = sortedWith(
+        // These will be sorted by top pinned notes,
+        // and based on the scheduled date.
+        compareBy(
+            Notes::canPinnedNote,
+            { it.notesDateSaved?.let { date ->
+                convertStringDateToCalendar(
+                    dateValue = date,
+                    currentDateFormat = DATE_AND_TIME_NAMED
+                ).time }
+            }
+        )
+    ).reversed().toMutableList()
 }

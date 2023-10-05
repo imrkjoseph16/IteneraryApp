@@ -1,6 +1,7 @@
 package com.example.iteneraryapplication.app.shared.dto.layout
 
 import android.content.Context
+import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.shared.component.TextLine
 import com.example.iteneraryapplication.app.util.Default.Companion.DEFAULT_HTTPS_URL
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
@@ -21,6 +22,7 @@ data class NoteItemViewDto(
     val itemNoteWebLink: String? = null,
     val itemNoteColor: String = NOTES_DEFAULT_COLOR,
     val itemListOfExpenses: MutableList<Expenses>? = null,
+    val canPinnedNote: Boolean = false
 ) {
 
     fun getItemTitle(context: Context) = itemTitle.getString(context)
@@ -34,4 +36,6 @@ data class NoteItemViewDto(
     fun getNoteWebLinkHost() = itemNoteWebLink?.replace(DEFAULT_HTTPS_URL, "") ?: ""
 
     fun getDefaultURL() = DEFAULT_HTTPS_URL
+
+    fun getPinnedStatus() = if (canPinnedNote) R.string.pinned_note_status else R.string.unpin_note_status
 }

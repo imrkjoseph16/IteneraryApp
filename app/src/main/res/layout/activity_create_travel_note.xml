@@ -134,12 +134,36 @@
                     android:fontFamily="@font/poppins_regular"
                     android:foreground="?attr/selectableItemBackground"
                     android:maxLines="1"
-                    android:text="@{(data.getItemDateSaved(context) == null) ? currentDateTime : data.getItemDateSaved(context)}"
+                    android:text="@{currentDateTime}"
                     android:textColor="@color/colorLightBrown"
                     android:textSize="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/etNoteTitle"
                     tools:text="Notes Date"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/pinned_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="4dp"
+                    android:checked="@{data.canPinnedNote}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDateTime"
+                    app:trackTint="@drawable/switch_track_selector"
+                    app:thumbTint="@drawable/switch_thumb_selector"
+                    app:switchPadding="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pin_this_note"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/colorLightBrown"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/pinned_note"
+                    app:layout_constraintStart_toEndOf="@+id/pinned_note"
+                    app:layout_constraintTop_toTopOf="@+id/pinned_note" />
 
                 <LinearLayout
                     android:id="@+id/l1"
@@ -151,13 +175,14 @@
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvDateTime">
+                    app:layout_constraintTop_toBottomOf="@id/pinned_note">
 
                     <View
                         android:id="@+id/colorView"
                         android:layout_width="@dimen/_8sdp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/background_default_note" />
+                        bind:setBackgroundColor="@{data.itemNoteColor}"
+                        tools:background="@drawable/background_default_note"/>
 
                     <EditText
                         android:id="@+id/etNoteSubTitle"

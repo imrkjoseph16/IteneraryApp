@@ -9,7 +9,6 @@ import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 
-
 class DateUtil @Inject constructor() {
 
     @SuppressLint("SimpleDateFormat")
@@ -43,6 +42,17 @@ class DateUtil @Inject constructor() {
             val sdf = SimpleDateFormat(currentDateFormat)
             cal.time = sdf.parse(dateValue) as Date
             return cal
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun convertStringDateToMillis(
+            dateValue: String,
+            currentDateFormat: String = DATE_AND_TIME_NAMED
+        ) : Long {
+            val cal: Calendar = Calendar.getInstance()
+            val sdf = SimpleDateFormat(currentDateFormat)
+            cal.time = sdf.parse(dateValue) as Date
+            return cal.timeInMillis
         }
     }
 }

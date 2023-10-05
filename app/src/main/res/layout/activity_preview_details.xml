@@ -78,13 +78,38 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:textSize="14dp"
-                android:text="Delete note"
+                android:text="@string/action_delete_note"
                 android:fontFamily="@font/poppins_medium"
                 bind:visible="@{data.itemId != null}"
                 android:textAlignment="textStart"
                 android:textColor="@color/ColorRedNote"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_details" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pinned_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="4dp"
+                android:checked="@{data.canPinnedNote}"
+                android:enabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/delete_details"
+                app:trackTint="@drawable/switch_track_selector"
+                app:thumbTint="@drawable/switch_thumb_selector"
+                app:switchPadding="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.getPinnedStatus()}"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/colorLightBrown"
+                android:textSize="13dp"
+                app:layout_constraintBottom_toBottomOf="@+id/pinned_note"
+                app:layout_constraintStart_toEndOf="@+id/pinned_note"
+                app:layout_constraintTop_toTopOf="@+id/pinned_note" />
 
             <TextView
                 android:id="@+id/notes_title"
@@ -99,7 +124,7 @@
                 android:textColor="@color/colorLightBrown"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/delete_details"
+                app:layout_constraintTop_toBottomOf="@+id/pinned_note"
                 tools:text="sample title text" />
 
             <TextView
@@ -160,8 +185,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="16dp"
                     android:textSize="16dp"
-                    android:text="@string/text_list_expenses"
-                    tools:textColor="@color/gray"/>
+                    android:text="@string/text_list_expenses"/>
 
                 <TextView
                     android:id="@+id/list_of_expenses"

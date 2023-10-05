@@ -38,7 +38,14 @@ fun setSrcIcon(imageView: AppCompatImageView, icon: Int?) {
 }
 
 @BindingAdapter("setCustomColor")
-fun setBackgroundColor(view: CardView, customColor: String) = view.setCardBackgroundColor(Color.parseColor(customColor))
+fun setCardBackgroundColor(view: CardView, customColor: String) = view.setCardBackgroundColor(Color.parseColor(customColor))
+
+@SuppressLint("UseCompatLoadingForDrawables")
+@BindingAdapter("setBackgroundColor")
+fun setBackgroundColor(view: View, customColor: String? = null) {
+    if (customColor != null) view.setBackgroundColor(Color.parseColor(customColor))
+    else view.background = view.context.getDrawable(R.drawable.background_default_note)
+}
 
 @BindingAdapter("glideImage")
 fun setGlideImageUrl(view: ImageView, imageUrl: String? = null) {

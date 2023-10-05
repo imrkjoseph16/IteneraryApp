@@ -75,7 +75,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
 
     private val viewModel: DashboardSharedViewModel by viewModels()
 
-    private var selectedColor: String = NOTES_DEFAULT_COLOR
+    private var selectedColor: String? = null
 
     private var listOfExpenses: MutableList<Expenses> = mutableListOf()
 
@@ -114,11 +114,11 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     @SuppressLint("SetTextI18n")
     private fun ActivityCreateTravelNoteBinding.configureViews() {
         screenTitle.setScreenTitle().also {
-            selectedDateTime = dateUtil.getCurrentDateTime()
-
             // Check if the intent extra notes data is null,
             // then display the current date and time today.
-            currentDateTime = "$selectedDateTime $DATE_TAP_HINT".takeIf { extraNotesData == null }
+            selectedDateTime = extraNotesData?.getItemDateSaved(this@CreateTravelNote) ?: dateUtil.getCurrentDateTime()
+
+            currentDateTime = "$selectedDateTime $DATE_TAP_HINT"
         }
 
         back.setOnClickListener {
@@ -386,7 +386,7 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
     }
 
     private fun receiveSelectedColor(intent: Intent?) {
-        selectedColor = intent?.getStringExtra(SELECTED_COLOR) ?: NOTES_DEFAULT_COLOR
+        selectedColor = intent?.getStringExtra(SELECTED_COLOR)
         binding.colorView.setBackgroundColor(Color.parseColor(selectedColor))
     }
 
@@ -395,10 +395,11 @@ class CreateTravelNote : BaseActivity<ActivityCreateTravelNoteBinding>() {
         notesTitle = etNoteTitle.text.toString(),
         notesDateSaved = selectedDateTime,
         notesSubtitle = etNoteSubTitle.text.toString(),
-        notesColor = data?.itemNoteColor.takeIf { it != NOTES_DEFAULT_COLOR } ?: selectedColor,
+        notesColor = (selectedColor ?: data?.itemNoteColor) ?: NOTES_DEFAULT_COLOR,
         notesDesc = etNoteDesc.text.toString(),
         notesWebLink = etWebLink.checkWebLinkValue(),
         notesImage = getNoteImagePath(imageUrl),
+        canPinnedNote = pinnedNote.isChecked,
         listOfExpenses = if (listOfExpenses.isEmpty()) extraNotesData?.itemListOfExpenses else listOfExpenses.notEmpty()
     )
 

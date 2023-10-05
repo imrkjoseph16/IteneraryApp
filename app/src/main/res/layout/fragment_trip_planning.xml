@@ -16,7 +16,7 @@
             type="com.example.iteneraryapplication.dashboard.pages.tripplanning.TripPlanningViewModel"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,15 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:rotation="120"
-            android:background="@drawable/background_wave"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@drawable/background_wave" />
 
         <EditText
             android:id="@+id/search_view"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -45,44 +41,36 @@
             android:iconifiedByDefault="false"
             android:paddingStart="16dp"
             android:theme="@style/ThemeOverlay.search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_change_layout"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_toStartOf="@+id/image_change_layout"/>
 
         <ImageView
             android:id="@+id/image_change_layout"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="26dp"
+            android:layout_alignParentRight="true"
             android:background="@drawable/background_circular"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_change_layout_24px"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/colorLightBrown" />
 
         <com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
             android:id="@+id/list_planning"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="12dp"
-            android:paddingVertical="8dp"
             android:requiresFadingEdge="vertical"
             android:fadingEdgeLength="6dp"
             android:nestedScrollingEnabled="false"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_view"
+            android:layout_below="@+id/search_view"
             tools:listitem="@layout/shared_list_note_item" />
-
-        <include
-            android:id="@+id/loading_widget"
-            layout="@layout/shared_loading_widget"
-            android:visibility="gone"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_trip_planning_note"
@@ -98,15 +86,20 @@
             android:tint="@color/white"
             android:scaleType="fitXY"
             android:clickable="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             app:rippleColor="@color/opacity_gray"
-            android:src="@drawable/icon_add_24px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:src="@drawable/icon_add_24px" />
 
         <include
             android:id="@+id/widget_empty_screen"
             layout="@layout/shared_empty_list_item"
             android:visibility="gone"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loading_widget"
+            layout="@layout/shared_loading_widget"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </layout>
 

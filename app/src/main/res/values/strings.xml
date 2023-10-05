@@ -77,6 +77,17 @@
     <string name="title_regions">Region</string>
     <string name="find_your_notes">Find your notes...</string>
     <string name="delete_note">Delete Note</string>
+    <string name="action_delete_note">Delete note</string>
+    <string name="pin_this_note">(Pin this note)</string>
+    <string name="pinned_note_status">(This note is currently pinned)</string>
+    <string name="unpin_note_status">(This note has not been pin yet)</string>
+
+    <!-- Span count for linear manager -->
+    <string name="column_count_1">Column Count: 1</string>
+    <string name="column_count_2">Column Count: 2</string>
+    <string name="column_count_3">Column Count: 3</string>
+    <string name="column_count_4">Column Count: 4</string>
+    <string name="column_count_5">Column Count: 5</string>
 
     <string-array name="gender_list">
         <item>Male</item>

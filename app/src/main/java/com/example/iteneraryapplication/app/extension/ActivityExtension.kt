@@ -33,7 +33,7 @@ fun AppCompatActivity.showTimePicker(
     var mMinute = c[Calendar.MINUTE]
 
     TimePickerDialog(
-        this, { _, hourOfDay, minute ->
+        this, R.style.DatePickerTheme, { _, hourOfDay, minute ->
             mHour = hourOfDay
             mMinute = minute
             onDatePickerCallback("$date $hourOfDay:$minute")

@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
-import com.example.iteneraryapplication.app.extension.showPopupMenu
 import com.example.iteneraryapplication.app.foundation.BaseFragment
 import com.example.iteneraryapplication.app.shared.binder.EmptyItemBinder
 import com.example.iteneraryapplication.app.shared.binder.SpaceItemViewDtoBinder
@@ -28,6 +27,7 @@ import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TR
 import com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
 import com.example.iteneraryapplication.app.shared.component.ListItemPayloadDiffCallback
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
+import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showColumnDialog
 import com.example.iteneraryapplication.app.widget.DialogFactory.DialogAttributes
 import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showCustomDialog
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
@@ -74,22 +74,14 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
         }
 
         imageChangeLayout.setOnClickListener {
-            showPopupMenu(onMenuItemClick = { count ->
-                listPlanning.setupListLayoutManager(spanCount = count.handleSpanCount())
-            }, it)
+            showColumnDialog(getAppCompatActivity()) { count ->
+                listPlanning.setupListLayoutManager(spanCount = count)
+            }
         }
 
         searchView.doAfterTextChanged { text ->
             true.also { planningViewModel.searchNotes(text.toString()) }
         }
-    }
-
-    private fun Int.handleSpanCount() = when(this) {
-        R.id.one -> 1
-        R.id.two -> 2
-        R.id.three -> 3
-        R.id.four -> 4
-        else -> 5
     }
 
     private fun FragmentTripPlanningBinding.setupListNotes() {

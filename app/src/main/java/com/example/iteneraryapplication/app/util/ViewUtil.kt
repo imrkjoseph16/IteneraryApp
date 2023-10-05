@@ -20,8 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.shared.receiver.NotificationAlarmReceiver
-import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertStringDateToCalendar
-import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME_NAMED
+import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertStringDateToMillis
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
 import com.google.gson.Gson
@@ -68,6 +67,12 @@ class ViewUtil @Inject constructor() {
             notes: Notes
         ) {
             try {
+                val triggerAtDate = convertStringDateToMillis(dateValue = notes.notesDateSaved.orEmpty())
+
+                // Check if the triggerAtDate is in past then throw a return,
+                // to avoid immediate triggering of the alarm manager.
+                if (triggerAtDate < System.currentTimeMillis()) return
+
                 val intentData = Intent(context, NotificationAlarmReceiver::class.java)
                     .putExtra(EXTRA_DATA_NOTES, Gson().toJson(notes))
 
@@ -76,10 +81,7 @@ class ViewUtil @Inject constructor() {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
                 val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-                val triggerAtDate = convertStringDateToCalendar(
-                    dateValue = notes.notesDateSaved.orEmpty(),
-                    currentDateFormat = DATE_AND_TIME_NAMED
-                ).timeInMillis
+
                 alarmManager[AlarmManager.RTC_WAKEUP, triggerAtDate] = pendingIntent
             } catch (_: Exception) { }
         }
@@ -104,7 +106,7 @@ class ViewUtil @Inject constructor() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             notificationManager.createNotificationChannel(getNotificationChannel(context = context))
                         }
-                        notificationManager.notify(200, notification)
+                        notificationManager.notify(Random().nextInt(100000), notification)
                 }
             }
         }

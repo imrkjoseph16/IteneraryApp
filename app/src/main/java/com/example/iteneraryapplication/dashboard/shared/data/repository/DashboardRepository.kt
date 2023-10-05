@@ -8,7 +8,6 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardS
 import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
@@ -48,7 +47,6 @@ class DashboardRepository @Inject constructor(
         val fireStorePath = fireStore.collection("notes")
             .document(userId)
             .collection(notesType)
-            .orderBy("notesTimeStampSaved", Query.Direction.ASCENDING)
 
         fireStorePath.addSnapshotListener { result, error ->
             val resultNotes = mutableListOf<Notes>()
