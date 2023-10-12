@@ -8,7 +8,6 @@ import com.example.iteneraryapplication.app.shared.dto.layout.SpaceItemViewDto
 import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertDateFormat
 import com.example.iteneraryapplication.app.util.DateUtil.Companion.convertStringDateToCalendar
 import com.example.iteneraryapplication.app.util.Default.Companion.DATE_AND_TIME_NAMED
-import com.example.iteneraryapplication.app.util.Default.Companion.DATE_NAMED
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardState
 import com.example.iteneraryapplication.dashboard.shared.presentation.GetNotesTypeData

@@ -53,7 +53,7 @@ class Profile : BaseActivity<ActivityProfileBinding>() {
                 title = getString(R.string.dialog_logout_title),
                 subTitle = getString(R.string.dialog_subtitle),
                 primaryButtonTitle = getString(R.string.action_cancel),
-                secondaryButtonTitle = getString(R.string.action_delete)
+                secondaryButtonTitle = getString(R.string.action_logout)
             ), secondaryButtonClicked = ::logoutUser
         )
 

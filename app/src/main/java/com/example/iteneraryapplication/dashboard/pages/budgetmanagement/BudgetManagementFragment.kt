@@ -69,8 +69,13 @@ class BudgetManagementFragment : BaseFragment<FragmentBudgetManagementBinding>()
             openTravelNoteScreen()
         }
 
-        searchView.doAfterTextChanged { text ->
-            true.also { budgetManagementViewModel.searchNotes(text.toString()) }
+        searchWidget.apply {
+            searchView.doAfterTextChanged { text ->
+                text?.isNotEmpty()?.let { clearSearch.setVisible(it) }
+                true.also { budgetManagementViewModel.searchNotes(text.toString()) }
+            }
+
+            clearSearch.setOnClickListener { searchView.text.clear() }
         }
     }
 

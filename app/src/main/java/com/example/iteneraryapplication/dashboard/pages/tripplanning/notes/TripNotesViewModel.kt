@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.pages.tripplanning
+package com.example.iteneraryapplication.dashboard.pages.tripplanning.notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TripPlanningViewModel @Inject constructor(
+class TripNotesViewModel @Inject constructor(
     private val travelNoteFactory: TravelNoteFactory,
     private val planningNoteUseCase: PlanningNoteUseCase
 ) : ViewModel() {

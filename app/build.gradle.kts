@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -68,8 +69,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Navigation Component
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
 
     // ViewModel Instance
     implementation("androidx.activity:activity-ktx:1.7.2")
@@ -85,8 +86,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.6.4")
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Scalable Unit Text Size
     implementation("com.intuit.ssp:ssp-android:1.0.6")

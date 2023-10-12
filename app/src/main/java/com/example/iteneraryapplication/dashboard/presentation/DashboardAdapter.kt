@@ -7,7 +7,7 @@ import com.example.iteneraryapplication.dashboard.pages.flightbooking.FlightBook
 import com.example.iteneraryapplication.dashboard.pages.budgetmanagement.BudgetManagementFragment
 import com.example.iteneraryapplication.dashboard.pages.hotelbooking.HotelBookingFragment
 import com.example.iteneraryapplication.dashboard.pages.traveltips.TravelTipsFragment
-import com.example.iteneraryapplication.dashboard.pages.tripplanning.TripPlanningFragment
+import com.example.iteneraryapplication.dashboard.pages.tripplanning.notes.TripNotesFragment
 
 class DashboardAdapter(
     fragmentManager: FragmentManager,
@@ -25,7 +25,7 @@ class DashboardAdapter(
     override fun getItemCount() = DashboardFragments.values().size
 
     override fun createFragment(position: Int) = when(DashboardFragments.values()[position]) {
-        DashboardFragments.TRIP_PLANNING -> TripPlanningFragment()
+        DashboardFragments.TRIP_PLANNING -> TripNotesFragment()
         DashboardFragments.FLIGHT_BOOKING -> FlightBookingFragment()
         DashboardFragments.HOTEL_BOOKING -> HotelBookingFragment()
         DashboardFragments.BUDGET_MANAGEMENT -> BudgetManagementFragment()

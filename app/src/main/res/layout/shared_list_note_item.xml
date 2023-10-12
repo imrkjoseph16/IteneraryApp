@@ -186,12 +186,12 @@
                         android:id="@+id/delete_note"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:src="@drawable/icon_delete_24px"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        app:tint="@color/ColorRedNote" />
+                        app:tint="@color/colorLightBrown" />
                 </RelativeLayout>
             </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

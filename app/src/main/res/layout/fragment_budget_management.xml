@@ -29,38 +29,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/search_view"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
+        <include
+            android:id="@+id/search_widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/background_search_view"
-            android:iconifiedByDefault="false"
-            android:hint="@string/find_your_notes"
-            android:paddingStart="16dp"
-            android:drawableStart="@drawable/icon_search_24px"
-            android:drawablePadding="6dp"
-            android:drawableTint="@color/colorLightBrown"
-            android:theme="@style/ThemeOverlay.search"
-            app:closeIcon="@drawable/icon_close_white_24px"
+            layout="@layout/shared_widget_searchview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
             android:id="@+id/list_budgets"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingTop="10dp"
             android:layout_marginHorizontal="12dp"
-            android:paddingTop="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="6dp"
+            android:nestedScrollingEnabled="false"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_view"
+            app:layout_constraintTop_toBottomOf="@+id/search_widget"
             tools:listitem="@layout/shared_list_note_item" />
 
         <include

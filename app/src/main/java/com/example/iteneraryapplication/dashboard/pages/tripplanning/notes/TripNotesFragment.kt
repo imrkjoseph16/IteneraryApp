@@ -1,4 +1,4 @@
-package com.example.iteneraryapplication.dashboard.pages.tripplanning
+package com.example.iteneraryapplication.dashboard.pages.tripplanning.notes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.iteneraryapplication.R
 import com.example.iteneraryapplication.app.extension.setVisible
@@ -17,19 +18,19 @@ import com.example.iteneraryapplication.app.foundation.BaseFragment
 import com.example.iteneraryapplication.app.shared.binder.EmptyItemBinder
 import com.example.iteneraryapplication.app.shared.binder.SpaceItemViewDtoBinder
 import com.example.iteneraryapplication.app.shared.binder.getListNoteItemBinder
+import com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
+import com.example.iteneraryapplication.app.shared.component.ListItemPayloadDiffCallback
 import com.example.iteneraryapplication.app.shared.component.TextLine
 import com.example.iteneraryapplication.app.shared.dto.data.NoteListItem
 import com.example.iteneraryapplication.app.shared.dto.layout.EmptyItemViewDto
 import com.example.iteneraryapplication.app.shared.dto.layout.NoteItemViewDto
 import com.example.iteneraryapplication.app.shared.state.AppUiStateModel
 import com.example.iteneraryapplication.app.shared.state.GetAppUiItems
-import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
-import com.example.iteneraryapplication.app.shared.component.CustomRecyclerView
-import com.example.iteneraryapplication.app.shared.component.ListItemPayloadDiffCallback
 import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_DEFAULT_COLOR
+import com.example.iteneraryapplication.app.util.Default.Companion.NOTES_TYPE_TRIP_PLAN
 import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showColumnDialog
-import com.example.iteneraryapplication.app.widget.DialogFactory.DialogAttributes
 import com.example.iteneraryapplication.app.widget.DialogFactory.Companion.showCustomDialog
+import com.example.iteneraryapplication.app.widget.DialogFactory.DialogAttributes
 import com.example.iteneraryapplication.dashboard.shared.domain.data.Notes
 import com.example.iteneraryapplication.dashboard.shared.presentation.DashboardSharedViewModel
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashboardDismissLoading
@@ -37,9 +38,10 @@ import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDashbo
 import com.example.iteneraryapplication.dashboard.shared.presentation.ShowDeleteImageSuccess
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote
 import com.example.iteneraryapplication.dashboard.shared.presentation.createnote.CreateTravelNote.Companion.TRAVEL_NOTES_TYPE_SELECTED
-import com.example.iteneraryapplication.databinding.FragmentTripPlanningBinding
+import com.example.iteneraryapplication.databinding.FragmentTripNotesBinding
 import com.example.iteneraryapplication.databinding.SharedEmptyListItemBinding
 import com.example.iteneraryapplication.databinding.SharedListNoteItemBinding
+import com.example.iteneraryapplication.databinding.SharedWidgetFloatingActionBinding
 import com.example.iteneraryapplication.preview.PreviewNotesDetails
 import com.example.iteneraryapplication.preview.PreviewNotesDetails.Companion.EXTRA_DATA_NOTES
 import com.google.gson.Gson
@@ -48,14 +50,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
+class TripNotesFragment : BaseFragment<FragmentTripNotesBinding>() {
 
-    private val planningViewModel: TripPlanningViewModel by viewModels()
+    private val planningViewModel: TripNotesViewModel by viewModels()
 
     private val sharedViewModel: DashboardSharedViewModel by activityViewModels()
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentTripPlanningBinding
-        get() = FragmentTripPlanningBinding::inflate
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentTripNotesBinding
+        get() = FragmentTripNotesBinding::inflate
 
     override fun onFragmentCreated() {
         super.onFragmentCreated()
@@ -66,12 +68,8 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
         }
     }
 
-    private fun FragmentTripPlanningBinding.configureViews() {
+    private fun FragmentTripNotesBinding.configureViews() {
         viewModel = planningViewModel
-
-        addTripPlanningNote.setOnClickListener {
-             openTravelNoteScreen()
-        }
 
         imageChangeLayout.setOnClickListener {
             showColumnDialog(getAppCompatActivity()) { count ->
@@ -87,9 +85,30 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
 
             clearSearch.setOnClickListener { searchView.text.clear() }
         }
+
+        floatingActionWidget.apply {
+            addOption.setOnClickListener {
+                setupBottomFab()
+            }
+
+            addNotesFolder.setOnClickListener {
+                findNavController().navigate(directions = TripNotesFragmentDirections.actionToCreateFolder())
+            }
+
+            createNewNote.setOnClickListener {
+                openTravelNoteScreen().also { setupBottomFab() }
+            }
+        }
     }
 
-    private fun FragmentTripPlanningBinding.setupListNotes() {
+    private fun SharedWidgetFloatingActionBinding.setupBottomFab() {
+        otherOptionVisible = when(otherOptionVisible) {
+            null, false  -> true
+            else -> false
+        }
+    }
+
+    private fun FragmentTripNotesBinding.setupListNotes() {
         listPlanning.apply {
             recyclerViewAdapter.setDiffUtilCallBack(diffUtilCallback = ListItemPayloadDiffCallback())
             setupListLayoutManager()
@@ -145,7 +164,7 @@ class TripPlanningFragment : BaseFragment<FragmentTripPlanningBinding>() {
         planningViewModel.getNotes(notesType = NOTES_TYPE_TRIP_PLAN)
     }
 
-    private fun FragmentTripPlanningBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
+    private fun FragmentTripNotesBinding.updateUIState(showLoading: Boolean) = loadingWidget.apply { isShowLoading = showLoading }
 
     private fun showDeleteNoteDialog(dto: NoteItemViewDto) = showCustomDialog(getAppCompatActivity(),
         DialogAttributes(

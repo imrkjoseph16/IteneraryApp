@@ -98,6 +98,7 @@ class ViewUtil @Inject constructor() {
                     setContentTitle(title)
                     setContentText(description)
                     setAutoCancel(true)
+                    setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                 }.build().also { notification ->
                     val notificationManager = NotificationManagerCompat.from(it)
 

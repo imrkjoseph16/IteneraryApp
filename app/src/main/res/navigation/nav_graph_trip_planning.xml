@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_trip_planning"
+    app:startDestination="@id/tripNotesFragment">
+
+    <fragment
+        android:id="@+id/tripNotesFragment"
+        android:name="com.example.iteneraryapplication.dashboard.pages.tripplanning.notes.TripNotesFragment"
+        android:label="fragment_trip_notes"
+        tools:layout="@layout/fragment_trip_notes" >
+        <action
+            android:id="@+id/action_to_create_folder"
+            app:destination="@id/createFolderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createFolderFragment"
+        android:name="com.example.iteneraryapplication.dashboard.shared.presentation.folder.CreateFolderFragment"
+        android:label="fragment_create_folder"
+        tools:layout="@layout/fragment_create_folder" />
+</navigation>
