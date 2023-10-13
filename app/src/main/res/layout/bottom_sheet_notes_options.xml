@@ -157,7 +157,7 @@
             android:textColor="@color/white"
             android:textSize="16dp"
             android:text="@string/pick_note_color"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -190,7 +190,7 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:text="@string/add_image"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -225,7 +225,7 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:text="@string/add_web_link"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -260,7 +260,7 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:text="@string/add_hand_writing"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>
@@ -295,7 +295,7 @@
             android:textColor="@color/ColorRedNote"
             android:textSize="14dp"
             android:text="@string/delete_note"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/sf_pro_text_medium"
             android:maxLines="1"
             android:ellipsize="end" />
     </LinearLayout>

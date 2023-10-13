@@ -75,7 +75,7 @@
 
     <string name="title_cities">City</string>
     <string name="title_regions">Region</string>
-    <string name="find_your_notes">Find your notes...</string>
+    <string name="find_your_notes">Let\'s find your notes…</string>
     <string name="delete_note">Delete Note</string>
     <string name="action_delete_note">Delete note</string>
     <string name="pin_this_note">(Pin this note)</string>
